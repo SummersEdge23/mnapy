@@ -1,7 +1,7 @@
 from typing import List
 
-from pysolver import Global
-from pysolver import Wire
+from mnapy import Global
+from mnapy import Wire
 
 
 class Ground:
@@ -26,7 +26,7 @@ class Ground:
     def stamp(self) -> None:
         None
         self.context.stamp_node(
-            self.Nodes[0], 1.0 / (2 * Global.SystemSettings.R_SHUNT)
+            self.Nodes[0], 1.0 / (2 * self.context.Params.SystemSettings.R_SHUNT)
         )
 
     def SetId(self, Id: str) -> None:

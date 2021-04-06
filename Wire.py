@@ -1,6 +1,6 @@
 from typing import List
 
-from pysolver import Parser
+from mnapy import Parser
 
 
 class Wire:

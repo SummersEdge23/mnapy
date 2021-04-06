@@ -1,9 +1,9 @@
 import math
 from typing import List
 
-from pysolver import ACSourceLimits
-from pysolver import Utils
-from pysolver import Wire
+from mnapy import ACSourceLimits
+from mnapy import Utils
+from mnapy import Wire
 
 
 class ACSource:

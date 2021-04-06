@@ -1,10 +1,10 @@
 from typing import List
 
-from pysolver import Global
-from pysolver import PIDController
-from pysolver import PIDModuleLimits
-from pysolver import Utils
-from pysolver import Wire
+from mnapy import Global
+from mnapy import PIDController
+from mnapy import PIDModuleLimits
+from mnapy import Utils
+from mnapy import Wire
 
 
 class PIDModule:
@@ -54,7 +54,7 @@ class PIDModule:
         self.ElementType = -1
         self.WireReferences = []
         self.context = context
-        self.pid_controller = PIDController.PIDController(Setpoint, Kp, Ki, Kd)
+        self.pid_controller = PIDController.PIDController(Setpoint, Kp, Ki, Kd, context)
         self.pid_controller.set_output_limits(Min_Output, Max_Output)
 
     def Set_Max_Output(self, setter: float) -> None:
@@ -149,7 +149,7 @@ class PIDModule:
     def update(self) -> None:
         None
         if (
-            Global.SystemFlags.FlagSimulating
+            self.context.Params.SystemFlags.FlagSimulating
             and self.context.solutions_ready
             and self.context.simulation_step != 0
         ):

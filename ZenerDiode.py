@@ -1,10 +1,10 @@
 import math
 from typing import List
 
-from pysolver import Global
-from pysolver import Utils
-from pysolver import Wire
-from pysolver import ZenerDiodeLimits
+from mnapy import Global
+from mnapy import Utils
+from mnapy import Wire
+from mnapy import ZenerDiodeLimits
 
 
 class ZenerDiode:
@@ -101,21 +101,21 @@ class ZenerDiode:
         None
         self.Voltage = 0
         self.Last_Voltage = Utils.Utils.calculate_vcrit(
-            self.Emission_Coefficient, self.Saturation_Current
+            self.Emission_Coefficient, self.Saturation_Current, self.context
         )
-        self.Last_Current = Global.SystemSettings.TOLERANCE * 2
-        self.Resistance = Global.SystemSettings.R_MAX
+        self.Last_Current = self.context.Params.SystemSettings.TOLERANCE * 2
+        self.Resistance = self.context.Params.SystemSettings.R_MAX
         self.Equivalent_Current = 0
         self.update()
 
     def update(self) -> None:
         None
-        if Global.SystemFlags.FlagSimulating and self.context.solutions_ready:
+        if self.context.Params.SystemFlags.FlagSimulating and self.context.solutions_ready:
             self.Last_Voltage = self.Voltage
             self.Last_Current = self.Equivalent_Current
             next_voltage: float = self.context.get_voltage(self.Nodes[0], self.Nodes[1])
             vcrit: float = Utils.Utils.calculate_vcrit(
-                self.Emission_Coefficient, self.Saturation_Current
+                self.Emission_Coefficient, self.Saturation_Current, self.context
             )
             diode_voltage: float = 0
             if next_voltage > self.damping_safety_factor * vcrit:
@@ -131,7 +131,7 @@ class ZenerDiode:
 
             diode_voltage = Utils.Utils.limit(diode_voltage, -self.Zener_Voltage, vcrit)
             self.gmin = Utils.Utils.gmin_step(
-                self.gmin_start, self.get_zener_error(), self.context.iterator
+                self.gmin_start, self.get_zener_error(), self.context.iterator, self.context
             )
             self.Voltage = diode_voltage
             adjusted_zener_voltage: float = (
@@ -144,14 +144,14 @@ class ZenerDiode:
                         self.Saturation_Current
                         / (
                             self.Emission_Coefficient
-                            * Global.SystemSettings.THERMAL_VOLTAGE
+                            * self.context.Params.SystemSettings.THERMAL_VOLTAGE
                         )
                     )
                     * math.exp(
                         self.Voltage
                         / (
                             self.Emission_Coefficient
-                            * Global.SystemSettings.THERMAL_VOLTAGE
+                            * self.context.Params.SystemSettings.THERMAL_VOLTAGE
                         )
                     )
                 )
@@ -162,7 +162,7 @@ class ZenerDiode:
                             self.Voltage
                             / (
                                 self.Emission_Coefficient
-                                * Global.SystemSettings.THERMAL_VOLTAGE
+                                * self.context.Params.SystemSettings.THERMAL_VOLTAGE
                             )
                         )
                         - 1
@@ -175,7 +175,7 @@ class ZenerDiode:
                         self.Saturation_Current
                         / (
                             self.Emission_Coefficient
-                            * Global.SystemSettings.THERMAL_VOLTAGE
+                            * self.context.Params.SystemSettings.THERMAL_VOLTAGE
                         )
                     )
                     * math.exp(
@@ -184,7 +184,7 @@ class ZenerDiode:
                             1.0
                             / (
                                 self.Emission_Coefficient
-                                * Global.SystemSettings.THERMAL_VOLTAGE
+                                * self.context.Params.SystemSettings.THERMAL_VOLTAGE
                             )
                         )
                     )
@@ -195,7 +195,7 @@ class ZenerDiode:
                         (-self.Voltage - adjusted_zener_voltage)
                         / (
                             self.Emission_Coefficient
-                            * Global.SystemSettings.THERMAL_VOLTAGE
+                            * self.context.Params.SystemSettings.THERMAL_VOLTAGE
                         )
                     )
                     - self.Voltage / self.Resistance

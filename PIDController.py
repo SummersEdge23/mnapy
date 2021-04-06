@@ -1,14 +1,15 @@
-from pysolver import Global
+from mnapy import Global
 
 
 class PIDController:
-    def __init__(self, set_point, k_p, k_i, k_d):
+    def __init__(self, set_point, k_p, k_i, k_d, context):
+        self.context = context
         self.set_point = set_point
         self.k_p = k_p
         self.k_i = k_i
         self.k_d = k_d
-        self.min_limit = -Global.SystemSettings.MAX_VOLTAGE
-        self.max_limit = Global.SystemSettings.MAX_VOLTAGE
+        self.min_limit = -self.context.Params.SystemSettings.MAX_VOLTAGE
+        self.max_limit = self.context.Params.SystemSettings.MAX_VOLTAGE
         self.previous_time = 0
         self.last_error = 0
         self.integral_error = 0

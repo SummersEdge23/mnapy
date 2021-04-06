@@ -1,9 +1,9 @@
 from typing import List
 
-from pysolver import Global
-from pysolver import LookUpTableLimits
-from pysolver import Utils
-from pysolver import Wire
+from mnapy import Global
+from mnapy import LookUpTableLimits
+from mnapy import Utils
+from mnapy import Wire
 
 
 class LookUpTable:
@@ -54,8 +54,8 @@ class LookUpTable:
 
     def Set_Interpolate(self, setter: str) -> None:
         None
-        if setter == (Global.SystemConstants.ON) or setter == (
-            Global.SystemConstants.OFF
+        if setter == (self.context.Params.SystemConstants.ON) or setter == (
+            self.context.Params.SystemConstants.OFF
         ):
             self.Interpolate = setter
         else:
@@ -142,7 +142,7 @@ class LookUpTable:
     def update(self) -> None:
         None
         if (
-            Global.SystemFlags.FlagSimulating
+            self.context.Params.SystemFlags.FlagSimulating
             and self.context.solutions_ready
             and self.context.simulation_step != 0
         ):
@@ -151,7 +151,7 @@ class LookUpTable:
                 self.Low_Voltage,
                 self.High_Voltage,
             )
-            if self.Interpolate == (Global.SystemConstants.ON):
+            if self.Interpolate == (self.context.Params.SystemConstants.ON):
                 self.Output_Voltage = Utils.Utils.linterp(
                     [
                         self.High_Voltage * 0,
@@ -165,7 +165,7 @@ class LookUpTable:
                     ],
                     self.Input_Voltage1,
                 )
-            elif self.Interpolate == (Global.SystemConstants.OFF):
+            elif self.Interpolate == (self.context.Params.SystemConstants.OFF):
                 index: int = 0
                 if (
                     self.Input_Voltage1 >= self.High_Voltage * 0

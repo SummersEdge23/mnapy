@@ -1,8 +1,8 @@
 import re
 from typing import List
 
-from pysolver import KeyPair
-from pysolver import Limit
+from mnapy import KeyPair
+from mnapy import Limit
 
 
 class Parser:

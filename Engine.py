@@ -3,84 +3,82 @@ from typing import List
 
 import numpy as np
 
-from pysolver import ACCurrent
-from pysolver import ACSource
-from pysolver import ADCModule
-from pysolver import ANDGate
-from pysolver import AbsoluteValue
-from pysolver import Adder
-from pysolver import AmMeter
-from pysolver import Capacitor
-from pysolver import Constant
-from pysolver import CurrentControlledCurrentSource
-from pysolver import CurrentControlledVoltageSource
-from pysolver import DACModule
-from pysolver import DCCurrent
-from pysolver import DCSource
-from pysolver import DFlipFlop
-from pysolver import DifferentiatorModule
-from pysolver import Diode
-from pysolver import Divider
-from pysolver import Element
-from pysolver import Fuse
-from pysolver import GainBlock
-from pysolver import Global
-from pysolver import GreaterThan
-from pysolver import Ground
-from pysolver import HighPassFilter
-from pysolver import Inductor
-from pysolver import IntegratorModule
-from pysolver import KeyPair
-from pysolver import LightEmittingDiode
-from pysolver import LookUpTable
-from pysolver import LowPassFilter
-from pysolver import Multiplier
-from pysolver import NANDGate
-from pysolver import NChannelMOSFET
-from pysolver import NORGate
-from pysolver import NOTGate
-from pysolver import NPNBipolarJunctionTransistor
-from pysolver import Net
-from pysolver import Node
-from pysolver import NodeManager
-from pysolver import Note
-from pysolver import ORGate
-from pysolver import OhmMeter
-from pysolver import OperationalAmplifier
-from pysolver import PChannelMOSFET
-from pysolver import PIDModule
-from pysolver import PNPBipolarJunctionTransistor
-from pysolver import Potentiometer
-from pysolver import PulseWidthModulator
-from pysolver import Rail
-from pysolver import Relay
-from pysolver import Resistor
-from pysolver import SampleAndHold
-from pysolver import SawWave
-from pysolver import SinglePoleDoubleThrow
-from pysolver import SinglePoleSingleThrow
-from pysolver import SquareWave
-from pysolver import Subtractor
-from pysolver import TPTZModule
-from pysolver import Transformer
-from pysolver import TriangleWave
-from pysolver import Type
-from pysolver import Utils
-from pysolver import VoltMeter
-from pysolver import VoltageControlledCapacitor
-from pysolver import VoltageControlledCurrentSource
-from pysolver import VoltageControlledInductor
-from pysolver import VoltageControlledResistor
-from pysolver import VoltageControlledSwitch
-from pysolver import VoltageControlledVoltageSource
-from pysolver import VoltageSaturation
-from pysolver import WattMeter
-from pysolver import Wire
-from pysolver import XNORGate
-from pysolver import XORGate
-from pysolver import ZenerDiode
-
-from pysolver import Global
+from mnapy import ACCurrent
+from mnapy import ACSource
+from mnapy import ADCModule
+from mnapy import ANDGate
+from mnapy import AbsoluteValue
+from mnapy import Adder
+from mnapy import AmMeter
+from mnapy import Capacitor
+from mnapy import Constant
+from mnapy import CurrentControlledCurrentSource
+from mnapy import CurrentControlledVoltageSource
+from mnapy import DACModule
+from mnapy import DCCurrent
+from mnapy import DCSource
+from mnapy import DFlipFlop
+from mnapy import DifferentiatorModule
+from mnapy import Diode
+from mnapy import Divider
+from mnapy import Element
+from mnapy import Fuse
+from mnapy import GainBlock
+from mnapy import Global
+from mnapy import GreaterThan
+from mnapy import Ground
+from mnapy import HighPassFilter
+from mnapy import Inductor
+from mnapy import IntegratorModule
+from mnapy import KeyPair
+from mnapy import LightEmittingDiode
+from mnapy import LookUpTable
+from mnapy import LowPassFilter
+from mnapy import Multiplier
+from mnapy import NANDGate
+from mnapy import NChannelMOSFET
+from mnapy import NORGate
+from mnapy import NOTGate
+from mnapy import NPNBipolarJunctionTransistor
+from mnapy import Net
+from mnapy import Node
+from mnapy import NodeManager
+from mnapy import Note
+from mnapy import ORGate
+from mnapy import OhmMeter
+from mnapy import OperationalAmplifier
+from mnapy import PChannelMOSFET
+from mnapy import PIDModule
+from mnapy import PNPBipolarJunctionTransistor
+from mnapy import Potentiometer
+from mnapy import PulseWidthModulator
+from mnapy import Rail
+from mnapy import Relay
+from mnapy import Resistor
+from mnapy import SampleAndHold
+from mnapy import SawWave
+from mnapy import SinglePoleDoubleThrow
+from mnapy import SinglePoleSingleThrow
+from mnapy import SquareWave
+from mnapy import Subtractor
+from mnapy import TPTZModule
+from mnapy import Transformer
+from mnapy import TriangleWave
+from mnapy import Type
+from mnapy import Utils
+from mnapy import VoltMeter
+from mnapy import VoltageControlledCapacitor
+from mnapy import VoltageControlledCurrentSource
+from mnapy import VoltageControlledInductor
+from mnapy import VoltageControlledResistor
+from mnapy import VoltageControlledSwitch
+from mnapy import VoltageControlledVoltageSource
+from mnapy import VoltageSaturation
+from mnapy import WattMeter
+from mnapy import Wire
+from mnapy import XNORGate
+from mnapy import XORGate
+from mnapy import ZenerDiode
 
 class Engine:
     def __init__(self) -> None:
@@ -279,347 +277,347 @@ class Engine:
         self.Params = Global.Global()
         None
 
-    def Resistor(self, index: int):
+    def InstanceOfResistor(self, index: int):
         return self.resistors[index]
 
     None
 
-    def Capacitor(self, index: int):
+    def InstanceOfCapacitor(self, index: int):
         return self.capacitors[index]
     
     None
 
-    def Inductor(self, index: int):
+    def InstanceOfInductor(self, index: int):
         return self.inductors[index]
     
     None
 
-    def Ground(self, index: int):
+    def InstanceOfGround(self, index: int):
         return self.grounds[index]
 
     None
 
-    def DCSource(self, index: int):
+    def InstanceOfDCSource(self, index: int):
         return self.dcsources[index]
 
     None
 
-    def DCCurrent(self, index: int):
+    def InstanceOfDCCurrent(self, index: int):
         return self.dccurrents[index]
 
     None
 
-    def ACSource(self, index: int):
+    def InstanceOfACSource(self, index: int):
         return self.acsources[index]
 
     None
 
-    def ACCurrent(self, index: int):
+    def InstanceOfACCurrent(self, index: int):
         return self.accurrents[index]
 
     None
 
-    def SquareWave(self, index: int):
+    def InstanceOfSquareWave(self, index: int):
         return self.squarewaves[index]
 
     None
 
-    def SawWave(self, index: int):
+    def InstanceOfSawWave(self, index: int):
         return self.sawwaves[index]
 
     None
 
-    def TriangleWave(self, index: int):
+    def InstanceOfTriangleWave(self, index: int):
         return self.trianglewaves[index]
 
     None
 
-    def Constant(self, index: int):
+    def InstanceOfConstant(self, index: int):
         return self.constants[index]
 
     None
 
-    def Wire(self, index: int):
+    def InstanceOfWire(self, index: int):
         return self.wires[index]
 
     None
 
-    def Net(self, index: int):
+    def InstanceOfNet(self, index: int):
         return self.nets[index]
 
     None
 
-    def Note(self, index: int):
+    def InstanceOfNote(self, index: int):
         return self.notes[index]
 
     None
 
-    def Rail(self, index: int):
+    def InstanceOfRail(self, index: int):
         return self.rails[index]
 
     None
 
-    def VoltMeter(self, index: int):
+    def InstanceOfVoltMeter(self, index: int):
         return self.voltmeters[index]
 
     None
 
-    def OhmMeter(self, index: int):
+    def InstanceOfOhmMeter(self, index: int):
         return self.ohmmeters[index]
 
     None
 
-    def AmMeter(self, index: int):
+    def InstanceOfAmMeter(self, index: int):
         return self.ammeters[index]
 
     None
 
-    def WattMeter(self, index: int):
+    def InstanceOfWattMeter(self, index: int):
         return self.wattmeters[index]
 
     None
 
-    def Fuse(self, index: int):
+    def InstanceOfFuse(self, index: int):
         return self.fuses[index]
 
     None
 
-    def SinglePoleSingleThrow(self, index: int):
+    def InstanceOfSinglePoleSingleThrow(self, index: int):
         return self.spsts[index]
 
     None
 
-    def SinglePoleDoubleThrow(self, index: int):
+    def InstanceOfSinglePoleDoubleThrow(self, index: int):
         return self.spdts[index]
 
     None
 
-    def NOTGate(self, index: int):
+    def InstanceOfNOTGate(self, index: int):
         return self.nots[index]
 
     None
 
-    def Diode(self, index: int):
+    def InstanceOfDiode(self, index: int):
         return self.diodes[index]
 
     None
 
-    def LightEmittingDiode(self, index: int):
+    def InstanceOfLightEmittingDiode(self, index: int):
         return self.leds[index]
 
     None
 
-    def ZenerDiode(self, index: int):
+    def InstanceOfZenerDiode(self, index: int):
         return self.zeners[index]
 
     None
 
-    def Potentiometer(self, index: int):
+    def InstanceOfPotentiometer(self, index: int):
         return self.potentiometers[index]
 
     None
 
-    def ANDGate(self, index: int):
+    def InstanceOfANDGate(self, index: int):
         return self.ands[index]
 
     None
 
-    def ORGate(self, index: int):
+    def InstanceOfORGate(self, index: int):
         return self.ors[index]
 
     None
 
-    def NANDGate(self, index: int):
+    def InstanceOfNANDGate(self, index: int):
         return self.nands[index]
 
     None
 
-    def NORGate(self, index: int):
+    def InstanceOfNORGate(self, index: int):
         return self.nors[index]
 
     None
 
-    def XORGate(self, index: int):
+    def InstanceOfXORGate(self, index: int):
         return self.xors[index]
 
     None
 
-    def XNORGate(self, index: int):
+    def InstanceOfXNORGate(self, index: int):
         return self.xnors[index]
 
     None
 
-    def DFlipFlop(self, index: int):
+    def InstanceOfDFlipFlop(self, index: int):
         return self.dffs[index]
 
     None
 
-    def VoltageSaturation(self, index: int):
+    def InstanceOfVoltageSaturation(self, index: int):
         return self.vsats[index]
 
     None
 
-    def Adder(self, index: int):
+    def InstanceOfAdder(self, index: int):
         return self.adders[index]
 
     None
 
-    def Subtractor(self, index: int):
+    def InstanceOfSubtractor(self, index: int):
         return self.subtractors[index]
 
     None
 
-    def Multiplier(self, index: int):
+    def InstanceOfMultiplier(self, index: int):
         return self.multipliers[index]
 
     None
 
-    def Divider(self, index: int):
+    def InstanceOfDivider(self, index: int):
         return self.dividers[index]
 
     None
 
-    def GainBlock(self, index: int):
+    def InstanceOfGainBlock(self, index: int):
         return self.gains[index]
 
     None
 
-    def AbsoluteValue(self, index: int):
+    def InstanceOfAbsoluteValue(self, index: int):
         return self.absvals[index]
 
     None
 
-    def VoltageControlledSwitch(self, index: int):
+    def InstanceOfVoltageControlledSwitch(self, index: int):
         return self.vcsws[index]
 
     None
 
-    def VoltageControlledVoltageSource(self, index: int):
+    def InstanceOfVoltageControlledVoltageSource(self, index: int):
         return self.vcvss[index]
 
     None
 
-    def VoltageControlledCurrentSource(self, index: int):
+    def InstanceOfVoltageControlledCurrentSource(self, index: int):
         return self.vccss[index]
 
     None
 
-    def CurrentControlledCurrentSource(self, index: int):
+    def InstanceOfCurrentControlledCurrentSource(self, index: int):
         return self.cccss[index]
 
     None
 
-    def CurrentControlledVoltageSource(self, index: int):
+    def InstanceOfCurrentControlledVoltageSource(self, index: int):
         return self.ccvss[index]
 
     None
 
-    def OperationalAmplifier(self, index: int):
+    def InstanceOfOperationalAmplifier(self, index: int):
         return self.opamps[index]
 
     None
 
-    def NChannelMOSFET(self, index: int):
+    def InstanceOfNChannelMOSFET(self, index: int):
         return self.nmosfets[index]
 
     None
 
-    def PChannelMOSFET(self, index: int):
+    def InstanceOfPChannelMOSFET(self, index: int):
         return self.pmosfets[index]
 
     None
 
-    def NPNBipolarJunctionTransistor(self, index: int):
+    def InstanceOfNPNBipolarJunctionTransistor(self, index: int):
         return self.npns[index]
 
     None
 
-    def PNPBipolarJunctionTransistor(self, index: int):
+    def InstanceOfPNPBipolarJunctionTransistor(self, index: int):
         return self.pnps[index]
 
     None
 
-    def ADCModule(self, index: int):
+    def InstanceOfADCModule(self, index: int):
         return self.adcs[index]
 
     None
 
-    def DACModule(self, index: int):
+    def InstanceOfDACModule(self, index: int):
         return self.dacs[index]
 
     None
 
-    def SampleAndHold(self, index: int):
+    def InstanceOfSampleAndHold(self, index: int):
         return self.sandhs[index]
 
     None
 
-    def PulseWidthModulator(self, index: int):
+    def InstanceOfPulseWidthModulator(self, index: int):
         return self.pwms[index]
 
     None
 
-    def IntegratorModule(self, index: int):
+    def InstanceOfIntegratorModule(self, index: int):
         return self.integrators[index]
 
     None
 
-    def DifferentiatorModule(self, index: int):
+    def InstanceOfDifferentiatorModule(self, index: int):
         return self.differentiators[index]
 
     None
 
-    def LowPassFilter(self, index: int):
+    def InstanceOfLowPassFilter(self, index: int):
         return self.lowpasses[index]
 
     None
 
-    def HighPassFilter(self, index: int):
+    def InstanceOfHighPassFilter(self, index: int):
         return self.highpasses[index]
 
     None
 
-    def Relay(self, index: int):
+    def InstanceOfRelay(self, index: int):
         return self.relays[index]
 
     None
 
-    def PIDModule(self, index: int):
+    def InstanceOfPIDModule(self, index: int):
         return self.pids[index]
 
     None
 
-    def LookUpTable(self, index: int):
+    def InstanceOfLookUpTable(self, index: int):
         return self.luts[index]
 
     None
 
-    def VoltageControlledResistor(self, index: int):
+    def InstanceOfVoltageControlledResistor(self, index: int):
         return self.vcrs[index]
 
     None
 
-    def VoltageControlledCapacitor(self, index: int):
+    def InstanceOfVoltageControlledCapacitor(self, index: int):
         return self.vccas[index]
 
     None
 
-    def VoltageControlledInductor(self, index: int):
+    def InstanceOfVoltageControlledInductor(self, index: int):
         return self.vcls[index]
 
     None
 
-    def GreaterThan(self, index: int):
+    def InstanceOfGreaterThan(self, index: int):
         return self.grts[index]
 
     None
 
-    def TPTZModule(self, index: int):
+    def InstanceOfTPTZModule(self, index: int):
         return self.tptzs[index]
 
     None
 
-    def Transformer(self, index: int):
+    def InstanceOfTransformer(self, index: int):
         return self.transformers[index]
 
     None
@@ -3168,7 +3166,7 @@ class Engine:
         else:
             return np.zeros((1, 1), dtype=np.float64)
 
-    def GetResistor(self, Designator: str):
+    def IndexOfResistor(self, Designator: str):
         for i in range(0, len(self.resistors)):
             if self.resistors[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3178,7 +3176,7 @@ class Engine:
 
     None
 
-    def GetCapacitor(self, Designator: str):
+    def IndexOfCapacitor(self, Designator: str):
         for i in range(0, len(self.capacitors)):
             if self.capacitors[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3188,7 +3186,7 @@ class Engine:
 
     None
 
-    def GetInductor(self, Designator: str):
+    def IndexOfInductor(self, Designator: str):
         for i in range(0, len(self.inductors)):
             if self.inductors[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3198,7 +3196,7 @@ class Engine:
 
     None
 
-    def GetGround(self, Designator: str):
+    def IndexOfGround(self, Designator: str):
         for i in range(0, len(self.grounds)):
             if self.grounds[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3208,7 +3206,7 @@ class Engine:
 
     None
 
-    def GetDCSource(self, Designator: str):
+    def IndexOfDCSource(self, Designator: str):
         for i in range(0, len(self.dcsources)):
             if self.dcsources[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3218,7 +3216,7 @@ class Engine:
 
     None
 
-    def GetDCCurrent(self, Designator: str):
+    def IndexOfDCCurrent(self, Designator: str):
         for i in range(0, len(self.dccurrents)):
             if self.dccurrents[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3228,7 +3226,7 @@ class Engine:
 
     None
 
-    def GetACSource(self, Designator: str):
+    def IndexOfACSource(self, Designator: str):
         for i in range(0, len(self.acsources)):
             if self.acsources[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3238,7 +3236,7 @@ class Engine:
 
     None
 
-    def GetACCurrent(self, Designator: str):
+    def IndexOfACCurrent(self, Designator: str):
         for i in range(0, len(self.accurrents)):
             if self.accurrents[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3248,7 +3246,7 @@ class Engine:
 
     None
 
-    def GetSquareWave(self, Designator: str):
+    def IndexOfSquareWave(self, Designator: str):
         for i in range(0, len(self.squarewaves)):
             if self.squarewaves[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3258,7 +3256,7 @@ class Engine:
 
     None
 
-    def GetSawWave(self, Designator: str):
+    def IndexOfSawWave(self, Designator: str):
         for i in range(0, len(self.sawwaves)):
             if self.sawwaves[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3268,7 +3266,7 @@ class Engine:
 
     None
 
-    def GetTriangleWave(self, Designator: str):
+    def IndexOfTriangleWave(self, Designator: str):
         for i in range(0, len(self.trianglewaves)):
             if self.trianglewaves[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3278,7 +3276,7 @@ class Engine:
 
     None
 
-    def GetConstant(self, Designator: str):
+    def IndexOfConstant(self, Designator: str):
         for i in range(0, len(self.constants)):
             if self.constants[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3288,7 +3286,7 @@ class Engine:
 
     None
 
-    def GetNet(self, Designator: str):
+    def IndexOfNet(self, Designator: str):
         for i in range(0, len(self.nets)):
             if self.nets[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3298,7 +3296,7 @@ class Engine:
 
     None
 
-    def GetNote(self, Designator: str):
+    def IndexOfNote(self, Designator: str):
         for i in range(0, len(self.notes)):
             if self.notes[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3308,7 +3306,7 @@ class Engine:
 
     None
 
-    def GetRail(self, Designator: str):
+    def IndexOfRail(self, Designator: str):
         for i in range(0, len(self.rails)):
             if self.rails[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3318,7 +3316,7 @@ class Engine:
 
     None
 
-    def GetVoltMeter(self, Designator: str):
+    def IndexOfVoltMeter(self, Designator: str):
         for i in range(0, len(self.voltmeters)):
             if self.voltmeters[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3328,7 +3326,7 @@ class Engine:
 
     None
 
-    def GetOhmMeter(self, Designator: str):
+    def IndexOfOhmMeter(self, Designator: str):
         for i in range(0, len(self.ohmmeters)):
             if self.ohmmeters[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3338,7 +3336,7 @@ class Engine:
 
     None
 
-    def GetAmMeter(self, Designator: str):
+    def IndexOfAmMeter(self, Designator: str):
         for i in range(0, len(self.ammeters)):
             if self.ammeters[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3348,7 +3346,7 @@ class Engine:
 
     None
 
-    def GetWattMeter(self, Designator: str):
+    def IndexOfWattMeter(self, Designator: str):
         for i in range(0, len(self.wattmeters)):
             if self.wattmeters[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3358,7 +3356,7 @@ class Engine:
 
     None
 
-    def GetFuse(self, Designator: str):
+    def IndexOfFuse(self, Designator: str):
         for i in range(0, len(self.fuses)):
             if self.fuses[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3368,7 +3366,7 @@ class Engine:
 
     None
 
-    def GetSinglePoleSingleThrow(self, Designator: str):
+    def IndexOfSinglePoleSingleThrow(self, Designator: str):
         for i in range(0, len(self.spsts)):
             if self.spsts[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3378,7 +3376,7 @@ class Engine:
 
     None
 
-    def GetSinglePoleDoubleThrow(self, Designator: str):
+    def IndexOfSinglePoleDoubleThrow(self, Designator: str):
         for i in range(0, len(self.spdts)):
             if self.spdts[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3388,7 +3386,7 @@ class Engine:
 
     None
 
-    def GetNOTGate(self, Designator: str):
+    def IndexOfNOTGate(self, Designator: str):
         for i in range(0, len(self.nots)):
             if self.nots[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3398,7 +3396,7 @@ class Engine:
 
     None
 
-    def GetDiode(self, Designator: str):
+    def IndexOfDiode(self, Designator: str):
         for i in range(0, len(self.diodes)):
             if self.diodes[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3408,7 +3406,7 @@ class Engine:
 
     None
 
-    def GetLightEmittingDiode(self, Designator: str):
+    def IndexOfLightEmittingDiode(self, Designator: str):
         for i in range(0, len(self.leds)):
             if self.leds[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3418,7 +3416,7 @@ class Engine:
 
     None
 
-    def GetZenerDiode(self, Designator: str):
+    def IndexOfZenerDiode(self, Designator: str):
         for i in range(0, len(self.zeners)):
             if self.zeners[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3428,7 +3426,7 @@ class Engine:
 
     None
 
-    def GetPotentiometer(self, Designator: str):
+    def IndexOfPotentiometer(self, Designator: str):
         for i in range(0, len(self.potentiometers)):
             if self.potentiometers[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3438,7 +3436,7 @@ class Engine:
 
     None
 
-    def GetANDGate(self, Designator: str):
+    def IndexOfANDGate(self, Designator: str):
         for i in range(0, len(self.ands)):
             if self.ands[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3448,7 +3446,7 @@ class Engine:
 
     None
 
-    def GetORGate(self, Designator: str):
+    def IndexOfORGate(self, Designator: str):
         for i in range(0, len(self.ors)):
             if self.ors[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3458,7 +3456,7 @@ class Engine:
 
     None
 
-    def GetNANDGate(self, Designator: str):
+    def IndexOfNANDGate(self, Designator: str):
         for i in range(0, len(self.nands)):
             if self.nands[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3468,7 +3466,7 @@ class Engine:
 
     None
 
-    def GetNORGate(self, Designator: str):
+    def IndexOfNORGate(self, Designator: str):
         for i in range(0, len(self.nors)):
             if self.nors[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3478,7 +3476,7 @@ class Engine:
 
     None
 
-    def GetXORGate(self, Designator: str):
+    def IndexOfXORGate(self, Designator: str):
         for i in range(0, len(self.xors)):
             if self.xors[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3488,7 +3486,7 @@ class Engine:
 
     None
 
-    def GetXNORGate(self, Designator: str):
+    def IndexOfXNORGate(self, Designator: str):
         for i in range(0, len(self.xnors)):
             if self.xnors[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3498,7 +3496,7 @@ class Engine:
 
     None
 
-    def GetDFlipFlop(self, Designator: str):
+    def IndexOfDFlipFlop(self, Designator: str):
         for i in range(0, len(self.dffs)):
             if self.dffs[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3508,7 +3506,7 @@ class Engine:
 
     None
 
-    def GetVoltageSaturation(self, Designator: str):
+    def IndexOfVoltageSaturation(self, Designator: str):
         for i in range(0, len(self.vsats)):
             if self.vsats[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3518,7 +3516,7 @@ class Engine:
 
     None
 
-    def GetAdder(self, Designator: str):
+    def IndexOfAdder(self, Designator: str):
         for i in range(0, len(self.adders)):
             if self.adders[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3528,7 +3526,7 @@ class Engine:
 
     None
 
-    def GetSubtractor(self, Designator: str):
+    def IndexOfSubtractor(self, Designator: str):
         for i in range(0, len(self.subtractors)):
             if self.subtractors[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3538,7 +3536,7 @@ class Engine:
 
     None
 
-    def GetMultiplier(self, Designator: str):
+    def IndexOfMultiplier(self, Designator: str):
         for i in range(0, len(self.multipliers)):
             if self.multipliers[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3548,7 +3546,7 @@ class Engine:
 
     None
 
-    def GetDivider(self, Designator: str):
+    def IndexOfDivider(self, Designator: str):
         for i in range(0, len(self.dividers)):
             if self.dividers[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3558,7 +3556,7 @@ class Engine:
 
     None
 
-    def GetGainBlock(self, Designator: str):
+    def IndexOfGainBlock(self, Designator: str):
         for i in range(0, len(self.gains)):
             if self.gains[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3568,7 +3566,7 @@ class Engine:
 
     None
 
-    def GetAbsoluteValue(self, Designator: str):
+    def IndexOfAbsoluteValue(self, Designator: str):
         for i in range(0, len(self.absvals)):
             if self.absvals[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3578,7 +3576,7 @@ class Engine:
 
     None
 
-    def GetVoltageControlledSwitch(self, Designator: str):
+    def IndexOfVoltageControlledSwitch(self, Designator: str):
         for i in range(0, len(self.vcsws)):
             if self.vcsws[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3588,7 +3586,7 @@ class Engine:
 
     None
 
-    def GetVoltageControlledVoltageSource(self, Designator: str):
+    def IndexOfVoltageControlledVoltageSource(self, Designator: str):
         for i in range(0, len(self.vcvss)):
             if self.vcvss[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3598,7 +3596,7 @@ class Engine:
 
     None
 
-    def GetVoltageControlledCurrentSource(self, Designator: str):
+    def IndexOfVoltageControlledCurrentSource(self, Designator: str):
         for i in range(0, len(self.vccss)):
             if self.vccss[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3608,7 +3606,7 @@ class Engine:
 
     None
 
-    def GetCurrentControlledCurrentSource(self, Designator: str):
+    def IndexOfCurrentControlledCurrentSource(self, Designator: str):
         for i in range(0, len(self.cccss)):
             if self.cccss[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3618,7 +3616,7 @@ class Engine:
 
     None
 
-    def GetCurrentControlledVoltageSource(self, Designator: str):
+    def IndexOfCurrentControlledVoltageSource(self, Designator: str):
         for i in range(0, len(self.ccvss)):
             if self.ccvss[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3628,7 +3626,7 @@ class Engine:
 
     None
 
-    def GetOperationalAmplifier(self, Designator: str):
+    def IndexOfOperationalAmplifier(self, Designator: str):
         for i in range(0, len(self.opamps)):
             if self.opamps[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3638,7 +3636,7 @@ class Engine:
 
     None
 
-    def GetNChannelMOSFET(self, Designator: str):
+    def IndexOfNChannelMOSFET(self, Designator: str):
         for i in range(0, len(self.nmosfets)):
             if self.nmosfets[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3648,7 +3646,7 @@ class Engine:
 
     None
 
-    def GetPChannelMOSFET(self, Designator: str):
+    def IndexOfPChannelMOSFET(self, Designator: str):
         for i in range(0, len(self.pmosfets)):
             if self.pmosfets[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3658,7 +3656,7 @@ class Engine:
 
     None
 
-    def GetNPNBipolarJunctionTransistor(self, Designator: str):
+    def IndexOfNPNBipolarJunctionTransistor(self, Designator: str):
         for i in range(0, len(self.npns)):
             if self.npns[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3668,7 +3666,7 @@ class Engine:
 
     None
 
-    def GetPNPBipolarJunctionTransistor(self, Designator: str):
+    def IndexOfPNPBipolarJunctionTransistor(self, Designator: str):
         for i in range(0, len(self.pnps)):
             if self.pnps[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3678,7 +3676,7 @@ class Engine:
 
     None
 
-    def GetADCModule(self, Designator: str):
+    def IndexOfADCModule(self, Designator: str):
         for i in range(0, len(self.adcs)):
             if self.adcs[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3688,7 +3686,7 @@ class Engine:
 
     None
 
-    def GetDACModule(self, Designator: str):
+    def IndexOfDACModule(self, Designator: str):
         for i in range(0, len(self.dacs)):
             if self.dacs[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3698,7 +3696,7 @@ class Engine:
 
     None
 
-    def GetSampleAndHold(self, Designator: str):
+    def IndexOfSampleAndHold(self, Designator: str):
         for i in range(0, len(self.sandhs)):
             if self.sandhs[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3708,7 +3706,7 @@ class Engine:
 
     None
 
-    def GetPulseWidthModulator(self, Designator: str):
+    def IndexOfPulseWidthModulator(self, Designator: str):
         for i in range(0, len(self.pwms)):
             if self.pwms[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3718,7 +3716,7 @@ class Engine:
 
     None
 
-    def GetIntegratorModule(self, Designator: str):
+    def IndexOfIntegratorModule(self, Designator: str):
         for i in range(0, len(self.integrators)):
             if self.integrators[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3728,7 +3726,7 @@ class Engine:
 
     None
 
-    def GetDifferentiatorModule(self, Designator: str):
+    def IndexOfDifferentiatorModule(self, Designator: str):
         for i in range(0, len(self.differentiators)):
             if self.differentiators[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3738,7 +3736,7 @@ class Engine:
 
     None
 
-    def GetLowPassFilter(self, Designator: str):
+    def IndexOfLowPassFilter(self, Designator: str):
         for i in range(0, len(self.lowpasses)):
             if self.lowpasses[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3748,7 +3746,7 @@ class Engine:
 
     None
 
-    def GetHighPassFilter(self, Designator: str):
+    def IndexOfHighPassFilter(self, Designator: str):
         for i in range(0, len(self.highpasses)):
             if self.highpasses[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3758,7 +3756,7 @@ class Engine:
 
     None
 
-    def GetRelay(self, Designator: str):
+    def IndexOfRelay(self, Designator: str):
         for i in range(0, len(self.relays)):
             if self.relays[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3768,7 +3766,7 @@ class Engine:
 
     None
 
-    def GetPIDModule(self, Designator: str):
+    def IndexOfPIDModule(self, Designator: str):
         for i in range(0, len(self.pids)):
             if self.pids[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3778,7 +3776,7 @@ class Engine:
 
     None
 
-    def GetLookUpTable(self, Designator: str):
+    def IndexOfLookUpTable(self, Designator: str):
         for i in range(0, len(self.luts)):
             if self.luts[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3788,7 +3786,7 @@ class Engine:
 
     None
 
-    def GetVoltageControlledResistor(self, Designator: str):
+    def IndexOfVoltageControlledResistor(self, Designator: str):
         for i in range(0, len(self.vcrs)):
             if self.vcrs[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3798,7 +3796,7 @@ class Engine:
 
     None
 
-    def GetVoltageControlledCapacitor(self, Designator: str):
+    def IndexOfVoltageControlledCapacitor(self, Designator: str):
         for i in range(0, len(self.vccas)):
             if self.vccas[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3808,7 +3806,7 @@ class Engine:
 
     None
 
-    def GetVoltageControlledInductor(self, Designator: str):
+    def IndexOfVoltageControlledInductor(self, Designator: str):
         for i in range(0, len(self.vcls)):
             if self.vcls[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3818,7 +3816,7 @@ class Engine:
 
     None
 
-    def GetGreaterThan(self, Designator: str):
+    def IndexOfGreaterThan(self, Designator: str):
         for i in range(0, len(self.grts)):
             if self.grts[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3828,7 +3826,7 @@ class Engine:
 
     None
 
-    def GetTPTZModule(self, Designator: str):
+    def IndexOfTPTZModule(self, Designator: str):
         for i in range(0, len(self.tptzs)):
             if self.tptzs[i].GetDesignator().strip() == Designator.strip():
                 return i
@@ -3838,7 +3836,7 @@ class Engine:
 
     None
 
-    def GetTransformer(self, Designator: str):
+    def IndexOfTransformer(self, Designator: str):
         for i in range(0, len(self.transformers)):
             if self.transformers[i].GetDesignator().strip() == Designator.strip():
                 return i

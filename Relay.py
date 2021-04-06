@@ -1,9 +1,9 @@
 from typing import List
 
-from pysolver import Global
-from pysolver import RelayLimits
-from pysolver import Utils
-from pysolver import Wire
+from mnapy import Global
+from mnapy import RelayLimits
+from mnapy import Utils
+from mnapy import Wire
 
 
 class Relay:
@@ -138,14 +138,14 @@ class Relay:
         None
         if self.Input_Voltage1 >= self.Must_Operate_Voltage:
             if (
-                Global.SystemFlags.FlagSimulating
+                self.context.Params.SystemFlags.FlagSimulating
                 and self.context.solutions_ready
                 and self.context.simulation_time > self.context.time_step
             ):
-                self.Status = Global.SystemConstants.ON
+                self.Status = self.context.Params.SystemConstants.ON
 
         elif self.Input_Voltage1 <= self.Must_Release_Voltage:
-            self.Status = Global.SystemConstants.OFF
+            self.Status = self.context.Params.SystemConstants.OFF
 
     def stamp(self) -> None:
         None
@@ -156,7 +156,7 @@ class Relay:
             self.Equivalent_Current
             / (1 + self.Coil_Resistance / self.Transient_Resistance),
         )
-        if self.Status == (Global.SystemConstants.ON):
+        if self.Status == (self.context.Params.SystemConstants.ON):
             self.context.stamp_resistor(
                 self.Nodes[2], self.Nodes[3], self.Closed_Resistance
             )

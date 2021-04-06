@@ -1,10 +1,10 @@
 import math
 from typing import List
 
-from pysolver import Global
-from pysolver import Utils
-from pysolver import VoltageControlledSwitchLimits
-from pysolver import Wire
+from mnapy import Global
+from mnapy import Utils
+from mnapy import VoltageControlledSwitchLimits
+from mnapy import Wire
 
 
 class VoltageControlledSwitch:
@@ -78,7 +78,7 @@ class VoltageControlledSwitch:
     def update(self) -> None:
         None
         if (
-            Global.SystemFlags.FlagSimulating
+            self.context.Params.SystemFlags.FlagSimulating
             and self.context.solutions_ready
             and self.context.simulation_step != 0
         ):

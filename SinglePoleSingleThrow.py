@@ -1,9 +1,9 @@
 from typing import List
 
-from pysolver import Global
-from pysolver import SinglePoleSingleThrowLimits
-from pysolver import Utils
-from pysolver import Wire
+from mnapy import Global
+from mnapy import SinglePoleSingleThrowLimits
+from mnapy import Utils
+from mnapy import Wire
 
 
 class SinglePoleSingleThrow:
@@ -40,8 +40,8 @@ class SinglePoleSingleThrow:
 
     def Set_Switch_State(self, setter: str) -> None:
         None
-        if setter == (Global.SystemConstants.OFF) or setter == (
-            Global.SystemConstants.ON
+        if setter == (self.context.Params.SystemConstants.OFF) or setter == (
+            self.context.Params.SystemConstants.ON
         ):
             self.Switch_State = setter
         else:
@@ -73,7 +73,7 @@ class SinglePoleSingleThrow:
 
     def stamp(self) -> None:
         None
-        if self.Switch_State == (Global.SystemConstants.ON):
+        if self.Switch_State == (self.context.Params.SystemConstants.ON):
             self.context.stamp_resistor(
                 self.Nodes[0], self.Nodes[1], self.Closed_Resistance
             )

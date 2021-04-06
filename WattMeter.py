@@ -1,9 +1,9 @@
 from typing import List
 
-from pysolver import Global
-from pysolver import Utils
-from pysolver import WattMeterLimits
-from pysolver import Wire
+from mnapy import Global
+from mnapy import Utils
+from mnapy import WattMeterLimits
+from mnapy import Wire
 
 
 class WattMeter:
@@ -46,7 +46,7 @@ class WattMeter:
     def stamp(self) -> None:
         None
         self.context.stamp_resistor(
-            self.Nodes[0], self.Nodes[1], Global.SystemSettings.WIRE_RESISTANCE
+            self.Nodes[0], self.Nodes[1], self.context.Params.SystemSettings.WIRE_RESISTANCE
         )
         self.context.stamp_voltage(
             self.Nodes[2],
@@ -99,11 +99,11 @@ class WattMeter:
     def push_voltage(self, v1: float, v2: float) -> None:
         None
         if (
-            Global.SystemFlags.FlagSimulating
+            self.context.Params.SystemFlags.FlagSimulating
             and self.context.simulation_time >= self.context.time_step
             and self.context.solutions_ready
         ):
-            curr: float = (v1 - v2) / Global.SystemSettings.WIRE_RESISTANCE
+            curr: float = (v1 - v2) / self.context.Params.SystemSettings.WIRE_RESISTANCE
             voltage: float = max(v1, v2)
             power: float = curr * voltage
             self.Wattage = power

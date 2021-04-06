@@ -1,10 +1,10 @@
 import math
 from typing import List
 
-from pysolver import DFlipFlopLimits
-from pysolver import Global
-from pysolver import Utils
-from pysolver import Wire
+from mnapy import DFlipFlopLimits
+from mnapy import Global
+from mnapy import Utils
+from mnapy import Wire
 
 
 class DFlipFlop:
@@ -52,7 +52,7 @@ class DFlipFlop:
 
     def update(self) -> None:
         None
-        if Global.SystemFlags.FlagSimulating and self.context.solutions_ready:
+        if self.context.Params.SystemFlags.FlagSimulating and self.context.solutions_ready:
             self.Last_Clock = self.Clock
             self.Input_Voltage1 = math.tanh(
                 10 * (self.context.get_voltage(self.Nodes[0], -1) - 0.5)

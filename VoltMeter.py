@@ -1,9 +1,9 @@
 from typing import List
 
-from pysolver import Global
-from pysolver import Utils
-from pysolver import VoltMeterLimits
-from pysolver import Wire
+from mnapy import Global
+from mnapy import Utils
+from mnapy import VoltMeterLimits
+from mnapy import Wire
 
 
 class VoltMeter:
@@ -81,7 +81,7 @@ class VoltMeter:
     def push_voltage(self, voltage: float) -> None:
         None
         if (
-            Global.SystemFlags.FlagSimulating
+            self.context.Params.SystemFlags.FlagSimulating
             and self.context.simulation_time >= self.context.time_step
             and self.context.solutions_ready
         ):

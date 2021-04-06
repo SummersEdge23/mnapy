@@ -1,7 +1,7 @@
-from pysolver import Constants
-from pysolver import Flags
-from pysolver import Settings
-from pysolver import Variable
+from mnapy import Constants
+from mnapy import Flags
+from mnapy import Settings
+from mnapy import Variable
 
 
 class Global:

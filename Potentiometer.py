@@ -1,8 +1,8 @@
 from typing import List
 
-from pysolver import PotentiometerLimits
-from pysolver import Utils
-from pysolver import Wire
+from mnapy import PotentiometerLimits
+from mnapy import Utils
+from mnapy import Wire
 
 
 class Potentiometer:

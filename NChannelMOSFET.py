@@ -1,10 +1,10 @@
 import math
 from typing import List
 
-from pysolver import Global
-from pysolver import NChannelMOSFETLimits
-from pysolver import Utils
-from pysolver import Wire
+from mnapy import Global
+from mnapy import NChannelMOSFETLimits
+from mnapy import Utils
+from mnapy import Wire
 
 
 class NChannelMOSFET:
@@ -124,12 +124,12 @@ class NChannelMOSFET:
         self.Vgs = 0
         self.Vds = 0
         self.Last_Vgs = 2
-        self.Last_Io = Global.SystemSettings.TOLERANCE * 2
+        self.Last_Io = self.context.Params.SystemSettings.TOLERANCE * 2
         self.update()
 
     def update(self) -> None:
         None
-        if Global.SystemFlags.FlagSimulating and self.context.solutions_ready:
+        if self.context.Params.SystemFlags.FlagSimulating and self.context.solutions_ready:
             self.Last_Vgs = self.Vgs
             self.Last_Io = self.Io
             self.Vgs = Utils.Utils.log_damping(
@@ -145,13 +145,13 @@ class NChannelMOSFET:
                 self.kappa,
             )
             self.gmin = Utils.Utils.gmin_step(
-                self.gmin_start, self.get_nmosfet_error(), self.context.iterator
+                self.gmin_start, self.get_nmosfet_error(), self.context.iterator, self.context
             )
             kn: float = 0.5 * self.W_L_Ratio * self.K_n
             if self.Vgs <= self.VTN:
                 self.Mosfet_Mode = 0
                 self.gm = 0
-                self.gds = 1.0 / Global.SystemSettings.R_MAX
+                self.gds = 1.0 / self.context.Params.SystemSettings.R_MAX
                 self.Io = 0
             elif self.Vds <= self.Vgs - self.VTN:
                 self.Mosfet_Mode = 1

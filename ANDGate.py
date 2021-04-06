@@ -1,10 +1,10 @@
 import math
 from typing import List
 
-from pysolver import ANDGateLimits
-from pysolver import Global
-from pysolver import Utils
-from pysolver import Wire
+from mnapy import ANDGateLimits
+from mnapy import Global
+from mnapy import Utils
+from mnapy import Wire
 
 
 class ANDGate:
@@ -61,7 +61,7 @@ class ANDGate:
 
     def update(self) -> None:
         None
-        if Global.SystemFlags.FlagSimulating and self.context.solutions_ready:
+        if self.context.Params.SystemFlags.FlagSimulating and self.context.solutions_ready:
             self.Input_Voltage1 = math.tanh(
                 10
                 * (
@@ -77,9 +77,9 @@ class ANDGate:
                 )
             )
             self.Output_Voltage = (self.High_Voltage * 2.0) / (
-                2 / (1 + self.Input_Voltage1 + Global.SystemConstants.ZERO_BIAS)
+                2 / (1 + self.Input_Voltage1 + self.context.Params.SystemConstants.ZERO_BIAS)
                 + 2.0 / (1 + self.Input_Voltage2)
-                + Global.SystemConstants.ZERO_BIAS
+                + self.context.Params.SystemConstants.ZERO_BIAS
             )
 
     def stamp(self) -> None:

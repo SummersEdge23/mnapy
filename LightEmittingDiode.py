@@ -1,10 +1,10 @@
 import math
 from typing import List
 
-from pysolver import Global
-from pysolver import LightEmittingDiodeLimits
-from pysolver import Utils
-from pysolver import Wire
+from mnapy import Global
+from mnapy import LightEmittingDiodeLimits
+from mnapy import Utils
+from mnapy import Wire
 
 
 class LightEmittingDiode:
@@ -103,22 +103,22 @@ class LightEmittingDiode:
         None
         self.Voltage = 0
         self.Last_Voltage = Utils.Utils.calculate_vcrit(
-            self.Emission_Coefficient, self.Saturation_Current
+            self.Emission_Coefficient, self.Saturation_Current, self.context
         )
-        self.Last_Current = Global.SystemSettings.TOLERANCE * 2
-        self.Resistance = Global.SystemSettings.R_MAX
+        self.Last_Current = self.context.Params.SystemSettings.TOLERANCE * 2
+        self.Resistance = self.context.Params.SystemSettings.R_MAX
         self.Equivalent_Current = 0
-        self.led_status = Global.SystemConstants.OFF
+        self.led_status = self.context.Params.SystemConstants.OFF
         self.update()
 
     def update(self) -> None:
         None
-        if Global.SystemFlags.FlagSimulating and self.context.solutions_ready:
+        if self.context.Params.SystemFlags.FlagSimulating and self.context.solutions_ready:
             self.Last_Voltage = self.Voltage
             self.Last_Current = self.Equivalent_Current
             next_voltage: float = self.context.get_voltage(self.Nodes[0], self.Nodes[1])
             vcrit: float = Utils.Utils.calculate_vcrit(
-                self.Emission_Coefficient, self.Saturation_Current
+                self.Emission_Coefficient, self.Saturation_Current, self.context
             )
             diode_voltage: float = 0
             if next_voltage > self.damping_safety_factor * vcrit:
@@ -134,7 +134,7 @@ class LightEmittingDiode:
 
             diode_voltage = Utils.Utils.limit(diode_voltage, -vcrit, vcrit)
             self.gmin = Utils.Utils.gmin_step(
-                self.gmin_start, self.get_led_error(), self.context.iterator
+                self.gmin_start, self.get_led_error(), self.context.iterator, self.context
             )
             self.Voltage = diode_voltage
             self.Resistance = 1.0 / (
@@ -142,14 +142,14 @@ class LightEmittingDiode:
                     self.Saturation_Current
                     / (
                         self.Emission_Coefficient
-                        * Global.SystemSettings.THERMAL_VOLTAGE
+                        * self.context.Params.SystemSettings.THERMAL_VOLTAGE
                     )
                 )
                 * math.exp(
                     self.Voltage
                     / (
                         self.Emission_Coefficient
-                        * Global.SystemSettings.THERMAL_VOLTAGE
+                        * self.context.Params.SystemSettings.THERMAL_VOLTAGE
                     )
                 )
             )
@@ -160,7 +160,7 @@ class LightEmittingDiode:
                         self.Voltage
                         / (
                             self.Emission_Coefficient
-                            * Global.SystemSettings.THERMAL_VOLTAGE
+                            * self.context.Params.SystemSettings.THERMAL_VOLTAGE
                         )
                     )
                     - 1
@@ -226,9 +226,9 @@ class LightEmittingDiode:
             and self.Last_Current > self.Turn_On_Current
             and self.context.simulation_step != 0
         ):
-            self.led_status = Global.SystemConstants.ON
+            self.led_status = self.context.Params.SystemConstants.ON
         else:
-            self.led_status = Global.SystemConstants.OFF
+            self.led_status = self.context.Params.SystemConstants.OFF
 
     def GetElementType(self) -> int:
         None

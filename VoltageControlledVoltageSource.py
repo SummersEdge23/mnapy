@@ -1,8 +1,8 @@
 from typing import List
 
-from pysolver import Utils
-from pysolver import VoltageControlledVoltageSourceLimits
-from pysolver import Wire
+from mnapy import Utils
+from mnapy import VoltageControlledVoltageSourceLimits
+from mnapy import Wire
 
 
 class VoltageControlledVoltageSource:

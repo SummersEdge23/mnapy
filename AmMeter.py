@@ -1,9 +1,9 @@
 from typing import List
 
-from pysolver import AmMeterLimits
-from pysolver import Global
-from pysolver import Utils
-from pysolver import Wire
+from mnapy import AmMeterLimits
+from mnapy import Global
+from mnapy import Utils
+from mnapy import Wire
 
 
 class AmMeter:
@@ -46,7 +46,7 @@ class AmMeter:
     def stamp(self) -> None:
         None
         self.context.stamp_resistor(
-            self.Nodes[0], self.Nodes[1], Global.SystemSettings.WIRE_RESISTANCE
+            self.Nodes[0], self.Nodes[1], self.context.Params.SystemSettings.WIRE_RESISTANCE
         )
         self.context.stamp_voltage(
             self.Nodes[0],
@@ -99,7 +99,7 @@ class AmMeter:
     def push_current(self, current: float) -> None:
         None
         if (
-            Global.SystemFlags.FlagSimulating
+            self.context.Params.SystemFlags.FlagSimulating
             and self.context.simulation_time >= self.context.time_step
             and self.context.solutions_ready
         ):

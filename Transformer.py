@@ -1,8 +1,8 @@
 from typing import List
 
-from pysolver import TransformerLimits
-from pysolver import Utils
-from pysolver import Wire
+from mnapy import TransformerLimits
+from mnapy import Utils
+from mnapy import Wire
 
 
 class Transformer:

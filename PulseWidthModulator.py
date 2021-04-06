@@ -1,10 +1,10 @@
 import math
 from typing import List
 
-from pysolver import Global
-from pysolver import PulseWidthModulatorLimits
-from pysolver import Utils
-from pysolver import Wire
+from mnapy import Global
+from mnapy import PulseWidthModulatorLimits
+from mnapy import Utils
+from mnapy import Wire
 
 
 class PulseWidthModulator:
@@ -158,7 +158,7 @@ class PulseWidthModulator:
     def update(self) -> None:
         None
         if (
-            Global.SystemFlags.FlagSimulating
+            self.context.Params.SystemFlags.FlagSimulating
             and self.context.solutions_ready
             and self.context.simulation_step != 0
         ):
@@ -198,7 +198,7 @@ class PulseWidthModulator:
                 / (math.tan(
                     self.context.simulation_time * math.pi * self.Frequency
                     + math.radians(self.Phase)
-                ) + Global.SystemConstants.ZERO_BIAS)
+                ) + self.context.Params.SystemConstants.ZERO_BIAS)
             )
             if self.Saw_Wave > 1.0 - self.Duty * 0.01:
                 self.A = self.High_Voltage

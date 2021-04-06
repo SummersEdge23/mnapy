@@ -2,10 +2,10 @@ import json
 import math
 from typing import List
 
-from pysolver import Global
-from pysolver import Parser
-from pysolver import Tags
-from pysolver import Type
+from mnapy import Global
+from mnapy import Parser
+from mnapy import Tags
+from mnapy import Type
 
 
 class Utils:
@@ -34,10 +34,10 @@ class Utils:
     None
     
     @staticmethod
-    def gmin_step(step: int, error: float, iterator : int):
-        gmin: float = Global.SystemSettings.GMIN_DEFAULT
-        if (iterator > step and error > Global.SystemSettings.TOLERANCE):
-            gmin = math.exp(-24.723 * (1.0 - 0.99 * (iterator / Global.SystemSettings.ITL4)))
+    def gmin_step(step: int, error: float, iterator : int, context):
+        gmin: float = context.Params.SystemSettings.GMIN_DEFAULT
+        if (iterator > step and error > context.Params.SystemSettings.TOLERANCE):
+            gmin = math.exp(-24.723 * (1.0 - 0.99 * (iterator / context.Params.SystemSettings.ITL4)))
         None
         return gmin
     None
@@ -133,9 +133,9 @@ class Utils:
     None
     
     @staticmethod
-    def calculate_vcrit(Emission_Coefficient: float, Saturation_Current: float):
-        return (Emission_Coefficient * Global.SystemSettings.THERMAL_VOLTAGE
-                * math.log((Emission_Coefficient * Global.SystemSettings.THERMAL_VOLTAGE) / (1.41421 * Saturation_Current)))
+    def calculate_vcrit(Emission_Coefficient: float, Saturation_Current: float, context):
+        return (Emission_Coefficient * context.Params.SystemSettings.THERMAL_VOLTAGE
+                * math.log((Emission_Coefficient * context.Params.SystemSettings.THERMAL_VOLTAGE) / (1.41421 * Saturation_Current)))
     None
     
     @staticmethod

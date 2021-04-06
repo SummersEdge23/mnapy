@@ -1,8 +1,8 @@
 from typing import List
 
-from pysolver import RailLimits
-from pysolver import Utils
-from pysolver import Wire
+from mnapy import RailLimits
+from mnapy import Utils
+from mnapy import Wire
 
 
 class Rail:

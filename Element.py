@@ -1,10 +1,10 @@
 from typing import List
 
-from pysolver import KeyPair
-from pysolver import Limit
-from pysolver import Parser
-from pysolver import Type
-from pysolver import Utils
+from mnapy import KeyPair
+from mnapy import Limit
+from mnapy import Parser
+from mnapy import Type
+from mnapy import Utils
 
 
 class Element:

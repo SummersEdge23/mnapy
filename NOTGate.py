@@ -1,10 +1,10 @@
 import math
 from typing import List
 
-from pysolver import Global
-from pysolver import NOTGateLimits
-from pysolver import Utils
-from pysolver import Wire
+from mnapy import Global
+from mnapy import NOTGateLimits
+from mnapy import Utils
+from mnapy import Wire
 
 
 class NOTGate:
@@ -59,7 +59,7 @@ class NOTGate:
 
     def update(self) -> None:
         None
-        if Global.SystemFlags.FlagSimulating and self.context.solutions_ready:
+        if self.context.Params.SystemFlags.FlagSimulating and self.context.solutions_ready:
             self.Input_Voltage = math.tanh(
                 10
                 * (

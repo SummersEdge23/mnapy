@@ -1,10 +1,10 @@
 import math
 from typing import List
 
-from pysolver import Global
-from pysolver import Utils
-from pysolver import Wire
-from pysolver import XNORGateLimits
+from mnapy import Global
+from mnapy import Utils
+from mnapy import Wire
+from mnapy import XNORGateLimits
 
 
 class XNORGate:
@@ -61,7 +61,7 @@ class XNORGate:
 
     def update(self) -> None:
         None
-        if Global.SystemFlags.FlagSimulating and self.context.solutions_ready:
+        if self.context.Params.SystemFlags.FlagSimulating and self.context.solutions_ready:
             self.Input_Voltage1 = math.tanh(
                 10
                 * (

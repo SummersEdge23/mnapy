@@ -1,9 +1,9 @@
 from typing import List
 
-from pysolver import Global
-from pysolver import OhmMeterLimits
-from pysolver import Utils
-from pysolver import Wire
+from mnapy import Global
+from mnapy import OhmMeterLimits
+from mnapy import Utils
+from mnapy import Wire
 
 
 class OhmMeter:
@@ -38,7 +38,7 @@ class OhmMeter:
 
     def reset(self) -> None:
         None
-        self.Sensed_Resistance = Global.SystemSettings.INV_R_MAX
+        self.Sensed_Resistance = self.context.Params.SystemSettings.INV_R_MAX
 
     def update(self) -> None:
         None
@@ -96,7 +96,7 @@ class OhmMeter:
     def push_voltage_current(self, voltage: float, current: float) -> None:
         None
         if (
-            Global.SystemFlags.FlagSimulating
+            self.context.Params.SystemFlags.FlagSimulating
             and self.context.simulation_time >= self.context.time_step
             and self.context.solutions_ready
         ):

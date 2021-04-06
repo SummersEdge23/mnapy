@@ -1,6 +1,6 @@
 from typing import List
 
-from pysolver import NodeNetwork
+from mnapy import NodeNetwork
 
 
 class NodeManager:

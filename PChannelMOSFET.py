@@ -1,10 +1,10 @@
 import math
 from typing import List
 
-from pysolver import Global
-from pysolver import PChannelMOSFETLimits
-from pysolver import Utils
-from pysolver import Wire
+from mnapy import Global
+from mnapy import PChannelMOSFETLimits
+from mnapy import Utils
+from mnapy import Wire
 
 
 class PChannelMOSFET:
@@ -133,13 +133,13 @@ class PChannelMOSFET:
         self.Vsg = 0
         self.Vsd = 0
         self.Last_Vsg = 2
-        self.Last_Io = Global.SystemSettings.TOLERANCE * 2
+        self.Last_Io = self.context.Params.SystemSettings.TOLERANCE * 2
         self.update()
     
     
     def update(self) -> None:
         None
-        if Global.SystemFlags.FlagSimulating and self.context.solutions_ready:
+        if self.context.Params.SystemFlags.FlagSimulating and self.context.solutions_ready:
             self.Last_Vsg = self.Vsg
             self.Last_Io = self.Io
             self.Vsg = Utils.Utils.log_damping(
@@ -155,13 +155,13 @@ class PChannelMOSFET:
                 self.kappa,
             )
             self.gmin = Utils.Utils.gmin_step(
-                self.gmin_start, self.get_pmosfet_error(), self.context.iterator
+                self.gmin_start, self.get_pmosfet_error(), self.context.iterator, self.context
             )
             kp: float = 0.5 * self.W_L_Ratio * -self.K_p
             if self.Vsg <= -self.VTP:
                 self.Mosfet_Mode = 0
                 self.gm = 0
-                self.gsd = 1.0 / Global.SystemSettings.R_MAX
+                self.gsd = 1.0 / self.context.Params.SystemSettings.R_MAX
                 self.Io = 0
             elif self.Vsd <= self.Vsg + self.VTP:
                 self.Mosfet_Mode = 1

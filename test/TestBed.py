@@ -5,33 +5,9 @@ Created on Sat Feb 20 07:22:25 2021
 @author: Christian
 
 """
-from pysolver import pandas as pd
+import pandas as pd
 
-from pysolver import Global
-from Engine import Engine
-
-def setup():
-    global engine, TIME_STEP, VM0, Vout, Time
-    
-    engine.time_step = TIME_STEP
-    VM0 = engine.GetVoltMeter("VM0")
-
-def logic(StepCounter: int):
-    global engine, TIME_STEP, VM0, Vout, Time
-    
-    Vout.append(engine.VoltMeter(VM0).Get_Voltage())
-    Time.append(engine.simulation_time)
-    None
-
-def output(StepCounter: int):
-    None
-
-def plot():
-    global engine, TIME_STEP, VM0, Vout, Time
-
-    df = pd.DataFrame(list(zip(Time, Vout)), columns=["Time", "Voltage"])
-    df.plot("Time", ["Voltage"])
-    None
+from mnapy.Engine import Engine
 
 # Required Variables.
 FILE_LOCATION = r"/home/christian/Downloads/ACSourceInitial_nl.txt"
@@ -51,6 +27,25 @@ Time = []
 engine = Engine()
 engine.load_file(FILE_LOCATION)
 engine.initialize()
+
+VM0 = engine.IndexOfVoltMeter("VM0")
+    
+def setup():
+    engine.time_step = TIME_STEP
+
+def logic(StepCounter: int):    
+    Vout.append(engine.InstanceOfVoltMeter(VM0).Get_Voltage())
+    Time.append(engine.simulation_time)
+    None
+
+def output(StepCounter: int):
+    None
+
+def plot():
+    df = pd.DataFrame(list(zip(Time, Vout)), columns=["Time", "Voltage"])
+    df.plot("Time", ["Voltage"])
+    None
+
 setup()
 
 # Engine Loop.
@@ -68,7 +63,7 @@ while StepCounter < SOLVER_STEPS:
         StepCounter += 1
     None
 
-    if not Global.SystemFlags.FlagSimulating:
+    if not engine.Params.SystemFlags.FlagSimulating:
         break
     None
 None

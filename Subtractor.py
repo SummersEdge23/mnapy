@@ -1,9 +1,9 @@
 from typing import List
 
-from pysolver import Global
-from pysolver import SubtractorLimits
-from pysolver import Utils
-from pysolver import Wire
+from mnapy import Global
+from mnapy import SubtractorLimits
+from mnapy import Utils
+from mnapy import Wire
 
 
 class Subtractor:
@@ -45,7 +45,7 @@ class Subtractor:
     def update(self) -> None:
         None
         if (
-            Global.SystemFlags.FlagSimulating
+            self.context.Params.SystemFlags.FlagSimulating
             and self.context.solutions_ready
             and self.context.simulation_step != 0
         ):

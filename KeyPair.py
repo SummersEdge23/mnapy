@@ -1,4 +1,4 @@
-from pysolver import Utils
+from mnapy import Utils
 
 
 class KeyPair:

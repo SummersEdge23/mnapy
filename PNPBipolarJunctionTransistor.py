@@ -1,10 +1,10 @@
 import math
 from typing import List
 
-from pysolver import Global
-from pysolver import PNPBipolarJunctionTransistorLimits
-from pysolver import Utils
-from pysolver import Wire
+from mnapy import Global
+from mnapy import PNPBipolarJunctionTransistorLimits
+from mnapy import Utils
+from mnapy import Wire
 
 
 class PNPBipolarJunctionTransistor:
@@ -119,19 +119,19 @@ class PNPBipolarJunctionTransistor:
         self.Veb = 0
         self.Vcb = 0
         self.Last_Veb = Utils.Utils.calculate_vcrit(
-            self.Emission_Coefficient, self.Saturation_Current
+            self.Emission_Coefficient, self.Saturation_Current, self.context
         )
-        self.Last_Io = Global.SystemSettings.TOLERANCE * 2
+        self.Last_Io = self.context.Params.SystemSettings.TOLERANCE * 2
         self.update()
 
     def update(self) -> None:
         None
-        if Global.SystemFlags.FlagSimulating and self.context.solutions_ready:
+        if self.context.Params.SystemFlags.FlagSimulating and self.context.solutions_ready:
             self.Last_Veb = self.Veb
             self.Last_Io = self.I_e - self.I_c
             next_veb: float = self.context.get_voltage(self.Nodes[0], self.Nodes[2])
             vcrit: float = Utils.Utils.calculate_vcrit(
-                self.Emission_Coefficient, self.Saturation_Current
+                self.Emission_Coefficient, self.Saturation_Current, self.context
             )
             veb: float = 0
             if next_veb > self.damping_safety_factor * vcrit:
@@ -163,33 +163,33 @@ class PNPBipolarJunctionTransistor:
             vcb = Utils.Utils.limit(vcb, -vcrit, vcrit)
             self.Vcb = vcb
             self.gmin = Utils.Utils.gmin_step(
-                self.gmin_start, self.get_pnpbjt_error(), self.context.iterator
+                self.gmin_start, self.get_pnpbjt_error(), self.context.iterator, self.context
             )
             forward_alpha: float = self.Forward_Beta / (1 + self.Forward_Beta)
             reverse_alpha: float = self.Reverse_Beta / (1 + self.Reverse_Beta)
             self.g_ee = (
-                self.Saturation_Current / Global.SystemSettings.THERMAL_VOLTAGE
-            ) * math.exp(self.Veb / Global.SystemSettings.THERMAL_VOLTAGE)
+                self.Saturation_Current / self.context.Params.SystemSettings.THERMAL_VOLTAGE
+            ) * math.exp(self.Veb / self.context.Params.SystemSettings.THERMAL_VOLTAGE)
             self.g_ec = -(
                 reverse_alpha
-                * (self.Saturation_Current / Global.SystemSettings.THERMAL_VOLTAGE)
-            ) * math.exp(self.Vcb / Global.SystemSettings.THERMAL_VOLTAGE)
+                * (self.Saturation_Current / self.context.Params.SystemSettings.THERMAL_VOLTAGE)
+            ) * math.exp(self.Vcb / self.context.Params.SystemSettings.THERMAL_VOLTAGE)
             self.g_ce = -(
                 forward_alpha
-                * (self.Saturation_Current / Global.SystemSettings.THERMAL_VOLTAGE)
-            ) * math.exp(self.Veb / Global.SystemSettings.THERMAL_VOLTAGE)
+                * (self.Saturation_Current / self.context.Params.SystemSettings.THERMAL_VOLTAGE)
+            ) * math.exp(self.Veb / self.context.Params.SystemSettings.THERMAL_VOLTAGE)
             self.g_cc = (
-                self.Saturation_Current / Global.SystemSettings.THERMAL_VOLTAGE
-            ) * math.exp(self.Vcb / Global.SystemSettings.THERMAL_VOLTAGE)
+                self.Saturation_Current / self.context.Params.SystemSettings.THERMAL_VOLTAGE
+            ) * math.exp(self.Vcb / self.context.Params.SystemSettings.THERMAL_VOLTAGE)
             self.i_e = self.Saturation_Current * (
-                math.exp(self.Veb / Global.SystemSettings.THERMAL_VOLTAGE) - 1
+                math.exp(self.Veb / self.context.Params.SystemSettings.THERMAL_VOLTAGE) - 1
             ) - reverse_alpha * self.Saturation_Current * (
-                math.exp(self.Vcb / Global.SystemSettings.THERMAL_VOLTAGE) - 1
+                math.exp(self.Vcb / self.context.Params.SystemSettings.THERMAL_VOLTAGE) - 1
             )
             self.i_c = self.Saturation_Current * (
-                math.exp(self.Vcb / Global.SystemSettings.THERMAL_VOLTAGE) - 1
+                math.exp(self.Vcb / self.context.Params.SystemSettings.THERMAL_VOLTAGE) - 1
             ) - forward_alpha * self.Saturation_Current * (
-                math.exp(self.Veb / Global.SystemSettings.THERMAL_VOLTAGE) - 1
+                math.exp(self.Veb / self.context.Params.SystemSettings.THERMAL_VOLTAGE) - 1
             )
             self.I_e = self.i_e - self.g_ee * self.Veb - self.g_ec * self.Vcb
             self.I_c = self.i_c - self.g_ce * self.Veb - self.g_cc * self.Vcb
