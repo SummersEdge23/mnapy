@@ -1,0 +1,4 @@
+1.1.04#VERSION#
+"ref_id":0#ID#
+{"Voltage":12,"Frequency":60,"Phase":0,"Offset":0,"tag":"AC","units":"V","options":["Voltage","Frequency","Phase","Offset"],"options_units":["V","Hz"," º","V"],"option_limits":{"Voltage":[1e-15,500000000],"Frequency":[1e-15,500000000],"Phase":[0,360],"Offset":[1e-15,500000000]}}#WIRE#
+[]#DIVIDER#
