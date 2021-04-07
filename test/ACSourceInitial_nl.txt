@@ -1,0 +1,34 @@
+1.1.05#VERSION#
+"ref_id":0#ID#
+{"Resistance":1000,"tag":"R","units":"Ω","options":["Resistance"],"options_units":["Ω"],"option_limits":{"Resistance":[0.001,500000000]}}#WIRE#
+[{"wire_id":0,"anchor_point":0,"linkage":0},{"wire_id":1,"anchor_point":1,"linkage":1},{"wire_id":4,"anchor_point":1,"linkage":0}]#DIVIDER#
+"ref_id":1#ID#
+{"Resistance":1000,"tag":"R","units":"Ω","options":["Resistance"],"options_units":["Ω"],"option_limits":{"Resistance":[0.001,500000000]}}#WIRE#
+[{"wire_id":1,"anchor_point":0,"linkage":0},{"wire_id":2,"anchor_point":1,"linkage":0}]#DIVIDER#
+"ref_id":0#ID#
+{"tag":"G","units":""}#WIRE#
+[{"wire_id":2,"anchor_point":0,"linkage":1},{"wire_id":3,"anchor_point":0,"linkage":1},{"wire_id":5,"anchor_point":0,"linkage":1}]#DIVIDER#
+"ref_id":0#ID#
+{"Voltage":12,"Frequency":60,"Phase":0,"Offset":0,"tag":"AC","units":"V","options":["Voltage","Frequency","Phase","Offset"],"options_units":["V","Hz"," º","V"],"option_limits":{"Voltage":[1e-15,500000000],"Frequency":[1e-15,500000000],"Phase":[0,360],"Offset":[1e-15,500000000]}}#WIRE#
+[{"wire_id":0,"anchor_point":0,"linkage":1},{"wire_id":3,"anchor_point":1,"linkage":0}]#DIVIDER#
+"ref_id":0#ID#
+{"Voltage":0,"tag":"VM","units":"V","options":[""],"options_units":[""],"option_limits":{}}#WIRE#
+[{"wire_id":4,"anchor_point":0,"linkage":1},{"wire_id":5,"anchor_point":1,"linkage":0}]#DIVIDER#
+"ref_id":0#ID#
+310, 339#WIRE#
+<WIRE>#DIVIDER#
+"ref_id":1#ID#
+344, 312#WIRE#
+<WIRE>#DIVIDER#
+"ref_id":2#ID#
+404, 459#WIRE#
+<WIRE>#DIVIDER#
+"ref_id":3#ID#
+399, 459#WIRE#
+<WIRE>#DIVIDER#
+"ref_id":4#ID#
+312, 347#WIRE#
+<WIRE>#DIVIDER#
+"ref_id":5#ID#
+407, 459#WIRE#
+<WIRE>#DIVIDER#
