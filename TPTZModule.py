@@ -1,6 +1,5 @@
 from typing import List
 
-from mnapy import Global
 from mnapy import TPTZController
 from mnapy import TPTZModuleLimits
 from mnapy import Utils
@@ -9,20 +8,20 @@ from mnapy import Wire
 
 class TPTZModule:
     def __init__(
-        self,
-        context,
-        A1,
-        B2,
-        A2,
-        options,
-        Input_Voltage,
-        tag,
-        units,
-        Output_Voltage,
-        options_units,
-        B0,
-        option_limits,
-        B1,
+            self,
+            context,
+            A1,
+            B2,
+            A2,
+            options,
+            Input_Voltage,
+            tag,
+            units,
+            Output_Voltage,
+            options_units,
+            B0,
+            option_limits,
+            B1,
     ):
         self.A1 = A1
         self.B2 = B2
@@ -52,8 +51,8 @@ class TPTZModule:
     def Set_A1(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.A1[0])
-            and abs(setter) <= abs(self.option_limits.A1[1])
+                abs(setter) >= abs(self.option_limits.A1[0])
+                and abs(setter) <= abs(self.option_limits.A1[1])
         ) or abs(setter) == 0:
             self.A1 = setter
         else:
@@ -66,8 +65,8 @@ class TPTZModule:
     def Set_B2(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.B2[0])
-            and abs(setter) <= abs(self.option_limits.B2[1])
+                abs(setter) >= abs(self.option_limits.B2[0])
+                and abs(setter) <= abs(self.option_limits.B2[1])
         ) or abs(setter) == 0:
             self.B2 = setter
         else:
@@ -80,8 +79,8 @@ class TPTZModule:
     def Set_A2(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.A2[0])
-            and abs(setter) <= abs(self.option_limits.A2[1])
+                abs(setter) >= abs(self.option_limits.A2[0])
+                and abs(setter) <= abs(self.option_limits.A2[1])
         ) or abs(setter) == 0:
             self.A2 = setter
         else:
@@ -94,8 +93,8 @@ class TPTZModule:
     def Set_B0(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.B0[0])
-            and abs(setter) <= abs(self.option_limits.B0[1])
+                abs(setter) >= abs(self.option_limits.B0[0])
+                and abs(setter) <= abs(self.option_limits.B0[1])
         ) or abs(setter) == 0:
             self.B0 = setter
         else:
@@ -108,8 +107,8 @@ class TPTZModule:
     def Set_B1(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.B1[0])
-            and abs(setter) <= abs(self.option_limits.B1[1])
+                abs(setter) >= abs(self.option_limits.B1[0])
+                and abs(setter) <= abs(self.option_limits.B1[1])
         ) or abs(setter) == 0:
             self.B1 = setter
         else:
@@ -127,9 +126,9 @@ class TPTZModule:
     def update(self) -> None:
         None
         if (
-            self.context.Params.SystemFlags.FlagSimulating
-            and self.context.solutions_ready
-            and self.context.simulation_step != 0
+                self.context.Params.SystemFlags.FlagSimulating
+                and self.context.solutions_ready
+                and self.context.simulation_step != 0
         ):
             self.Input_Voltage = self.context.get_voltage(self.Nodes[0], -1)
             self.tptz_controller.set_tptz_coefficients(

@@ -1,6 +1,5 @@
 from typing import List
 
-from mnapy import Global
 from mnapy import Utils
 from mnapy import VoltageSaturationLimits
 from mnapy import Wire
@@ -8,17 +7,17 @@ from mnapy import Wire
 
 class VoltageSaturation:
     def __init__(
-        self,
-        context,
-        options,
-        Input_Voltage,
-        tag,
-        units,
-        High_Voltage,
-        Output_Voltage,
-        options_units,
-        Low_Voltage,
-        option_limits,
+            self,
+            context,
+            options,
+            Input_Voltage,
+            tag,
+            units,
+            High_Voltage,
+            Output_Voltage,
+            options_units,
+            Low_Voltage,
+            option_limits,
     ):
         self.options = options
         self.Input_Voltage = Input_Voltage
@@ -43,8 +42,8 @@ class VoltageSaturation:
     def Set_High_Voltage(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.High_Voltage[0])
-            and abs(setter) <= abs(self.option_limits.High_Voltage[1])
+                abs(setter) >= abs(self.option_limits.High_Voltage[0])
+                and abs(setter) <= abs(self.option_limits.High_Voltage[1])
         ) or abs(setter) == 0:
             self.High_Voltage = setter
         else:
@@ -57,8 +56,8 @@ class VoltageSaturation:
     def Set_Low_Voltage(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Low_Voltage[0])
-            and abs(setter) <= abs(self.option_limits.Low_Voltage[1])
+                abs(setter) >= abs(self.option_limits.Low_Voltage[0])
+                and abs(setter) <= abs(self.option_limits.Low_Voltage[1])
         ) or abs(setter) == 0:
             self.Low_Voltage = setter
         else:
@@ -75,9 +74,9 @@ class VoltageSaturation:
     def update(self) -> None:
         None
         if (
-            self.context.Params.SystemFlags.FlagSimulating
-            and self.context.solutions_ready
-            and self.context.simulation_step != 0
+                self.context.Params.SystemFlags.FlagSimulating
+                and self.context.solutions_ready
+                and self.context.simulation_step != 0
         ):
             self.Input_Voltage = self.context.get_voltage(self.Nodes[0], -1)
             self.Output_Voltage = Utils.Utils.limit(

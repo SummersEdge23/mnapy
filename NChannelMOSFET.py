@@ -1,7 +1,6 @@
 import math
 from typing import List
 
-from mnapy import Global
 from mnapy import NChannelMOSFETLimits
 from mnapy import Utils
 from mnapy import Wire
@@ -9,25 +8,25 @@ from mnapy import Wire
 
 class NChannelMOSFET:
     def __init__(
-        self,
-        context,
-        W_L_Ratio,
-        Vgs,
-        Vds,
-        gm,
-        Io,
-        units,
-        options_units,
-        option_limits,
-        VTN,
-        K_n,
-        gds,
-        options,
-        Mosfet_Mode,
-        Last_Io,
-        tag,
-        Lambda,
-        Last_Vgs,
+            self,
+            context,
+            W_L_Ratio,
+            Vgs,
+            Vds,
+            gm,
+            Io,
+            units,
+            options_units,
+            option_limits,
+            VTN,
+            K_n,
+            gds,
+            options,
+            Mosfet_Mode,
+            Last_Io,
+            tag,
+            Lambda,
+            Last_Vgs,
     ):
         self.W_L_Ratio = W_L_Ratio
         self.Vgs = Vgs
@@ -65,8 +64,8 @@ class NChannelMOSFET:
     def Set_W_L_Ratio(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.W_L_Ratio[0])
-            and abs(setter) <= abs(self.option_limits.W_L_Ratio[1])
+                abs(setter) >= abs(self.option_limits.W_L_Ratio[0])
+                and abs(setter) <= abs(self.option_limits.W_L_Ratio[1])
         ) or abs(setter) == 0:
             self.W_L_Ratio = setter
         else:
@@ -79,8 +78,8 @@ class NChannelMOSFET:
     def Set_VTN(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.VTN[0])
-            and abs(setter) <= abs(self.option_limits.VTN[1])
+                abs(setter) >= abs(self.option_limits.VTN[0])
+                and abs(setter) <= abs(self.option_limits.VTN[1])
         ) or abs(setter) == 0:
             self.VTN = setter
         else:
@@ -93,8 +92,8 @@ class NChannelMOSFET:
     def Set_K_n(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.K_n[0])
-            and abs(setter) <= abs(self.option_limits.K_n[1])
+                abs(setter) >= abs(self.option_limits.K_n[0])
+                and abs(setter) <= abs(self.option_limits.K_n[1])
         ) or abs(setter) == 0:
             self.K_n = setter
         else:
@@ -107,8 +106,8 @@ class NChannelMOSFET:
     def Set_Lambda(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Lambda[0])
-            and abs(setter) <= abs(self.option_limits.Lambda[1])
+                abs(setter) >= abs(self.option_limits.Lambda[0])
+                and abs(setter) <= abs(self.option_limits.Lambda[1])
         ) or abs(setter) == 0:
             self.Lambda = setter
         else:
@@ -158,24 +157,24 @@ class NChannelMOSFET:
                 self.gds = 2.0 * kn * (self.Vgs - self.VTN - self.Vds)
                 self.gm = 2.0 * kn * self.Vds
                 self.Io = (
-                    2.0
-                    * kn
-                    * ((self.Vgs - self.VTN) * self.Vds - 0.5 * self.Vds * self.Vds)
-                    - self.Vgs * self.gm
-                    - self.Vds * self.gds
+                        2.0
+                        * kn
+                        * ((self.Vgs - self.VTN) * self.Vds - 0.5 * self.Vds * self.Vds)
+                        - self.Vgs * self.gm
+                        - self.Vds * self.gds
                 )
             elif self.Vds >= self.Vgs - self.VTN:
                 self.Mosfet_Mode = 2
                 self.gds = kn * self.Lambda * math.pow(self.Vgs - self.VTN, 2)
                 self.gm = (
-                    2.0 * kn * ((self.Vgs - self.VTN) * (1.0 + self.Lambda * self.Vds))
+                        2.0 * kn * ((self.Vgs - self.VTN) * (1.0 + self.Lambda * self.Vds))
                 )
                 self.Io = (
-                    kn
-                    * math.pow(self.Vgs - self.VTN, 2)
-                    * (1.0 + self.Lambda * self.Vds)
-                    - self.Vgs * self.gm
-                    - self.Vds * self.gds
+                        kn
+                        * math.pow(self.Vgs - self.VTN, 2)
+                        * (1.0 + self.Lambda * self.Vds)
+                        - self.Vgs * self.gm
+                        - self.Vds * self.gds
                 )
 
     def stamp(self) -> None:

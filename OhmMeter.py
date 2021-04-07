@@ -1,6 +1,5 @@
 from typing import List
 
-from mnapy import Global
 from mnapy import OhmMeterLimits
 from mnapy import Utils
 from mnapy import Wire
@@ -8,15 +7,15 @@ from mnapy import Wire
 
 class OhmMeter:
     def __init__(
-        self,
-        context,
-        Test_Voltage,
-        options,
-        tag,
-        units,
-        Sensed_Resistance,
-        options_units,
-        option_limits,
+            self,
+            context,
+            Test_Voltage,
+            options,
+            tag,
+            units,
+            Sensed_Resistance,
+            options_units,
+            option_limits,
     ):
         self.Test_Voltage = Test_Voltage
         self.options = options
@@ -96,18 +95,18 @@ class OhmMeter:
     def push_voltage_current(self, voltage: float, current: float) -> None:
         None
         if (
-            self.context.Params.SystemFlags.FlagSimulating
-            and self.context.simulation_time >= self.context.time_step
-            and self.context.solutions_ready
+                self.context.Params.SystemFlags.FlagSimulating
+                and self.context.simulation_time >= self.context.time_step
+                and self.context.solutions_ready
         ):
             self.Sensed_Resistance = abs(voltage / current)
 
     def get_simulation_index(self) -> int:
         None
         return (
-            self.context.node_size
-            + self.context.ELEMENT_OHMMETER_OFFSET
-            + self.SimulationId
+                self.context.node_size
+                + self.context.ELEMENT_OHMMETER_OFFSET
+                + self.SimulationId
         )
 
     def Get_Resistance(self) -> float:

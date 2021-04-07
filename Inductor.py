@@ -7,19 +7,19 @@ from mnapy import Wire
 
 class Inductor:
     def __init__(
-        self,
-        context,
-        Transient_Resistance,
-        Inductance,
-        options,
-        Initial_Current,
-        tag,
-        units,
-        Transient_Current,
-        Transient_Voltage,
-        options_units,
-        Equivalent_Current,
-        option_limits,
+            self,
+            context,
+            Transient_Resistance,
+            Inductance,
+            options,
+            Initial_Current,
+            tag,
+            units,
+            Transient_Current,
+            Transient_Voltage,
+            options_units,
+            Equivalent_Current,
+            option_limits,
     ):
         self.Transient_Resistance = Transient_Resistance
         self.Inductance = Inductance
@@ -46,8 +46,8 @@ class Inductor:
     def Set_Inductance(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Inductance[0])
-            and abs(setter) <= abs(self.option_limits.Inductance[1])
+                abs(setter) >= abs(self.option_limits.Inductance[0])
+                and abs(setter) <= abs(self.option_limits.Inductance[1])
         ) or abs(setter) == 0:
             self.Inductance = setter
             self.conserve_energy()
@@ -61,8 +61,8 @@ class Inductor:
     def Set_Initial_Current(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Initial_Current[0])
-            and abs(setter) <= abs(self.option_limits.Initial_Current[1])
+                abs(setter) >= abs(self.option_limits.Initial_Current[0])
+                and abs(setter) <= abs(self.option_limits.Initial_Current[1])
         ) or abs(setter) == 0:
             self.Initial_Current = setter
         else:
@@ -78,7 +78,7 @@ class Inductor:
         self.Transient_Voltage = 0
         self.Transient_Current = self.Initial_Current
         self.Equivalent_Current = (
-            self.Transient_Voltage / self.Transient_Resistance + self.Transient_Current
+                self.Transient_Voltage / self.Transient_Resistance + self.Transient_Current
         )
 
     def update(self) -> None:
@@ -136,18 +136,18 @@ class Inductor:
             voltage: float = self.context.get_voltage(self.Nodes[0], self.Nodes[1])
             self.Transient_Voltage = voltage
             self.Transient_Current = (
-                voltage / self.Transient_Resistance + self.Equivalent_Current
+                    voltage / self.Transient_Resistance + self.Equivalent_Current
             )
             self.Equivalent_Current = (
-                self.Transient_Voltage / self.Transient_Resistance
-                + self.Transient_Current
+                    self.Transient_Voltage / self.Transient_Resistance
+                    + self.Transient_Current
             )
 
     def conserve_energy(self) -> None:
         None
         self.Transient_Resistance = (2 * self.Inductance) / self.context.time_step
         self.Equivalent_Current = (
-            self.Transient_Voltage / self.Transient_Resistance + self.Transient_Current
+                self.Transient_Voltage / self.Transient_Resistance + self.Transient_Current
         )
 
     def GetElementType(self) -> int:

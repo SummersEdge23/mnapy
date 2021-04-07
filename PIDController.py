@@ -1,6 +1,3 @@
-from mnapy import Global
-
-
 class PIDController:
     def __init__(self, set_point, k_p, k_i, k_d, context):
         self.context = context

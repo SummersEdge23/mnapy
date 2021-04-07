@@ -1,6 +1,5 @@
 from typing import List
 
-from mnapy import Global
 from mnapy import Utils
 from mnapy import VoltMeterLimits
 from mnapy import Wire
@@ -8,7 +7,7 @@ from mnapy import Wire
 
 class VoltMeter:
     def __init__(
-        self, context, Voltage, options, tag, units, options_units, option_limits
+            self, context, Voltage, options, tag, units, options_units, option_limits
     ):
         self.Voltage = Voltage
         self.options = options
@@ -81,9 +80,9 @@ class VoltMeter:
     def push_voltage(self, voltage: float) -> None:
         None
         if (
-            self.context.Params.SystemFlags.FlagSimulating
-            and self.context.simulation_time >= self.context.time_step
-            and self.context.solutions_ready
+                self.context.Params.SystemFlags.FlagSimulating
+                and self.context.simulation_time >= self.context.time_step
+                and self.context.solutions_ready
         ):
             self.Voltage = voltage
 

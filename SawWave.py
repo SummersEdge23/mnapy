@@ -8,17 +8,17 @@ from mnapy import Wire
 
 class SawWave:
     def __init__(
-        self,
-        context,
-        Phase,
-        Voltage,
-        options,
-        Frequency,
-        tag,
-        units,
-        options_units,
-        option_limits,
-        Offset,
+            self,
+            context,
+            Phase,
+            Voltage,
+            options,
+            Frequency,
+            tag,
+            units,
+            options_units,
+            option_limits,
+            Offset,
     ):
         self.Phase = Phase
         self.Voltage = Voltage
@@ -43,8 +43,8 @@ class SawWave:
     def Set_Phase(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Phase[0])
-            and abs(setter) <= abs(self.option_limits.Phase[1])
+                abs(setter) >= abs(self.option_limits.Phase[0])
+                and abs(setter) <= abs(self.option_limits.Phase[1])
         ) or abs(setter) == 0:
             self.Phase = setter
         else:
@@ -57,8 +57,8 @@ class SawWave:
     def Set_Voltage(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Voltage[0])
-            and abs(setter) <= abs(self.option_limits.Voltage[1])
+                abs(setter) >= abs(self.option_limits.Voltage[0])
+                and abs(setter) <= abs(self.option_limits.Voltage[1])
         ) or abs(setter) == 0:
             self.Voltage = setter
         else:
@@ -71,8 +71,8 @@ class SawWave:
     def Set_Frequency(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Frequency[0])
-            and abs(setter) <= abs(self.option_limits.Frequency[1])
+                abs(setter) >= abs(self.option_limits.Frequency[0])
+                and abs(setter) <= abs(self.option_limits.Frequency[1])
         ) or abs(setter) == 0:
             self.Frequency = setter
         else:
@@ -85,8 +85,8 @@ class SawWave:
     def Set_Offset(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Offset[0])
-            and abs(setter) <= abs(self.option_limits.Offset[1])
+                abs(setter) >= abs(self.option_limits.Offset[0])
+                and abs(setter) <= abs(self.option_limits.Offset[1])
         ) or abs(setter) == 0:
             self.Offset = setter
         else:
@@ -112,11 +112,11 @@ class SawWave:
             * math.atan(
                 1.0
                 / (
-                    math.tan(
-                        self.context.simulation_time * math.pi * self.Frequency
-                        + math.radians(self.Phase)
-                    )
-                    + 1e-19
+                        math.tan(
+                            self.context.simulation_time * math.pi * self.Frequency
+                            + math.radians(self.Phase)
+                        )
+                        + 1e-19
                 )
             ),
             self.context.ELEMENT_SAW_OFFSET + self.SimulationId,

@@ -1,7 +1,6 @@
 import math
 from typing import List
 
-from mnapy import Global
 from mnapy import Utils
 from mnapy import Wire
 from mnapy import XORGateLimits
@@ -9,17 +8,17 @@ from mnapy import XORGateLimits
 
 class XORGate:
     def __init__(
-        self,
-        context,
-        Input_Voltage2,
-        options,
-        Input_Voltage1,
-        tag,
-        units,
-        High_Voltage,
-        Output_Voltage,
-        options_units,
-        option_limits,
+            self,
+            context,
+            Input_Voltage2,
+            options,
+            Input_Voltage1,
+            tag,
+            units,
+            High_Voltage,
+            Output_Voltage,
+            options_units,
+            option_limits,
     ):
         self.Input_Voltage2 = Input_Voltage2
         self.options = options
@@ -44,8 +43,8 @@ class XORGate:
     def Set_High_Voltage(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.High_Voltage[0])
-            and abs(setter) <= abs(self.option_limits.High_Voltage[1])
+                abs(setter) >= abs(self.option_limits.High_Voltage[0])
+                and abs(setter) <= abs(self.option_limits.High_Voltage[1])
         ) or abs(setter) == 0:
             self.High_Voltage = setter
         else:
@@ -65,19 +64,19 @@ class XORGate:
             self.Input_Voltage1 = math.tanh(
                 10
                 * (
-                    self.context.get_voltage(self.Nodes[0], -1) / self.High_Voltage
-                    - 0.5
+                        self.context.get_voltage(self.Nodes[0], -1) / self.High_Voltage
+                        - 0.5
                 )
             )
             self.Input_Voltage2 = math.tanh(
                 10
                 * (
-                    self.context.get_voltage(self.Nodes[1], -1) / self.High_Voltage
-                    - 0.5
+                        self.context.get_voltage(self.Nodes[1], -1) / self.High_Voltage
+                        - 0.5
                 )
             )
             self.Output_Voltage = self.High_Voltage * (
-                0.5 * (1 - self.Input_Voltage1 * self.Input_Voltage2)
+                    0.5 * (1 - self.Input_Voltage1 * self.Input_Voltage2)
             )
 
     def stamp(self) -> None:

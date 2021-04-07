@@ -7,19 +7,19 @@ from mnapy import Wire
 
 class Capacitor:
     def __init__(
-        self,
-        context,
-        Transient_Resistance,
-        Initial_Voltage,
-        options,
-        Capacitance,
-        tag,
-        units,
-        Transient_Current,
-        Transient_Voltage,
-        options_units,
-        Equivalent_Current,
-        option_limits,
+            self,
+            context,
+            Transient_Resistance,
+            Initial_Voltage,
+            options,
+            Capacitance,
+            tag,
+            units,
+            Transient_Current,
+            Transient_Voltage,
+            options_units,
+            Equivalent_Current,
+            option_limits,
     ):
         self.Transient_Resistance = Transient_Resistance
         self.Initial_Voltage = Initial_Voltage
@@ -46,8 +46,8 @@ class Capacitor:
     def Set_Initial_Voltage(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Initial_Voltage[0])
-            and abs(setter) <= abs(self.option_limits.Initial_Voltage[1])
+                abs(setter) >= abs(self.option_limits.Initial_Voltage[0])
+                and abs(setter) <= abs(self.option_limits.Initial_Voltage[1])
         ) or abs(setter) == 0:
             self.Initial_Voltage = setter
         else:
@@ -60,8 +60,8 @@ class Capacitor:
     def Set_Capacitance(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Capacitance[0])
-            and abs(setter) <= abs(self.option_limits.Capacitance[1])
+                abs(setter) >= abs(self.option_limits.Capacitance[0])
+                and abs(setter) <= abs(self.option_limits.Capacitance[1])
         ) or abs(setter) == 0:
             self.Capacitance = setter
             self.conserve_energy()
@@ -78,7 +78,7 @@ class Capacitor:
         self.Transient_Voltage = self.Initial_Voltage
         self.Transient_Current = 0
         self.Equivalent_Current = (
-            -self.Transient_Voltage / self.Transient_Resistance - self.Transient_Current
+                -self.Transient_Voltage / self.Transient_Resistance - self.Transient_Current
         )
 
     def update(self) -> None:
@@ -136,18 +136,18 @@ class Capacitor:
             voltage: float = self.context.get_voltage(self.Nodes[0], self.Nodes[1])
             self.Transient_Voltage = voltage
             self.Transient_Current = (
-                voltage / self.Transient_Resistance + self.Equivalent_Current
+                    voltage / self.Transient_Resistance + self.Equivalent_Current
             )
             self.Equivalent_Current = (
-                -self.Transient_Voltage / self.Transient_Resistance
-                - self.Transient_Current
+                    -self.Transient_Voltage / self.Transient_Resistance
+                    - self.Transient_Current
             )
 
     def conserve_energy(self) -> None:
         None
         self.Transient_Resistance = self.context.time_step / (2 * self.Capacitance)
         self.Equivalent_Current = (
-            -self.Transient_Voltage / self.Transient_Resistance - self.Transient_Current
+                -self.Transient_Voltage / self.Transient_Resistance - self.Transient_Current
         )
 
     def GetElementType(self) -> int:

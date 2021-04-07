@@ -1,6 +1,5 @@
 from typing import List
 
-from mnapy import Global
 from mnapy import Wire
 
 

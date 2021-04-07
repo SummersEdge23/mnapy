@@ -1,7 +1,6 @@
 import math
 from typing import List
 
-from mnapy import Global
 from mnapy import NPNBipolarJunctionTransistorLimits
 from mnapy import Utils
 from mnapy import Wire
@@ -9,29 +8,29 @@ from mnapy import Wire
 
 class NPNBipolarJunctionTransistor:
     def __init__(
-        self,
-        context,
-        Saturation_Current,
-        g_ec,
-        Reverse_Beta,
-        g_ee,
-        g_cc,
-        g_ce,
-        Last_Vbe,
-        Forward_Beta,
-        Emission_Coefficient,
-        units,
-        i_c,
-        I_c,
-        options_units,
-        i_e,
-        I_e,
-        option_limits,
-        Vbc,
-        Vbe,
-        options,
-        Last_Io,
-        tag,
+            self,
+            context,
+            Saturation_Current,
+            g_ec,
+            Reverse_Beta,
+            g_ee,
+            g_cc,
+            g_ce,
+            Last_Vbe,
+            Forward_Beta,
+            Emission_Coefficient,
+            units,
+            i_c,
+            I_c,
+            options_units,
+            i_e,
+            I_e,
+            option_limits,
+            Vbc,
+            Vbe,
+            options,
+            Last_Io,
+            tag,
     ):
         self.Saturation_Current = Saturation_Current
         self.g_ec = g_ec
@@ -75,8 +74,8 @@ class NPNBipolarJunctionTransistor:
     def Set_Saturation_Current(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Saturation_Current[0])
-            and abs(setter) <= abs(self.option_limits.Saturation_Current[1])
+                abs(setter) >= abs(self.option_limits.Saturation_Current[0])
+                and abs(setter) <= abs(self.option_limits.Saturation_Current[1])
         ) or abs(setter) == 0:
             self.Saturation_Current = setter
         else:
@@ -89,8 +88,8 @@ class NPNBipolarJunctionTransistor:
     def Set_Reverse_Beta(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Reverse_Beta[0])
-            and abs(setter) <= abs(self.option_limits.Reverse_Beta[1])
+                abs(setter) >= abs(self.option_limits.Reverse_Beta[0])
+                and abs(setter) <= abs(self.option_limits.Reverse_Beta[1])
         ) or abs(setter) == 0:
             self.Reverse_Beta = setter
         else:
@@ -103,8 +102,8 @@ class NPNBipolarJunctionTransistor:
     def Set_Forward_Beta(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Forward_Beta[0])
-            and abs(setter) <= abs(self.option_limits.Forward_Beta[1])
+                abs(setter) >= abs(self.option_limits.Forward_Beta[0])
+                and abs(setter) <= abs(self.option_limits.Forward_Beta[1])
         ) or abs(setter) == 0:
             self.Forward_Beta = setter
         else:
@@ -168,31 +167,31 @@ class NPNBipolarJunctionTransistor:
             forward_alpha: float = self.Forward_Beta / (1 + self.Forward_Beta)
             reverse_alpha: float = self.Reverse_Beta / (1 + self.Reverse_Beta)
             self.g_ee = (
-                self.Saturation_Current / self.context.Params.SystemSettings.THERMAL_VOLTAGE
-            ) * math.exp(self.Vbe / self.context.Params.SystemSettings.THERMAL_VOLTAGE)
+                                self.Saturation_Current / self.context.Params.SystemSettings.THERMAL_VOLTAGE
+                        ) * math.exp(self.Vbe / self.context.Params.SystemSettings.THERMAL_VOLTAGE)
             self.g_ec = (
-                reverse_alpha
-                * (self.Saturation_Current / self.context.Params.SystemSettings.THERMAL_VOLTAGE)
-                * math.exp(self.Vbc / self.context.Params.SystemSettings.THERMAL_VOLTAGE)
+                    reverse_alpha
+                    * (self.Saturation_Current / self.context.Params.SystemSettings.THERMAL_VOLTAGE)
+                    * math.exp(self.Vbc / self.context.Params.SystemSettings.THERMAL_VOLTAGE)
             )
             self.g_ce = (
-                forward_alpha
-                * (self.Saturation_Current / self.context.Params.SystemSettings.THERMAL_VOLTAGE)
-                * math.exp(self.Vbe / self.context.Params.SystemSettings.THERMAL_VOLTAGE)
+                    forward_alpha
+                    * (self.Saturation_Current / self.context.Params.SystemSettings.THERMAL_VOLTAGE)
+                    * math.exp(self.Vbe / self.context.Params.SystemSettings.THERMAL_VOLTAGE)
             )
             self.g_cc = (
-                self.Saturation_Current / self.context.Params.SystemSettings.THERMAL_VOLTAGE
-            ) * math.exp(self.Vbc / self.context.Params.SystemSettings.THERMAL_VOLTAGE)
+                                self.Saturation_Current / self.context.Params.SystemSettings.THERMAL_VOLTAGE
+                        ) * math.exp(self.Vbc / self.context.Params.SystemSettings.THERMAL_VOLTAGE)
             self.i_e = -self.Saturation_Current * (
-                math.exp(self.Vbe / self.context.Params.SystemSettings.THERMAL_VOLTAGE) - 1
+                    math.exp(self.Vbe / self.context.Params.SystemSettings.THERMAL_VOLTAGE) - 1
             ) + reverse_alpha * self.Saturation_Current * (
-                math.exp(self.Vbc / self.context.Params.SystemSettings.THERMAL_VOLTAGE) - 1
-            )
+                               math.exp(self.Vbc / self.context.Params.SystemSettings.THERMAL_VOLTAGE) - 1
+                       )
             self.i_c = forward_alpha * self.Saturation_Current * (
-                math.exp(self.Vbe / self.context.Params.SystemSettings.THERMAL_VOLTAGE) - 1
+                    math.exp(self.Vbe / self.context.Params.SystemSettings.THERMAL_VOLTAGE) - 1
             ) - self.Saturation_Current * (
-                math.exp(self.Vbc / self.context.Params.SystemSettings.THERMAL_VOLTAGE) - 1
-            )
+                               math.exp(self.Vbc / self.context.Params.SystemSettings.THERMAL_VOLTAGE) - 1
+                       )
             self.I_e = self.i_e + self.g_ee * self.Vbe - self.g_ec * self.Vbc
             self.I_c = self.i_c - self.g_ce * self.Vbe + self.g_cc * self.Vbc
 

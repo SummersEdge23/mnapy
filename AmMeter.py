@@ -1,22 +1,21 @@
 from typing import List
 
 from mnapy import AmMeterLimits
-from mnapy import Global
 from mnapy import Utils
 from mnapy import Wire
 
 
 class AmMeter:
     def __init__(
-        self,
-        context,
-        Test_Voltage,
-        options,
-        tag,
-        units,
-        Current,
-        options_units,
-        option_limits,
+            self,
+            context,
+            Test_Voltage,
+            options,
+            tag,
+            units,
+            Current,
+            options_units,
+            option_limits,
     ):
         self.Test_Voltage = Test_Voltage
         self.options = options
@@ -99,18 +98,18 @@ class AmMeter:
     def push_current(self, current: float) -> None:
         None
         if (
-            self.context.Params.SystemFlags.FlagSimulating
-            and self.context.simulation_time >= self.context.time_step
-            and self.context.solutions_ready
+                self.context.Params.SystemFlags.FlagSimulating
+                and self.context.simulation_time >= self.context.time_step
+                and self.context.solutions_ready
         ):
             self.Current = current
 
     def get_simulation_index(self) -> int:
         None
         return (
-            self.context.node_size
-            + self.context.ELEMENT_AMMETER_OFFSET
-            + self.SimulationId
+                self.context.node_size
+                + self.context.ELEMENT_AMMETER_OFFSET
+                + self.SimulationId
         )
 
     def Get_Current(self) -> float:

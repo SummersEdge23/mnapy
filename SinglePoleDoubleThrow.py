@@ -1,6 +1,5 @@
 from typing import List
 
-from mnapy import Global
 from mnapy import SinglePoleDoubleThrowLimits
 from mnapy import Utils
 from mnapy import Wire
@@ -8,16 +7,16 @@ from mnapy import Wire
 
 class SinglePoleDoubleThrow:
     def __init__(
-        self,
-        context,
-        Closed_Resistance,
-        options,
-        Open_Resistance,
-        tag,
-        units,
-        Switch_State,
-        options_units,
-        option_limits,
+            self,
+            context,
+            Closed_Resistance,
+            options,
+            Open_Resistance,
+            tag,
+            units,
+            Switch_State,
+            options_units,
+            option_limits,
     ):
         self.Closed_Resistance = Closed_Resistance
         self.options = options
@@ -41,7 +40,7 @@ class SinglePoleDoubleThrow:
     def Set_Switch_State(self, setter: str) -> None:
         None
         if setter == (self.context.Params.SystemConstants.OFF) or setter == (
-            self.context.Params.SystemConstants.ON
+                self.context.Params.SystemConstants.ON
         ):
             self.Switch_State = setter
         else:
@@ -54,8 +53,8 @@ class SinglePoleDoubleThrow:
     def Set_Closed_Resistance(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Closed_Resistance[0])
-            and abs(setter) <= abs(self.option_limits.Closed_Resistance[1])
+                abs(setter) >= abs(self.option_limits.Closed_Resistance[0])
+                and abs(setter) <= abs(self.option_limits.Closed_Resistance[1])
         ) or abs(setter) == 0:
             self.Closed_Resistance = setter
         else:

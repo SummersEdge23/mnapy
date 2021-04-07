@@ -2,27 +2,26 @@ import math
 from typing import List
 
 from mnapy import DiodeLimits
-from mnapy import Global
 from mnapy import Utils
 from mnapy import Wire
 
 
 class Diode:
     def __init__(
-        self,
-        context,
-        Last_Voltage,
-        Resistance,
-        Last_Current,
-        Saturation_Current,
-        Voltage,
-        options,
-        Emission_Coefficient,
-        tag,
-        units,
-        options_units,
-        Equivalent_Current,
-        option_limits,
+            self,
+            context,
+            Last_Voltage,
+            Resistance,
+            Last_Current,
+            Saturation_Current,
+            Voltage,
+            options,
+            Emission_Coefficient,
+            tag,
+            units,
+            options_units,
+            Equivalent_Current,
+            option_limits,
     ):
         self.Last_Voltage = Last_Voltage
         self.Resistance = Resistance
@@ -55,8 +54,8 @@ class Diode:
     def Set_Saturation_Current(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Saturation_Current[0])
-            and abs(setter) <= abs(self.option_limits.Saturation_Current[1])
+                abs(setter) >= abs(self.option_limits.Saturation_Current[0])
+                and abs(setter) <= abs(self.option_limits.Saturation_Current[1])
         ) or abs(setter) == 0:
             self.Saturation_Current = setter
         else:
@@ -69,8 +68,8 @@ class Diode:
     def Set_Emission_Coefficient(self, setter: float) -> None:
         None
         if (
-            setter > self.option_limits.Emission_Coefficient[0]
-            and setter < self.option_limits.Emission_Coefficient[1]
+                setter > self.option_limits.Emission_Coefficient[0]
+                and setter < self.option_limits.Emission_Coefficient[1]
         ):
             self.Emission_Coefficient = setter
         else:
@@ -118,34 +117,34 @@ class Diode:
             )
             self.Voltage = diode_voltage
             self.Resistance = 1.0 / (
-                (
-                    self.Saturation_Current
-                    / (
+                    (
+                            self.Saturation_Current
+                            / (
+                                    self.Emission_Coefficient
+                                    * self.context.Params.SystemSettings.THERMAL_VOLTAGE
+                            )
+                    )
+                    * math.exp(
+                self.Voltage
+                / (
                         self.Emission_Coefficient
                         * self.context.Params.SystemSettings.THERMAL_VOLTAGE
-                    )
-                )
-                * math.exp(
-                    self.Voltage
-                    / (
-                        self.Emission_Coefficient
-                        * self.context.Params.SystemSettings.THERMAL_VOLTAGE
-                    )
                 )
             )
+            )
             self.Equivalent_Current = -(
-                self.Saturation_Current
-                * (
-                    math.exp(
-                        self.Voltage
-                        / (
-                            self.Emission_Coefficient
-                            * self.context.Params.SystemSettings.THERMAL_VOLTAGE
-                        )
+                    self.Saturation_Current
+                    * (
+                            math.exp(
+                                self.Voltage
+                                / (
+                                        self.Emission_Coefficient
+                                        * self.context.Params.SystemSettings.THERMAL_VOLTAGE
+                                )
+                            )
+                            - 1
                     )
-                    - 1
-                )
-                - self.Voltage / self.Resistance
+                    - self.Voltage / self.Resistance
             )
 
     def stamp(self) -> None:

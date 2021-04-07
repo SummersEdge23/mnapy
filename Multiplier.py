@@ -1,6 +1,5 @@
 from typing import List
 
-from mnapy import Global
 from mnapy import MultiplierLimits
 from mnapy import Utils
 from mnapy import Wire
@@ -8,16 +7,16 @@ from mnapy import Wire
 
 class Multiplier:
     def __init__(
-        self,
-        context,
-        Input_Voltage2,
-        options,
-        Input_Voltage1,
-        tag,
-        units,
-        Output_Voltage,
-        options_units,
-        option_limits,
+            self,
+            context,
+            Input_Voltage2,
+            options,
+            Input_Voltage1,
+            tag,
+            units,
+            Output_Voltage,
+            options_units,
+            option_limits,
     ):
         self.Input_Voltage2 = Input_Voltage2
         self.options = options
@@ -45,9 +44,9 @@ class Multiplier:
     def update(self) -> None:
         None
         if (
-            self.context.Params.SystemFlags.FlagSimulating
-            and self.context.solutions_ready
-            and self.context.simulation_step != 0
+                self.context.Params.SystemFlags.FlagSimulating
+                and self.context.solutions_ready
+                and self.context.simulation_step != 0
         ):
             self.Input_Voltage1 = self.context.get_voltage(self.Nodes[0], -1)
             self.Input_Voltage2 = self.context.get_voltage(self.Nodes[1], -1)

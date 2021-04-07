@@ -1,7 +1,6 @@
 import math
 from typing import List
 
-from mnapy import Global
 from mnapy import PulseWidthModulatorLimits
 from mnapy import Utils
 from mnapy import Wire
@@ -9,30 +8,30 @@ from mnapy import Wire
 
 class PulseWidthModulator:
     def __init__(
-        self,
-        context,
-        Max_Frequency,
-        A,
-        Phase,
-        Min_Duty,
-        Saw_Wave,
-        units,
-        High_Voltage,
-        options_units,
-        Low_Voltage,
-        option_limits,
-        Min_Frequency,
-        Max_Duty,
-        Counter,
-        Duty,
-        Input_Voltage2,
-        options,
-        Frequency,
-        Last_Output_Voltage,
-        Input_Voltage1,
-        tag,
-        Output_Voltage,
-        Postscaler,
+            self,
+            context,
+            Max_Frequency,
+            A,
+            Phase,
+            Min_Duty,
+            Saw_Wave,
+            units,
+            High_Voltage,
+            options_units,
+            Low_Voltage,
+            option_limits,
+            Min_Frequency,
+            Max_Duty,
+            Counter,
+            Duty,
+            Input_Voltage2,
+            options,
+            Frequency,
+            Last_Output_Voltage,
+            Input_Voltage1,
+            tag,
+            Output_Voltage,
+            Postscaler,
     ):
         self.Max_Frequency = Max_Frequency
         self.A = A
@@ -70,8 +69,8 @@ class PulseWidthModulator:
     def Set_Max_Frequency(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Max_Frequency[0])
-            and abs(setter) <= abs(self.option_limits.Max_Frequency[1])
+                abs(setter) >= abs(self.option_limits.Max_Frequency[0])
+                and abs(setter) <= abs(self.option_limits.Max_Frequency[1])
         ) or abs(setter) == 0:
             self.Max_Frequency = setter
         else:
@@ -84,8 +83,8 @@ class PulseWidthModulator:
     def Set_Min_Frequency(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Min_Frequency[0])
-            and abs(setter) <= abs(self.option_limits.Min_Frequency[1])
+                abs(setter) >= abs(self.option_limits.Min_Frequency[0])
+                and abs(setter) <= abs(self.option_limits.Min_Frequency[1])
         ) or abs(setter) == 0:
             self.Min_Frequency = setter
         else:
@@ -98,8 +97,8 @@ class PulseWidthModulator:
     def Set_Max_Duty(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Max_Duty[0])
-            and abs(setter) <= abs(self.option_limits.Max_Duty[1])
+                abs(setter) >= abs(self.option_limits.Max_Duty[0])
+                and abs(setter) <= abs(self.option_limits.Max_Duty[1])
         ) or abs(setter) == 0:
             self.Max_Duty = setter
         else:
@@ -112,8 +111,8 @@ class PulseWidthModulator:
     def Set_Phase(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Phase[0])
-            and abs(setter) <= abs(self.option_limits.Phase[1])
+                abs(setter) >= abs(self.option_limits.Phase[0])
+                and abs(setter) <= abs(self.option_limits.Phase[1])
         ) or abs(setter) == 0:
             self.Phase = setter
         else:
@@ -126,8 +125,8 @@ class PulseWidthModulator:
     def Set_Min_Duty(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Min_Duty[0])
-            and abs(setter) <= abs(self.option_limits.Min_Duty[1])
+                abs(setter) >= abs(self.option_limits.Min_Duty[0])
+                and abs(setter) <= abs(self.option_limits.Min_Duty[1])
         ) or abs(setter) == 0:
             self.Min_Duty = setter
         else:
@@ -140,8 +139,8 @@ class PulseWidthModulator:
     def Set_Postscaler(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Postscaler[0])
-            and abs(setter) <= abs(self.option_limits.Postscaler[1])
+                abs(setter) >= abs(self.option_limits.Postscaler[0])
+                and abs(setter) <= abs(self.option_limits.Postscaler[1])
         ) or abs(setter) == 0:
             self.Postscaler = setter
         else:
@@ -158,13 +157,13 @@ class PulseWidthModulator:
     def update(self) -> None:
         None
         if (
-            self.context.Params.SystemFlags.FlagSimulating
-            and self.context.solutions_ready
-            and self.context.simulation_step != 0
+                self.context.Params.SystemFlags.FlagSimulating
+                and self.context.solutions_ready
+                and self.context.simulation_step != 0
         ):
             if (
-                self.context.simulation_time < self.context.time_step
-                or self.Counter >= self.Postscaler
+                    self.context.simulation_time < self.context.time_step
+                    or self.Counter >= self.Postscaler
             ):
                 self.Input_Voltage1 = Utils.Utils.limit(
                     self.context.get_voltage(self.Nodes[0], -1),
@@ -182,8 +181,8 @@ class PulseWidthModulator:
             self.Last_Output_Voltage = self.Output_Voltage
             self.Output_Voltage = self.A
             if (
-                abs(self.Last_Output_Voltage - self.Output_Voltage) > 0
-                or self.context.simulation_time < self.context.time_step
+                    abs(self.Last_Output_Voltage - self.Output_Voltage) > 0
+                    or self.context.simulation_time < self.context.time_step
             ):
                 self.Frequency = Utils.Utils.map_range(
                     self.Input_Voltage1, self.Min_Frequency, self.Max_Frequency

@@ -7,15 +7,15 @@ from mnapy import Wire
 
 class Potentiometer:
     def __init__(
-        self,
-        context,
-        Resistance,
-        Wiper_Percentage,
-        options,
-        tag,
-        units,
-        options_units,
-        option_limits,
+            self,
+            context,
+            Resistance,
+            Wiper_Percentage,
+            options,
+            tag,
+            units,
+            options_units,
+            option_limits,
     ):
         self.Resistance = Resistance
         self.Wiper_Percentage = Wiper_Percentage
@@ -38,8 +38,8 @@ class Potentiometer:
     def Set_Resistance(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Resistance[0])
-            and abs(setter) <= abs(self.option_limits.Resistance[1])
+                abs(setter) >= abs(self.option_limits.Resistance[0])
+                and abs(setter) <= abs(self.option_limits.Resistance[1])
         ) or abs(setter) == 0:
             self.Resistance = setter
         else:
@@ -52,8 +52,8 @@ class Potentiometer:
     def Set_Wiper_Percentage(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Wiper_Percentage[0])
-            and abs(setter) <= abs(self.option_limits.Wiper_Percentage[1])
+                abs(setter) >= abs(self.option_limits.Wiper_Percentage[0])
+                and abs(setter) <= abs(self.option_limits.Wiper_Percentage[1])
         ) or abs(setter) == 0:
             self.Wiper_Percentage = setter
         else:

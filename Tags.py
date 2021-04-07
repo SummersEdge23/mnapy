@@ -1,5 +1,4 @@
 class Tags:
-
     TAG_RESISTOR = "R"
     TAG_SPST = "SPST"
     TAG_NOT = "NOT"

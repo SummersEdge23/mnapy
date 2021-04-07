@@ -7,17 +7,17 @@ from mnapy import Wire
 
 class SquareWave:
     def __init__(
-        self,
-        context,
-        Duty,
-        Voltage,
-        options,
-        Frequency,
-        tag,
-        units,
-        options_units,
-        option_limits,
-        Offset,
+            self,
+            context,
+            Duty,
+            Voltage,
+            options,
+            Frequency,
+            tag,
+            units,
+            options_units,
+            option_limits,
+            Offset,
     ):
         self.Duty = Duty
         self.Voltage = Voltage
@@ -42,8 +42,8 @@ class SquareWave:
     def Set_Duty(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Duty[0])
-            and abs(setter) <= abs(self.option_limits.Duty[1])
+                abs(setter) >= abs(self.option_limits.Duty[0])
+                and abs(setter) <= abs(self.option_limits.Duty[1])
         ) or abs(setter) == 0:
             self.Duty = setter
         else:
@@ -57,8 +57,8 @@ class SquareWave:
     def Set_Voltage(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Voltage[0])
-            and abs(setter) <= abs(self.option_limits.Voltage[1])
+                abs(setter) >= abs(self.option_limits.Voltage[0])
+                and abs(setter) <= abs(self.option_limits.Voltage[1])
         ) or abs(setter) == 0:
             self.Voltage = setter
         else:
@@ -72,8 +72,8 @@ class SquareWave:
     def Set_Frequency(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Frequency[0])
-            and abs(setter) <= abs(self.option_limits.Frequency[1])
+                abs(setter) >= abs(self.option_limits.Frequency[0])
+                and abs(setter) <= abs(self.option_limits.Frequency[1])
         ) or abs(setter) == 0:
             self.Frequency = setter
         else:
@@ -87,8 +87,8 @@ class SquareWave:
     def Set_Offset(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Offset[0])
-            and abs(setter) <= abs(self.option_limits.Offset[1])
+                abs(setter) >= abs(self.option_limits.Offset[0])
+                and abs(setter) <= abs(self.option_limits.Offset[1])
         ) or abs(setter) == 0:
             self.Offset = setter
         else:
@@ -109,7 +109,7 @@ class SquareWave:
         None
         mod = 0
         if Utils.Utils.wrap(
-            self.context.simulation_time, 1.0 / self.Frequency
+                self.context.simulation_time, 1.0 / self.Frequency
         ) < self.Duty * 0.01 * (1.0 / self.Frequency):
             mod = 1
         else:

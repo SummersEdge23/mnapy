@@ -1,24 +1,23 @@
 from typing import List
 
 from mnapy import FuseLimits
-from mnapy import Global
 from mnapy import Utils
 from mnapy import Wire
 
 
 class Fuse:
     def __init__(
-        self,
-        context,
-        Resistance,
-        Voltage,
-        Current_Rating,
-        options,
-        tag,
-        units,
-        options_units,
-        option_limits,
-        Broken,
+            self,
+            context,
+            Resistance,
+            Voltage,
+            Current_Rating,
+            options,
+            tag,
+            units,
+            options_units,
+            option_limits,
+            Broken,
     ):
         self.Resistance = Resistance
         self.Voltage = Voltage
@@ -43,8 +42,8 @@ class Fuse:
     def Set_Resistance(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Resistance[0])
-            and abs(setter) <= abs(self.option_limits.Resistance[1])
+                abs(setter) >= abs(self.option_limits.Resistance[0])
+                and abs(setter) <= abs(self.option_limits.Resistance[1])
         ) or abs(setter) == 0:
             self.Resistance = setter
         else:
@@ -57,8 +56,8 @@ class Fuse:
     def Set_Current_Rating(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Current_Rating[0])
-            and abs(setter) <= abs(self.option_limits.Current_Rating[1])
+                abs(setter) >= abs(self.option_limits.Current_Rating[0])
+                and abs(setter) <= abs(self.option_limits.Current_Rating[1])
         ) or abs(setter) == 0:
             self.Current_Rating = setter
         else:
@@ -75,9 +74,9 @@ class Fuse:
     def update(self) -> None:
         None
         if (
-            self.context.Params.SystemFlags.FlagSimulating
-            and self.context.solutions_ready
-            and self.context.simulation_step != 0
+                self.context.Params.SystemFlags.FlagSimulating
+                and self.context.solutions_ready
+                and self.context.simulation_step != 0
         ):
             self.Voltage = abs(self.context.get_voltage(self.Nodes[0], self.Nodes[1]))
             if self.Voltage / self.Resistance >= self.Current_Rating:

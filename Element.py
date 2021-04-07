@@ -118,7 +118,7 @@ class Element:
                 if (self.context.wires[j].GetId() == str(self.Nodes[i])):
                     self.Nodes[i] = self.context.wires[j].GetNodes()[self.Linkages[i]]
                     self.context.nodes[self.Nodes[i]].AddReference(Utils.Utils.ParseInt(self.Id),
-                                                             Utils.Utils.GetElementType(self.Tag))
+                                                                   Utils.Utils.GetElementType(self.Tag))
                     break
                 None
             None

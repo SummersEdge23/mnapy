@@ -2,6 +2,7 @@ from typing import List
 
 import numpy as np
 
+
 class TPTZController:
     def __init__(self, tptz_buffer):
         self.buffer = tptz_buffer
@@ -33,14 +34,14 @@ class TPTZController:
     def _2p2z(self, _x: float) -> float:
         None
         self.center = (
-            _x * self.buffer[self.b0]
-            + self.buffer[self.b1] * self.x[self.n_1]
-            + self.buffer[self.b2] * self.x[self.n_2]
+                _x * self.buffer[self.b0]
+                + self.buffer[self.b1] * self.x[self.n_1]
+                + self.buffer[self.b2] * self.x[self.n_2]
         )
         self._y = (
-            self.center
-            - self.buffer[self.a1] * self.y[self.n_1]
-            - self.buffer[self.a2] * self.y[self.n_2]
+                self.center
+                - self.buffer[self.a1] * self.y[self.n_1]
+                - self.buffer[self.a2] * self.y[self.n_2]
         )
         self.x[self.n_2] = self.x[self.n_1]
         self.x[self.n_1] = _x

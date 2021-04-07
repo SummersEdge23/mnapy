@@ -1,6 +1,5 @@
 from typing import List
 
-from mnapy import Global
 from mnapy import Utils
 from mnapy import WattMeterLimits
 from mnapy import Wire
@@ -8,15 +7,15 @@ from mnapy import Wire
 
 class WattMeter:
     def __init__(
-        self,
-        context,
-        Test_Voltage,
-        Wattage,
-        options,
-        tag,
-        units,
-        options_units,
-        option_limits,
+            self,
+            context,
+            Test_Voltage,
+            Wattage,
+            options,
+            tag,
+            units,
+            options_units,
+            option_limits,
     ):
         self.Test_Voltage = Test_Voltage
         self.Wattage = Wattage
@@ -99,9 +98,9 @@ class WattMeter:
     def push_voltage(self, v1: float, v2: float) -> None:
         None
         if (
-            self.context.Params.SystemFlags.FlagSimulating
-            and self.context.simulation_time >= self.context.time_step
-            and self.context.solutions_ready
+                self.context.Params.SystemFlags.FlagSimulating
+                and self.context.simulation_time >= self.context.time_step
+                and self.context.solutions_ready
         ):
             curr: float = (v1 - v2) / self.context.Params.SystemSettings.WIRE_RESISTANCE
             voltage: float = max(v1, v2)
@@ -111,9 +110,9 @@ class WattMeter:
     def get_simulation_index(self) -> int:
         None
         return (
-            self.context.node_size
-            + self.context.ELEMENT_WATTMETER_OFFSET
-            + self.SimulationId
+                self.context.node_size
+                + self.context.ELEMENT_WATTMETER_OFFSET
+                + self.SimulationId
         )
 
     def Get_Wattage(self) -> float:

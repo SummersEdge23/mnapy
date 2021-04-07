@@ -7,16 +7,16 @@ from mnapy import Wire
 
 class Note:
     def __init__(
-        self,
-        context,
-        Show_Marker,
-        Text_Style,
-        Note,
-        options,
-        tag,
-        units,
-        options_units,
-        option_limits,
+            self,
+            context,
+            Show_Marker,
+            Text_Style,
+            Note,
+            options,
+            tag,
+            units,
+            options_units,
+            option_limits,
     ):
         self.Show_Marker = Show_Marker
         self.Text_Style = Text_Style

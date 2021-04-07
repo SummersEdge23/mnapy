@@ -1,6 +1,5 @@
 from typing import List
 
-from mnapy import Global
 from mnapy import SampleAndHoldLimits
 from mnapy import Utils
 from mnapy import Wire
@@ -8,18 +7,18 @@ from mnapy import Wire
 
 class SampleAndHold:
     def __init__(
-        self,
-        context,
-        Input_Voltage2,
-        options,
-        Input_Voltage1,
-        tag,
-        units,
-        High_Voltage,
-        Output_Voltage,
-        options_units,
-        Low_Voltage,
-        option_limits,
+            self,
+            context,
+            Input_Voltage2,
+            options,
+            Input_Voltage1,
+            tag,
+            units,
+            High_Voltage,
+            Output_Voltage,
+            options_units,
+            Low_Voltage,
+            option_limits,
     ):
         self.Input_Voltage2 = Input_Voltage2
         self.options = options
@@ -49,9 +48,9 @@ class SampleAndHold:
     def update(self) -> None:
         None
         if (
-            self.context.Params.SystemFlags.FlagSimulating
-            and self.context.solutions_ready
-            and self.context.simulation_step != 0
+                self.context.Params.SystemFlags.FlagSimulating
+                and self.context.solutions_ready
+                and self.context.simulation_step != 0
         ):
             self.Input_Voltage2 = Utils.Utils.limit(
                 self.context.get_voltage(self.Nodes[1], -1),

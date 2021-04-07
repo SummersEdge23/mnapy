@@ -1,6 +1,5 @@
 from typing import List
 
-from mnapy import Global
 from mnapy import RelayLimits
 from mnapy import Utils
 from mnapy import Wire
@@ -8,26 +7,26 @@ from mnapy import Wire
 
 class Relay:
     def __init__(
-        self,
-        context,
-        Transient_Resistance,
-        Transient_Voltage,
-        Open_Resistance,
-        units,
-        Transient_Current,
-        options_units,
-        option_limits,
-        Inductance,
-        Coil_Resistance,
-        Closed_Resistance,
-        Must_Operate_Voltage,
-        Must_Release_Voltage,
-        Input_Voltage1,
-        options,
-        Initial_Current,
-        Status,
-        tag,
-        Equivalent_Current,
+            self,
+            context,
+            Transient_Resistance,
+            Transient_Voltage,
+            Open_Resistance,
+            units,
+            Transient_Current,
+            options_units,
+            option_limits,
+            Inductance,
+            Coil_Resistance,
+            Closed_Resistance,
+            Must_Operate_Voltage,
+            Must_Release_Voltage,
+            Input_Voltage1,
+            options,
+            Initial_Current,
+            Status,
+            tag,
+            Equivalent_Current,
     ):
         self.Transient_Resistance = Transient_Resistance
         self.Transient_Voltage = Transient_Voltage
@@ -61,8 +60,8 @@ class Relay:
     def Set_Inductance(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Inductance[0])
-            and abs(setter) <= abs(self.option_limits.Inductance[1])
+                abs(setter) >= abs(self.option_limits.Inductance[0])
+                and abs(setter) <= abs(self.option_limits.Inductance[1])
         ) or abs(setter) == 0:
             self.Inductance = setter
             self.conserve_energy()
@@ -76,8 +75,8 @@ class Relay:
     def Set_Coil_Resistance(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Coil_Resistance[0])
-            and abs(setter) <= abs(self.option_limits.Coil_Resistance[1])
+                abs(setter) >= abs(self.option_limits.Coil_Resistance[0])
+                and abs(setter) <= abs(self.option_limits.Coil_Resistance[1])
         ) or abs(setter) == 0:
             self.Coil_Resistance = setter
         else:
@@ -90,8 +89,8 @@ class Relay:
     def Set_Must_Operate_Voltage(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Must_Operate_Voltage[0])
-            and abs(setter) <= abs(self.option_limits.Must_Operate_Voltage[1])
+                abs(setter) >= abs(self.option_limits.Must_Operate_Voltage[0])
+                and abs(setter) <= abs(self.option_limits.Must_Operate_Voltage[1])
         ) or abs(setter) == 0:
             self.Must_Operate_Voltage = setter
         else:
@@ -100,8 +99,8 @@ class Relay:
     def Set_Must_Release_Voltage(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Must_Release_Voltage[0])
-            and abs(setter) <= abs(self.option_limits.Must_Release_Voltage[1])
+                abs(setter) >= abs(self.option_limits.Must_Release_Voltage[0])
+                and abs(setter) <= abs(self.option_limits.Must_Release_Voltage[1])
         ) or abs(setter) == 0:
             self.Must_Release_Voltage = setter
         else:
@@ -114,8 +113,8 @@ class Relay:
     def Set_Closed_Resistance(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Closed_Resistance[0])
-            and abs(setter) <= abs(self.option_limits.Closed_Resistance[1])
+                abs(setter) >= abs(self.option_limits.Closed_Resistance[0])
+                and abs(setter) <= abs(self.option_limits.Closed_Resistance[1])
         ) or abs(setter) == 0:
             self.Closed_Resistance = setter
         else:
@@ -131,16 +130,16 @@ class Relay:
         self.Transient_Voltage = 0
         self.Transient_Current = self.Initial_Current
         self.Equivalent_Current = (
-            self.Transient_Voltage / self.Transient_Resistance + self.Transient_Current
+                self.Transient_Voltage / self.Transient_Resistance + self.Transient_Current
         )
 
     def update(self) -> None:
         None
         if self.Input_Voltage1 >= self.Must_Operate_Voltage:
             if (
-                self.context.Params.SystemFlags.FlagSimulating
-                and self.context.solutions_ready
-                and self.context.simulation_time > self.context.time_step
+                    self.context.Params.SystemFlags.FlagSimulating
+                    and self.context.solutions_ready
+                    and self.context.simulation_time > self.context.time_step
             ):
                 self.Status = self.context.Params.SystemConstants.ON
 
@@ -207,18 +206,18 @@ class Relay:
             voltage: float = self.context.get_voltage(self.Nodes[0], self.Nodes[1])
             self.Transient_Voltage = voltage
             self.Transient_Current = (
-                voltage / self.Transient_Resistance + self.Equivalent_Current
+                    voltage / self.Transient_Resistance + self.Equivalent_Current
             )
             self.Equivalent_Current = (
-                self.Transient_Voltage / self.Transient_Resistance
-                + self.Transient_Current
+                    self.Transient_Voltage / self.Transient_Resistance
+                    + self.Transient_Current
             )
 
     def conserve_energy(self) -> None:
         None
         self.Transient_Resistance = (2 * self.Inductance) / self.context.time_step
         self.Equivalent_Current = (
-            self.Transient_Voltage / self.Transient_Resistance + self.Transient_Current
+                self.Transient_Voltage / self.Transient_Resistance + self.Transient_Current
         )
 
     def GetElementType(self) -> int:

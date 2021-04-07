@@ -1,7 +1,6 @@
 import math
 from typing import List
 
-from mnapy import Global
 from mnapy import Utils
 from mnapy import Wire
 from mnapy import ZenerDiodeLimits
@@ -9,21 +8,21 @@ from mnapy import ZenerDiodeLimits
 
 class ZenerDiode:
     def __init__(
-        self,
-        context,
-        Last_Voltage,
-        Last_Current,
-        Zener_Voltage,
-        Saturation_Current,
-        Emission_Coefficient,
-        units,
-        options_units,
-        option_limits,
-        Resistance,
-        Voltage,
-        options,
-        tag,
-        Equivalent_Current,
+            self,
+            context,
+            Last_Voltage,
+            Last_Current,
+            Zener_Voltage,
+            Saturation_Current,
+            Emission_Coefficient,
+            units,
+            options_units,
+            option_limits,
+            Resistance,
+            Voltage,
+            options,
+            tag,
+            Equivalent_Current,
     ):
         self.Last_Voltage = Last_Voltage
         self.Last_Current = Last_Current
@@ -58,8 +57,8 @@ class ZenerDiode:
     def Set_Zener_Voltage(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Zener_Voltage[0])
-            and abs(setter) <= abs(self.option_limits.Zener_Voltage[1])
+                abs(setter) >= abs(self.option_limits.Zener_Voltage[0])
+                and abs(setter) <= abs(self.option_limits.Zener_Voltage[1])
         ) or abs(setter) == 0:
             self.Zener_Voltage = setter
         else:
@@ -72,8 +71,8 @@ class ZenerDiode:
     def Set_Saturation_Current(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Saturation_Current[0])
-            and abs(setter) <= abs(self.option_limits.Saturation_Current[1])
+                abs(setter) >= abs(self.option_limits.Saturation_Current[0])
+                and abs(setter) <= abs(self.option_limits.Saturation_Current[1])
         ) or abs(setter) == 0:
             self.Saturation_Current = setter
         else:
@@ -86,8 +85,8 @@ class ZenerDiode:
     def Set_Emission_Coefficient(self, setter: float) -> None:
         None
         if (
-            setter > self.option_limits.Emission_Coefficient[0]
-            and setter < self.option_limits.Emission_Coefficient[1]
+                setter > self.option_limits.Emission_Coefficient[0]
+                and setter < self.option_limits.Emission_Coefficient[1]
         ):
             self.Emission_Coefficient = setter
         else:
@@ -135,70 +134,70 @@ class ZenerDiode:
             )
             self.Voltage = diode_voltage
             adjusted_zener_voltage: float = (
-                self.damping_safety_factor * self.Zener_Voltage
-                - self.ZENER_MARGIN_SAFETY_FACTOR
+                    self.damping_safety_factor * self.Zener_Voltage
+                    - self.ZENER_MARGIN_SAFETY_FACTOR
             )
             if diode_voltage >= 0:
                 self.Resistance = 1.0 / (
-                    (
-                        self.Saturation_Current
-                        / (
+                        (
+                                self.Saturation_Current
+                                / (
+                                        self.Emission_Coefficient
+                                        * self.context.Params.SystemSettings.THERMAL_VOLTAGE
+                                )
+                        )
+                        * math.exp(
+                    self.Voltage
+                    / (
                             self.Emission_Coefficient
                             * self.context.Params.SystemSettings.THERMAL_VOLTAGE
-                        )
-                    )
-                    * math.exp(
-                        self.Voltage
-                        / (
-                            self.Emission_Coefficient
-                            * self.context.Params.SystemSettings.THERMAL_VOLTAGE
-                        )
                     )
                 )
+                )
                 self.Equivalent_Current = -(
-                    self.Saturation_Current
-                    * (
-                        math.exp(
-                            self.Voltage
-                            / (
-                                self.Emission_Coefficient
-                                * self.context.Params.SystemSettings.THERMAL_VOLTAGE
-                            )
+                        self.Saturation_Current
+                        * (
+                                math.exp(
+                                    self.Voltage
+                                    / (
+                                            self.Emission_Coefficient
+                                            * self.context.Params.SystemSettings.THERMAL_VOLTAGE
+                                    )
+                                )
+                                - 1
                         )
-                        - 1
-                    )
-                    - self.Voltage / self.Resistance
+                        - self.Voltage / self.Resistance
                 )
             else:
                 self.Resistance = 1.0 / (
-                    (
-                        self.Saturation_Current
-                        / (
-                            self.Emission_Coefficient
-                            * self.context.Params.SystemSettings.THERMAL_VOLTAGE
+                        (
+                                self.Saturation_Current
+                                / (
+                                        self.Emission_Coefficient
+                                        * self.context.Params.SystemSettings.THERMAL_VOLTAGE
+                                )
                         )
-                    )
-                    * math.exp(
-                        (-self.Voltage - adjusted_zener_voltage)
-                        * (
+                        * math.exp(
+                    (-self.Voltage - adjusted_zener_voltage)
+                    * (
                             1.0
                             / (
-                                self.Emission_Coefficient
-                                * self.context.Params.SystemSettings.THERMAL_VOLTAGE
+                                    self.Emission_Coefficient
+                                    * self.context.Params.SystemSettings.THERMAL_VOLTAGE
                             )
-                        )
                     )
                 )
+                )
                 self.Equivalent_Current = -(
-                    self.Saturation_Current
-                    * -math.exp(
-                        (-self.Voltage - adjusted_zener_voltage)
-                        / (
+                        self.Saturation_Current
+                        * -math.exp(
+                    (-self.Voltage - adjusted_zener_voltage)
+                    / (
                             self.Emission_Coefficient
                             * self.context.Params.SystemSettings.THERMAL_VOLTAGE
-                        )
                     )
-                    - self.Voltage / self.Resistance
+                )
+                        - self.Voltage / self.Resistance
                 )
 
     def stamp(self) -> None:

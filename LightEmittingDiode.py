@@ -1,7 +1,6 @@
 import math
 from typing import List
 
-from mnapy import Global
 from mnapy import LightEmittingDiodeLimits
 from mnapy import Utils
 from mnapy import Wire
@@ -9,22 +8,22 @@ from mnapy import Wire
 
 class LightEmittingDiode:
     def __init__(
-        self,
-        context,
-        Turn_On_Current,
-        Last_Voltage,
-        Last_Current,
-        Saturation_Current,
-        Emission_Coefficient,
-        units,
-        options_units,
-        Wavelength,
-        option_limits,
-        Resistance,
-        Voltage,
-        options,
-        tag,
-        Equivalent_Current,
+            self,
+            context,
+            Turn_On_Current,
+            Last_Voltage,
+            Last_Current,
+            Saturation_Current,
+            Emission_Coefficient,
+            units,
+            options_units,
+            Wavelength,
+            option_limits,
+            Resistance,
+            Voltage,
+            options,
+            tag,
+            Equivalent_Current,
     ):
         self.Turn_On_Current = Turn_On_Current
         self.Last_Voltage = Last_Voltage
@@ -60,8 +59,8 @@ class LightEmittingDiode:
     def Set_Saturation_Current(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Saturation_Current[0])
-            and abs(setter) <= abs(self.option_limits.Saturation_Current[1])
+                abs(setter) >= abs(self.option_limits.Saturation_Current[0])
+                and abs(setter) <= abs(self.option_limits.Saturation_Current[1])
         ) or abs(setter) == 0:
             self.Saturation_Current = setter
         else:
@@ -74,8 +73,8 @@ class LightEmittingDiode:
     def Set_Emission_Coefficient(self, setter: float) -> None:
         None
         if (
-            setter > self.option_limits.Emission_Coefficient[0]
-            and setter < self.option_limits.Emission_Coefficient[1]
+                setter > self.option_limits.Emission_Coefficient[0]
+                and setter < self.option_limits.Emission_Coefficient[1]
         ):
             self.Emission_Coefficient = setter
         else:
@@ -88,8 +87,8 @@ class LightEmittingDiode:
     def Set_Wavelength(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Wavelength[0])
-            and abs(setter) <= abs(self.option_limits.Wavelength[1])
+                abs(setter) >= abs(self.option_limits.Wavelength[0])
+                and abs(setter) <= abs(self.option_limits.Wavelength[1])
         ) or abs(setter) == 0:
             self.Wavelength = setter
         else:
@@ -138,34 +137,34 @@ class LightEmittingDiode:
             )
             self.Voltage = diode_voltage
             self.Resistance = 1.0 / (
-                (
-                    self.Saturation_Current
-                    / (
+                    (
+                            self.Saturation_Current
+                            / (
+                                    self.Emission_Coefficient
+                                    * self.context.Params.SystemSettings.THERMAL_VOLTAGE
+                            )
+                    )
+                    * math.exp(
+                self.Voltage
+                / (
                         self.Emission_Coefficient
                         * self.context.Params.SystemSettings.THERMAL_VOLTAGE
-                    )
-                )
-                * math.exp(
-                    self.Voltage
-                    / (
-                        self.Emission_Coefficient
-                        * self.context.Params.SystemSettings.THERMAL_VOLTAGE
-                    )
                 )
             )
+            )
             self.Equivalent_Current = -(
-                self.Saturation_Current
-                * (
-                    math.exp(
-                        self.Voltage
-                        / (
-                            self.Emission_Coefficient
-                            * self.context.Params.SystemSettings.THERMAL_VOLTAGE
-                        )
+                    self.Saturation_Current
+                    * (
+                            math.exp(
+                                self.Voltage
+                                / (
+                                        self.Emission_Coefficient
+                                        * self.context.Params.SystemSettings.THERMAL_VOLTAGE
+                                )
+                            )
+                            - 1
                     )
-                    - 1
-                )
-                - self.Voltage / self.Resistance
+                    - self.Voltage / self.Resistance
             )
         else:
             None
@@ -222,9 +221,9 @@ class LightEmittingDiode:
     def turn_on_check(self) -> None:
         None
         if (
-            abs(self.Equivalent_Current) > self.Turn_On_Current
-            and self.Last_Current > self.Turn_On_Current
-            and self.context.simulation_step != 0
+                abs(self.Equivalent_Current) > self.Turn_On_Current
+                and self.Last_Current > self.Turn_On_Current
+                and self.context.simulation_step != 0
         ):
             self.led_status = self.context.Params.SystemConstants.ON
         else:

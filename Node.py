@@ -17,7 +17,7 @@ class Node:
         self.context.node_manager.remove_node(self.Id)
 
     def AddReferenceList(
-        self, ReferenceList: List[NodeReference.NodeReference]
+            self, ReferenceList: List[NodeReference.NodeReference]
     ) -> None:
         for i in range(0, len(ReferenceList)):
             self.AddReference(ReferenceList[i].Id, ReferenceList[i].Type)

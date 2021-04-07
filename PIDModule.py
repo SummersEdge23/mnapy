@@ -1,6 +1,5 @@
 from typing import List
 
-from mnapy import Global
 from mnapy import PIDController
 from mnapy import PIDModuleLimits
 from mnapy import Utils
@@ -9,24 +8,24 @@ from mnapy import Wire
 
 class PIDModule:
     def __init__(
-        self,
-        context,
-        Kp,
-        Min_Output,
-        Setpoint,
-        units,
-        High_Voltage,
-        options_units,
-        Low_Voltage,
-        option_limits,
-        Max_Output,
-        Input_Voltage2,
-        options,
-        Kd,
-        Input_Voltage1,
-        tag,
-        Output_Voltage,
-        Ki,
+            self,
+            context,
+            Kp,
+            Min_Output,
+            Setpoint,
+            units,
+            High_Voltage,
+            options_units,
+            Low_Voltage,
+            option_limits,
+            Max_Output,
+            Input_Voltage2,
+            options,
+            Kd,
+            Input_Voltage1,
+            tag,
+            Output_Voltage,
+            Ki,
     ):
         self.Kp = Kp
         self.Min_Output = Min_Output
@@ -60,8 +59,8 @@ class PIDModule:
     def Set_Max_Output(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Max_Output[0])
-            and abs(setter) <= abs(self.option_limits.Max_Output[1])
+                abs(setter) >= abs(self.option_limits.Max_Output[0])
+                and abs(setter) <= abs(self.option_limits.Max_Output[1])
         ) or abs(setter) == 0:
             self.Max_Output = setter
         else:
@@ -74,8 +73,8 @@ class PIDModule:
     def Set_Kp(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Kp[0])
-            and abs(setter) <= abs(self.option_limits.Kp[1])
+                abs(setter) >= abs(self.option_limits.Kp[0])
+                and abs(setter) <= abs(self.option_limits.Kp[1])
         ) or abs(setter) == 0:
             self.Kp = setter
         else:
@@ -88,8 +87,8 @@ class PIDModule:
     def Set_Min_Output(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Min_Output[0])
-            and abs(setter) <= abs(self.option_limits.Min_Output[1])
+                abs(setter) >= abs(self.option_limits.Min_Output[0])
+                and abs(setter) <= abs(self.option_limits.Min_Output[1])
         ) or abs(setter) == 0:
             self.Min_Output = setter
         else:
@@ -102,8 +101,8 @@ class PIDModule:
     def Set_Setpoint(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Setpoint[0])
-            and abs(setter) <= abs(self.option_limits.Setpoint[1])
+                abs(setter) >= abs(self.option_limits.Setpoint[0])
+                and abs(setter) <= abs(self.option_limits.Setpoint[1])
         ) or abs(setter) == 0:
             self.Setpoint = setter
         else:
@@ -116,8 +115,8 @@ class PIDModule:
     def Set_Kd(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Kd[0])
-            and abs(setter) <= abs(self.option_limits.Kd[1])
+                abs(setter) >= abs(self.option_limits.Kd[0])
+                and abs(setter) <= abs(self.option_limits.Kd[1])
         ) or abs(setter) == 0:
             self.Kd = setter
         else:
@@ -130,8 +129,8 @@ class PIDModule:
     def Set_Ki(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Ki[0])
-            and abs(setter) <= abs(self.option_limits.Ki[1])
+                abs(setter) >= abs(self.option_limits.Ki[0])
+                and abs(setter) <= abs(self.option_limits.Ki[1])
         ) or abs(setter) == 0:
             self.Ki = setter
         else:
@@ -149,9 +148,9 @@ class PIDModule:
     def update(self) -> None:
         None
         if (
-            self.context.Params.SystemFlags.FlagSimulating
-            and self.context.solutions_ready
-            and self.context.simulation_step != 0
+                self.context.Params.SystemFlags.FlagSimulating
+                and self.context.solutions_ready
+                and self.context.simulation_step != 0
         ):
             self.pid_controller.set_setpoint(self.Setpoint)
             self.pid_controller.set_kp(self.Kp)

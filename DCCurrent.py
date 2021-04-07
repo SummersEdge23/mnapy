@@ -7,7 +7,7 @@ from mnapy import Wire
 
 class DCCurrent:
     def __init__(
-        self, context, options, tag, units, Current, options_units, option_limits
+            self, context, options, tag, units, Current, options_units, option_limits
     ):
         self.options = options
         self.tag = tag
@@ -29,8 +29,8 @@ class DCCurrent:
     def Set_Current(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Current[0])
-            and abs(setter) <= abs(self.option_limits.Current[1])
+                abs(setter) >= abs(self.option_limits.Current[0])
+                and abs(setter) <= abs(self.option_limits.Current[1])
         ) or abs(setter) == 0:
             self.Current = setter
         else:

@@ -2,25 +2,24 @@ import math
 from typing import List
 
 from mnapy import DFlipFlopLimits
-from mnapy import Global
 from mnapy import Utils
 from mnapy import Wire
 
 
 class DFlipFlop:
     def __init__(
-        self,
-        context,
-        N_Q,
-        Q,
-        Last_Clock,
-        options,
-        Input_Voltage1,
-        tag,
-        units,
-        Clock,
-        options_units,
-        option_limits,
+            self,
+            context,
+            N_Q,
+            Q,
+            Last_Clock,
+            options,
+            Input_Voltage1,
+            tag,
+            units,
+            Clock,
+            options_units,
+            option_limits,
     ):
         self.N_Q = N_Q
         self.Q = Q

@@ -2,7 +2,6 @@ import math
 from typing import List
 
 import numpy as np
-
 from mnapy import ACCurrent
 from mnapy import ACSource
 from mnapy import ADCModule
@@ -80,20 +79,21 @@ from mnapy import XNORGate
 from mnapy import XORGate
 from mnapy import ZenerDiode
 
+
 class Engine:
     def __init__(self) -> None:
         '''The Engine class is how to interact with a circuit dynamically. It loads all the data from the
         generated netlist and creates objects that can be modified during the execution of the code. NOTE: None
         of the modifications are actually written to file. '''
-        
+
         self.__version__ = "1.1.9"
-        #Version control variables.
+        # Version control variables.
         self.ELEMENT_DIVIDER = "#DIVIDER#"
         self.WIRE_DIVIDER = "#WIRE#"
         self.ID_DIVIDER = "#ID#"
         self.VERSION_NUMBER = "#VERSION#"
         self.WIRE_ELEMENT = "<WIRE>"
-        
+
         self.MINIMUM_MAJOR = 1
         self.MINIMUM_MINOR = 1
         self.MINIMUM_PATCH = 2
@@ -107,21 +107,20 @@ class Engine:
         self.PATCH_MASK = (0xFF) << self.PATCH_SHIFT
 
         self.MINIMUM_VERSION = (
-            ((self.MINIMUM_MAJOR << self.MAJOR_SHIFT) & self.MAJOR_MASK)
-            | ((self.MINIMUM_MINOR << self.MINOR_SHIFT) & self.MINOR_MASK)
-            | ((self.MINIMUM_PATCH << self.PATCH_SHIFT) & self.PATCH_MASK)
+                ((self.MINIMUM_MAJOR << self.MAJOR_SHIFT) & self.MAJOR_MASK)
+                | ((self.MINIMUM_MINOR << self.MINOR_SHIFT) & self.MINOR_MASK)
+                | ((self.MINIMUM_PATCH << self.PATCH_SHIFT) & self.PATCH_MASK)
         )
-        
-        #Contains system File Data (Loaded from user file).
+
+        # Contains system File Data (Loaded from user file).
         self.FileData = ""
-        
-        #Portions of the Net List File.
+
+        # Portions of the Net List File.
         self.Parts = []
         self.Elements = []
         self.Id_Properties = []
         self.CircuitElements: List[Element.Element] = []
-        
-        
+
         self.Map: List[KeyPair.KeyPair] = []
 
         self.SIMULATION_MAX_TIME: float = 1e18
@@ -132,8 +131,8 @@ class Engine:
         self.matrix_z: np.ndarray = np.zeros((1, 1), dtype=np.float64)
         self.matrix_x: np.ndarray = np.zeros((1, 1), dtype=np.float64)
         self.matrix_x_copy: np.ndarray = np.zeros((1, 1), dtype=np.float64)
-        
-        #Circuit Elements 
+
+        # Circuit Elements
         self.nodes = []
         self.wires = []
         self.resistors = []
@@ -285,12 +284,12 @@ class Engine:
 
     def InstanceOfCapacitor(self, index: int):
         return self.capacitors[index]
-    
+
     None
 
     def InstanceOfInductor(self, index: int):
         return self.inductors[index]
-    
+
     None
 
     def InstanceOfGround(self, index: int):
@@ -1726,21 +1725,21 @@ class Engine:
                 Patch = int(MajorMinorPatch[2].replace("[^\d]", ""))
 
                 VersionNumber = (
-                    ((Major << self.MAJOR_SHIFT) & self.MAJOR_MASK)
-                    | ((Minor << self.MINOR_SHIFT) & self.MINOR_MASK)
-                    | ((Patch << self.PATCH_SHIFT) & self.PATCH_MASK)
+                        ((Major << self.MAJOR_SHIFT) & self.MAJOR_MASK)
+                        | ((Minor << self.MINOR_SHIFT) & self.MINOR_MASK)
+                        | ((Patch << self.PATCH_SHIFT) & self.PATCH_MASK)
                 )
 
                 if VersionNumber < self.MINIMUM_VERSION:
                     raise RuntimeError("Invalid file version: %d.%d.%d. The minimum file version number is: %d.%d.%d."
-                        % (
-                            Major,
-                            Minor,
-                            Patch,
-                            self.MINIMUM_MAJOR,
-                            self.MINIMUM_MINOR,
-                            self.MINIMUM_PATCH,
-                        ))
+                                       % (
+                                           Major,
+                                           Minor,
+                                           Patch,
+                                           self.MINIMUM_MAJOR,
+                                           self.MINIMUM_MINOR,
+                                           self.MINIMUM_PATCH,
+                                       ))
                 None
             None
         else:
@@ -2008,7 +2007,7 @@ class Engine:
                 self.zeners[-1].SetElementType(self.CircuitElements[i].GetElementType())
                 self.zeners[-1].SetLinkages(self.CircuitElements[i].GetLinkages())
             elif (
-                self.CircuitElements[i].GetElementType() == Type.Type.TYPE_POTENTIOMETER
+                    self.CircuitElements[i].GetElementType() == Type.Type.TYPE_POTENTIOMETER
             ):
                 self.potentiometers.append(
                     Potentiometer.Potentiometer(self, **ModifiedProperties)
@@ -2268,8 +2267,8 @@ class Engine:
                 )
                 self.integrators[-1].SetLinkages(self.CircuitElements[i].GetLinkages())
             elif (
-                self.CircuitElements[i].GetElementType()
-                == Type.Type.TYPE_DIFFERENTIATOR
+                    self.CircuitElements[i].GetElementType()
+                    == Type.Type.TYPE_DIFFERENTIATOR
             ):
                 self.differentiators.append(
                     DifferentiatorModule.DifferentiatorModule(
@@ -2473,48 +2472,48 @@ class Engine:
         self.ELEMENT_TRAN_OFFSET = self.ELEMENT_TPTZ_OFFSET + len(self.tptzs)
 
         self.MATRIX_OFFSET = (
-            len(self.dcsources)
-            + len(self.acsources)
-            + len(self.squarewaves)
-            + len(self.sawwaves)
-            + len(self.trianglewaves)
-            + len(self.constants)
-            + len(self.rails)
-            + len(self.ohmmeters)
-            + len(self.ammeters)
-            + len(self.wattmeters)
-            + len(self.nots)
-            + len(self.ands)
-            + len(self.ors)
-            + len(self.nands)
-            + len(self.nors)
-            + len(self.xors)
-            + len(self.xnors)
-            + (2 * len(self.dffs))
-            + len(self.vsats)
-            + len(self.adders)
-            + len(self.subtractors)
-            + len(self.multipliers)
-            + len(self.dividers)
-            + len(self.gains)
-            + len(self.absvals)
-            + len(self.vcvss)
-            + len(self.cccss)
-            + (2 * len(self.ccvss))
-            + len(self.opamps)
-            + len(self.adcs)
-            + len(self.dacs)
-            + len(self.sandhs)
-            + len(self.pwms)
-            + len(self.integrators)
-            + len(self.differentiators)
-            + len(self.lowpasses)
-            + len(self.highpasses)
-            + len(self.pids)
-            + len(self.luts)
-            + len(self.grts)
-            + len(self.tptzs)
-            + len(self.transformers)
+                len(self.dcsources)
+                + len(self.acsources)
+                + len(self.squarewaves)
+                + len(self.sawwaves)
+                + len(self.trianglewaves)
+                + len(self.constants)
+                + len(self.rails)
+                + len(self.ohmmeters)
+                + len(self.ammeters)
+                + len(self.wattmeters)
+                + len(self.nots)
+                + len(self.ands)
+                + len(self.ors)
+                + len(self.nands)
+                + len(self.nors)
+                + len(self.xors)
+                + len(self.xnors)
+                + (2 * len(self.dffs))
+                + len(self.vsats)
+                + len(self.adders)
+                + len(self.subtractors)
+                + len(self.multipliers)
+                + len(self.dividers)
+                + len(self.gains)
+                + len(self.absvals)
+                + len(self.vcvss)
+                + len(self.cccss)
+                + (2 * len(self.ccvss))
+                + len(self.opamps)
+                + len(self.adcs)
+                + len(self.dacs)
+                + len(self.sandhs)
+                + len(self.pwms)
+                + len(self.integrators)
+                + len(self.differentiators)
+                + len(self.lowpasses)
+                + len(self.highpasses)
+                + len(self.pids)
+                + len(self.luts)
+                + len(self.grts)
+                + len(self.tptzs)
+                + len(self.transformers)
         )
 
         self.Params.SystemFlags.FlagSimulating = True
@@ -2631,7 +2630,7 @@ class Engine:
     None
 
     def stamp_capacitor(
-        self, n1: int, n2: int, transient_resistance: float, transient_ieq: float
+            self, n1: int, n2: int, transient_resistance: float, transient_ieq: float
     ) -> None:
         node_1 = self.map_node(n1)
         node_2 = self.map_node(n2)
@@ -2651,7 +2650,7 @@ class Engine:
     None
 
     def stamp_inductor(
-        self, n1: int, n2: int, transient_resistance: float, transient_ieq: float
+            self, n1: int, n2: int, transient_resistance: float, transient_ieq: float
     ) -> None:
         node_1 = self.map_node(n1)
         node_2 = self.map_node(n2)
@@ -2671,7 +2670,7 @@ class Engine:
     None
 
     def stamp_ccvs(
-        self, n1: int, n2: int, n3: int, n4: int, gain: float, id: int
+            self, n1: int, n2: int, n3: int, n4: int, gain: float, id: int
     ) -> None:
         node_1 = self.map_node(n1)
         node_2 = self.map_node(n2)
@@ -2719,7 +2718,7 @@ class Engine:
     None
 
     def stamp_cccs(
-        self, n1: int, n2: int, n3: int, n4: int, gain: float, id: int
+            self, n1: int, n2: int, n3: int, n4: int, gain: float, id: int
     ) -> None:
         node_1 = self.map_node(n1)
         node_2 = self.map_node(n2)
@@ -2744,7 +2743,7 @@ class Engine:
     None
 
     def stamp_vcvs(
-        self, n1: int, n2: int, n3: int, n4: int, gain: float, id: int
+            self, n1: int, n2: int, n3: int, n4: int, gain: float, id: int
     ) -> None:
         node_1 = self.map_node(n1)
         node_2 = self.map_node(n2)
@@ -2787,7 +2786,7 @@ class Engine:
     None
 
     def stamp_transformer(
-        self, n1: int, n2: int, n3: int, n4: int, gain: float, id: int
+            self, n1: int, n2: int, n3: int, n4: int, gain: float, id: int
     ) -> None:
         node_1 = self.map_node(n1)
         node_2 = self.map_node(n2)
@@ -2839,10 +2838,10 @@ class Engine:
                 self.update_reactive_elements()
 
                 if (
-                    not self.continue_solving
-                    or self.iterator >= self.Params.SystemSettings.ITL4
-                    or self.Params.SystemVariables.IsSingular
-                    or self.simulation_time >= self.SIMULATION_MAX_TIME
+                        not self.continue_solving
+                        or self.iterator >= self.Params.SystemSettings.ITL4
+                        or self.Params.SystemVariables.IsSingular
+                        or self.simulation_time >= self.SIMULATION_MAX_TIME
                 ):
                     if self.iterator >= self.Params.SystemSettings.ITL4:
                         self.Params.SystemFlags.FlagSimulating = False
@@ -3088,9 +3087,9 @@ class Engine:
             for i in range(0, len(self.matrix_x)):
                 if i < self.node_size:
                     if (
-                        abs(self.matrix_x[i][0] - self.matrix_x_copy[i][0])
-                        < self.Params.SystemSettings.RELTOL * self.max_voltage_error[i][0]
-                        + self.Params.SystemSettings.VNTOL
+                            abs(self.matrix_x[i][0] - self.matrix_x_copy[i][0])
+                            < self.Params.SystemSettings.RELTOL * self.max_voltage_error[i][0]
+                            + self.Params.SystemSettings.VNTOL
                     ):
                         if not self.voltage_error_locked:
                             self.voltage_converged = True
@@ -3101,9 +3100,9 @@ class Engine:
                     None
                 else:
                     if (
-                        abs(self.matrix_x[i][0] - self.matrix_x_copy[i][0])
-                        < self.Params.SystemSettings.RELTOL * self.max_current_error[i][0]
-                        + self.Params.SystemSettings.ABSTOL
+                            abs(self.matrix_x[i][0] - self.matrix_x_copy[i][0])
+                            < self.Params.SystemSettings.RELTOL * self.max_current_error[i][0]
+                            + self.Params.SystemSettings.ABSTOL
                     ):
                         if not self.current_error_locked:
                             self.current_converged = True

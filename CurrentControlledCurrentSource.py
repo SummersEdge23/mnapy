@@ -7,7 +7,7 @@ from mnapy import Wire
 
 class CurrentControlledCurrentSource:
     def __init__(
-        self, context, options, tag, units, options_units, Gain, option_limits
+            self, context, options, tag, units, options_units, Gain, option_limits
     ):
         self.options = options
         self.tag = tag
@@ -31,8 +31,8 @@ class CurrentControlledCurrentSource:
     def Set_Gain(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Gain[0])
-            and abs(setter) <= abs(self.option_limits.Gain[1])
+                abs(setter) >= abs(self.option_limits.Gain[0])
+                and abs(setter) <= abs(self.option_limits.Gain[1])
         ) or abs(setter) == 0:
             self.Gain = setter
         else:

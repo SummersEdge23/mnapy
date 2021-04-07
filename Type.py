@@ -1,5 +1,4 @@
 class Type:
-
     iterator = 0
     TYPE_RESISTOR = iterator
     iterator += 1

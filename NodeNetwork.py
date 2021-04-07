@@ -57,9 +57,9 @@ class NodeNetwork:
 
     def IsRemoved(self, Node: int) -> bool:
         return (
-            (self.IsFound(Node) and Node != self.FindLowestId())
-            or self.FindLowestId() == -1
-            or Node == -1
+                (self.IsFound(Node) and Node != self.FindLowestId())
+                or self.FindLowestId() == -1
+                or Node == -1
         )
 
     def FindLowestId(self) -> int:

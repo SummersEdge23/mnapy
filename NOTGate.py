@@ -1,7 +1,6 @@
 import math
 from typing import List
 
-from mnapy import Global
 from mnapy import NOTGateLimits
 from mnapy import Utils
 from mnapy import Wire
@@ -9,16 +8,16 @@ from mnapy import Wire
 
 class NOTGate:
     def __init__(
-        self,
-        context,
-        options,
-        Input_Voltage,
-        tag,
-        units,
-        High_Voltage,
-        Output_Voltage,
-        options_units,
-        option_limits,
+            self,
+            context,
+            options,
+            Input_Voltage,
+            tag,
+            units,
+            High_Voltage,
+            Output_Voltage,
+            options_units,
+            option_limits,
     ):
         self.options = options
         self.Input_Voltage = Input_Voltage
@@ -42,8 +41,8 @@ class NOTGate:
     def Set_High_Voltage(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.High_Voltage[0])
-            and abs(setter) <= abs(self.option_limits.High_Voltage[1])
+                abs(setter) >= abs(self.option_limits.High_Voltage[0])
+                and abs(setter) <= abs(self.option_limits.High_Voltage[1])
         ) or abs(setter) == 0:
             self.High_Voltage = setter
         else:
@@ -63,8 +62,8 @@ class NOTGate:
             self.Input_Voltage = math.tanh(
                 10
                 * (
-                    self.context.get_voltage(self.Nodes[0], -1) / self.High_Voltage
-                    - 0.5
+                        self.context.get_voltage(self.Nodes[0], -1) / self.High_Voltage
+                        - 0.5
                 )
             )
             self.Output_Voltage = self.High_Voltage * 0.5 * (1 - self.Input_Voltage)

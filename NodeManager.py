@@ -83,13 +83,13 @@ class NodeManager:
             for j in range(0, len(self.context.nets)):
                 if i != j:
                     if (
-                        self.context.nets[i].Get_Name()
-                        == self.context.nets[j].Get_Name()
+                            self.context.nets[i].Get_Name()
+                            == self.context.nets[j].Get_Name()
                     ):
                         if not self.net_redundancy_check(
-                            self.context.nets[i].GetNode(0),
-                            self.context.nets[j].GetNode(0),
-                            net_list,
+                                self.context.nets[i].GetNode(0),
+                                self.context.nets[j].GetNode(0),
+                                net_list,
                         ):
                             net_list.append(
                                 [
@@ -122,7 +122,7 @@ class NodeManager:
             for j in range(0, len(self.unique_nodes)):
                 if j != i:
                     if self.unique_nodes[i].IsConnected(
-                        self.unique_nodes[j].GetReferences()
+                            self.unique_nodes[j].GetReferences()
                     ):
                         self.unique_nodes[i].AddReferences(
                             self.unique_nodes[j].GetReferences()
@@ -138,8 +138,8 @@ class NodeManager:
         for i in range(0, len(self.unique_nodes)):
             for j in range(len(self.active_nodes) - 1, -1, -1):
                 if (
-                    self.unique_nodes[i].IsRemoved(self.active_nodes[j])
-                    and self.active_nodes[j] < self.context.Params.SystemSettings.MAXNODES
+                        self.unique_nodes[i].IsRemoved(self.active_nodes[j])
+                        and self.active_nodes[j] < self.context.Params.SystemSettings.MAXNODES
                 ):
                     del self.active_nodes[j]
                 None
@@ -151,7 +151,7 @@ class NodeManager:
 
         for i in range(0, len(net_list)):
             if (n1 == net_list[i][0] and n2 == net_list[i][1]) or (
-                n2 == net_list[i][0] and n1 == net_list[i][1]
+                    n2 == net_list[i][0] and n1 == net_list[i][1]
             ):
                 output = True
                 break

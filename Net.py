@@ -7,15 +7,15 @@ from mnapy import Wire
 
 class Net:
     def __init__(
-        self,
-        context,
-        Show_Name,
-        options,
-        tag,
-        units,
-        options_units,
-        option_limits,
-        Name,
+            self,
+            context,
+            Show_Name,
+            options,
+            tag,
+            units,
+            options_units,
+            option_limits,
+            Name,
     ):
         self.Show_Name = Show_Name
         self.options = options

@@ -7,7 +7,7 @@ from mnapy import Wire
 
 class Resistor:
     def __init__(
-        self, context, Resistance, options, tag, units, options_units, option_limits
+            self, context, Resistance, options, tag, units, options_units, option_limits
     ):
         self.Resistance = Resistance
         self.options = options
@@ -29,8 +29,8 @@ class Resistor:
     def Set_Resistance(self, setter: float) -> None:
         None
         if (
-            abs(setter) >= abs(self.option_limits.Resistance[0])
-            and abs(setter) <= abs(self.option_limits.Resistance[1])
+                abs(setter) >= abs(self.option_limits.Resistance[0])
+                and abs(setter) <= abs(self.option_limits.Resistance[1])
         ) or abs(setter) == 0:
             self.Resistance = setter
         else:
