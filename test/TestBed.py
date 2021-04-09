@@ -10,7 +10,7 @@ import pandas as pd
 from mnapy.Engine import Engine
 
 # Required Variables.
-FILE_LOCATION = r"/home/christian/Downloads/ACSourceInitial_nl.txt"
+FILE_LOCATION = r"ACSourceInitial_nl.txt"
 T_SPAN = 100e-3
 TIME_STEP = 166.67e-6
 SOLVER_STEPS = int(round(T_SPAN / TIME_STEP))
@@ -29,7 +29,6 @@ engine.load_file(FILE_LOCATION)
 engine.initialize()
 
 VM0 = engine.IndexOfVoltMeter("VM0")
-
 
 def setup():
     engine.time_step = TIME_STEP
