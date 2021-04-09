@@ -19,7 +19,6 @@ Lock = True
 
 # User Variables.
 VM0 = -1
-ID0 = -1
 Vout = []
 Time = []
 
@@ -32,23 +31,19 @@ VM0 = engine.IndexOfVoltMeter("VM0")
 
 def setup():
     engine.time_step = TIME_STEP
-
-
+    
 def logic(StepCounter: int):
     Vout.append(engine.InstanceOfVoltMeter(VM0).Get_Voltage())
     Time.append(engine.simulation_time)
     None
 
-
 def output(StepCounter: int):
     None
-
 
 def plot():
     df = pd.DataFrame(list(zip(Time, Vout)), columns=["Time", "Voltage"])
     df.plot("Time", ["Voltage"])
     None
-
 
 setup()
 
