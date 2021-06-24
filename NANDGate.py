@@ -10,23 +10,37 @@ class NANDGate:
     def __init__(
             self,
             context,
-            Input_Voltage2,
             options,
-            Input_Voltage1,
             tag,
             units,
             High_Voltage,
-            Output_Voltage,
+            V_1,
+            V_1_prime,
+            V_in1,
+            V_partial1,
+            V_2,
+            V_2_prime,
+            V_in2,
+            V_partial2,
+            V_out,
+            V_eq,
             options_units,
             option_limits,
     ):
-        self.Input_Voltage2 = Input_Voltage2
         self.options = options
-        self.Input_Voltage1 = Input_Voltage1
         self.tag = tag
         self.units = units
         self.High_Voltage = High_Voltage
-        self.Output_Voltage = Output_Voltage
+        self.V_1 = V_1
+        self.V_1_prime = V_1_prime
+        self.V_in1 = V_in1
+        self.V_partial1 = V_partial1
+        self.V_2 = V_2
+        self.V_2_prime = V_2_prime
+        self.V_in2 = V_in2
+        self.V_partial2 = V_partial2
+        self.V_out = V_out
+        self.V_eq = V_eq
         self.options_units = options_units
         self.option_limits = NANDGateLimits.NANDGateLimits(
             **Utils.Utils.FixDictionary(option_limits)
@@ -58,40 +72,49 @@ class NANDGate:
         None
         self.Output_Voltage = 0
 
-    def update(self) -> None:
-        None
-        if self.context.Params.SystemFlags.FlagSimulating and self.context.solutions_ready:
-            self.Input_Voltage1 = math.tanh(
-                10
-                * (
-                        self.context.get_voltage(self.Nodes[0], -1) / self.High_Voltage
-                        - 0.5
-                )
-            )
-            self.Input_Voltage2 = math.tanh(
-                10
-                * (
-                        self.context.get_voltage(self.Nodes[1], -1) / self.High_Voltage
-                        - 0.5
-                )
-            )
-            self.Output_Voltage = self.High_Voltage * (
-                    1
-                    - 2.0
-                    / (
-                            2.0 / (1 + self.Input_Voltage1 + self.context.Params.SystemConstants.ZERO_BIAS)
-                            + 2.0 / (1 + self.Input_Voltage2 + self.context.Params.SystemConstants.ZERO_BIAS)
-                    )
-            )
+    def vout_nand(self, ui: List[float]) -> float:
+        sum = 0
+        N = 2
+        size = len(ui)
 
-    def stamp(self) -> None:
-        None
-        self.context.stamp_voltage(
-            self.Nodes[2],
-            -1,
-            self.Output_Voltage,
-            self.context.ELEMENT_NAND_OFFSET + self.SimulationId,
-        )
+        for i in range(0, len(ui)):
+            sum += size / (1 + ui[i] + self.context.Params.SystemConstants.ZERO_BIAS)
+
+        return 1.0 - N / sum + self.context.Params.SystemConstants.ZERO_BIAS
+
+    def partial_nand(self, terminal: float, ui: List[float], ui_prime: List[float]) -> float:
+        sum = 0
+        N = 2
+        size = len(ui)
+
+        for i in range(0, len(ui)):
+            sum += size / (1 + ui[i] + self.context.Params.SystemConstants.ZERO_BIAS)
+
+        return -(2 * N * ui_prime[terminal]) / math.pow((1 + ui[terminal] + self.context.Params.SystemConstants.ZERO_BIAS) * sum, 2)
+        
+    def update(self):
+        if self.context.Params.SystemFlags.FlagSimulating and self.context.solutions_ready:
+            self.V_in1 = self.context.get_voltage(self.Nodes[0], -1)
+            self.V_1 = math.tanh(10 * (self.V_in1 / self.High_Voltage - 0.5))
+            self.V_1_prime = 10 * (1.0 - self.V_1 * self.V_1)
+            self.V_in2 = self.context.get_voltage(self.Nodes[1], -1)
+            self.V_2 = math.tanh(10 * (self.V_in2 / self.High_Voltage - 0.5))
+            self.V_2_prime = 10 * (1.0 - self.V_2 * self.V_2)
+            self.V_out = self.vout_nand([self.V_1, self.V_2])
+            self.V_partial1 = Utils.Utils.limit(
+                self.partial_nand(0, [self.V_1, self.V_2], [self.V_1_prime, self.V_2_prime]),
+                0.0,
+                1.0
+            )
+            self.V_partial2 = Utils.Utils.limit(
+                self.partial_nand(1, [self.V_1, self.V_2], [self.V_1_prime, self.V_2_prime]),
+                0.0,
+                1.0
+            )
+            self.V_eq = self.High_Voltage * (self.V_partial1 * (self.V_in1 / self.High_Voltage) + self.V_partial2 * (self.V_in2 / self.High_Voltage) - self.V_out)
+
+    def stamp(self):
+        self.context.stamp_gate2(self.Nodes[2], self.V_partial1, self.V_partial2, self.V_eq, self.context.ELEMENT_NAND_OFFSET + self.SimulationId)
 
     def SetId(self, Id: str) -> None:
         None

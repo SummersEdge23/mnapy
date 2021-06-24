@@ -8,23 +8,31 @@ from mnapy import Wire
 
 class NOTGate:
     def __init__(
-            self,
-            context,
-            options,
-            Input_Voltage,
-            tag,
-            units,
-            High_Voltage,
-            Output_Voltage,
-            options_units,
-            option_limits,
+        self,
+        context,
+        options,
+        tag,
+        units,
+        High_Voltage,
+        V_1,
+        V_1_prime,
+        V_in1,
+        V_partial1,
+        V_out,
+        V_eq,
+        options_units,
+        option_limits,
     ):
         self.options = options
-        self.Input_Voltage = Input_Voltage
         self.tag = tag
         self.units = units
         self.High_Voltage = High_Voltage
-        self.Output_Voltage = Output_Voltage
+        self.V_1 = V_1
+        self.V_1_prime = V_1_prime
+        self.V_in1 = V_in1
+        self.V_partial1 = V_partial1
+        self.V_out = V_out
+        self.V_eq = V_eq
         self.options_units = options_units
         self.option_limits = NOTGateLimits.NOTGateLimits(
             **Utils.Utils.FixDictionary(option_limits)
@@ -57,25 +65,16 @@ class NOTGate:
         self.Output_Voltage = 0
 
     def update(self) -> None:
-        None
         if self.context.Params.SystemFlags.FlagSimulating and self.context.solutions_ready:
-            self.Input_Voltage = math.tanh(
-                10
-                * (
-                        self.context.get_voltage(self.Nodes[0], -1) / self.High_Voltage
-                        - 0.5
-                )
-            )
-            self.Output_Voltage = self.High_Voltage * 0.5 * (1 - self.Input_Voltage)
+            self.V_in1 = self.context.get_voltage(self.Nodes[0], -1)
+            self.V_1 = math.tanh(10 * (self.V_in1 / self.High_Voltage - 0.5))
+            self.V_1_prime = 10 * (1.0 - self.V_1 * self.V_1)
+            self.V_out = 0.5 * (1 - self.V_1)
+            self.V_partial1 = Utils.Utils.limit(-0.5 * self.V_1_prime, 0.0, 1.0)
+            self.V_eq = self.High_Voltage * (self.V_partial1 * (self.V_in1 / self.High_Voltage) - self.V_out)
 
     def stamp(self) -> None:
-        None
-        self.context.stamp_voltage(
-            self.Nodes[1],
-            -1,
-            self.Output_Voltage,
-            self.context.ELEMENT_NOT_OFFSET + self.SimulationId,
-        )
+        self.context.stamp_gate1(self.Nodes[1], self.V_partial1, self.V_eq, self.context.ELEMENT_NOT_OFFSET + self.SimulationId)
 
     def SetId(self, Id: str) -> None:
         None

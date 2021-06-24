@@ -86,7 +86,7 @@ class Engine:
         generated netlist and creates objects that can be modified during the execution of the code. NOTE: None
         of the modifications are actually written to file. '''
 
-        self.__version__ = "1.2.4"
+        self.__version__ = "1.2.5"
         # Version control variables.
         self.ELEMENT_DIVIDER = "#DIVIDER#"
         self.WIRE_DIVIDER = "#WIRE#"
@@ -96,7 +96,7 @@ class Engine:
 
         self.MINIMUM_MAJOR = 1
         self.MINIMUM_MINOR = 1
-        self.MINIMUM_PATCH = 2
+        self.MINIMUM_PATCH = 9
 
         self.MAJOR_SHIFT = 16
         self.MINOR_SHIFT = 8
@@ -1274,36 +1274,8 @@ class Engine:
             self.spdts[i].update()
         None
 
-        for i in range(0, len(self.nots)):
-            self.nots[i].update()
-        None
-
         for i in range(0, len(self.potentiometers)):
             self.potentiometers[i].update()
-        None
-
-        for i in range(0, len(self.ands)):
-            self.ands[i].update()
-        None
-
-        for i in range(0, len(self.ors)):
-            self.ors[i].update()
-        None
-
-        for i in range(0, len(self.nands)):
-            self.nands[i].update()
-        None
-
-        for i in range(0, len(self.nors)):
-            self.nors[i].update()
-        None
-
-        for i in range(0, len(self.xors)):
-            self.xors[i].update()
-        None
-
-        for i in range(0, len(self.xnors)):
-            self.xnors[i].update()
         None
 
         for i in range(0, len(self.dffs)):
@@ -2669,6 +2641,31 @@ class Engine:
 
     None
 
+    def stamp_gate1(self, n1: int, par_vout_par_vin1: float, v_eq: float, id: int) -> None:
+    	node_1 = self.map_node(n1)
+    	node_offset = self.node_size
+    	if node_1 != -1:
+    		self.matrix_a[node_1][node_offset + id] = 1
+    		self.matrix_a[node_offset + id][node_1] = -1
+    		self.matrix_a[node_offset + id][node_1 + 1] = par_vout_par_vin1
+    		self.matrix_a[node_1][node_1] += 1.0 / self.Params.SystemSettings.R_MAX
+    	None
+    	self.matrix_z[node_offset + id][0] += v_eq
+    None
+    
+    def stamp_gate2(self, n1: int, par_vout_par_vin1: float, par_vout_par_vin2: float, v_eq: float, id: int) -> None:
+    	node_1 = self.map_node(n1)
+    	node_offset = self.node_size
+    	if node_1 != -1:
+    		self.matrix_a[node_1][node_offset+ id] = 1
+    		self.matrix_a[node_offset + id][node_1] = -1
+    		self.matrix_a[node_offset + id][node_1 + 1] = par_vout_par_vin1
+    		self.matrix_a[node_offset + id][node_1 + 2] = par_vout_par_vin2
+    		self.matrix_a[node_1][node_1] += 1.0 / self.Params.SystemSettings.R_MAX
+    	None
+    	self.matrix_z[node_offset + id][0] += v_eq
+    None
+    
     def stamp_ccvs(
             self, n1: int, n2: int, n3: int, n4: int, gain: float, id: int
     ) -> None:
@@ -2781,7 +2778,7 @@ class Engine:
         if node_3 != -1:
             self.matrix_a[node_3][node_offset + id] = 1
         None
-        self.matrix_a[node_offset + id][node_offset + id] += 1e-18
+        self.matrix_a[node_offset + id][node_offset + id] += 1e-9
 
     None
 
@@ -3024,7 +3021,27 @@ class Engine:
         for i in range(0, len(self.pnps)):
             self.pnps[i].update()
         None
-
+        for i in range(0, len(self.nots)):
+            self.nots[i].update()
+        None
+        for i in range(0, len(self.ands)):
+            self.ands[i].update()
+        None
+        for i in range(0, len(self.ors)):
+            self.ors[i].update()
+        None
+        for i in range(0, len(self.nands)):
+            self.nands[i].update()
+        None
+        for i in range(0, len(self.nors)):
+            self.nors[i].update()
+        None
+        for i in range(0, len(self.xors)):
+            self.xors[i].update()
+        None
+        for i in range(0, len(self.xnors)):
+            self.xnors[i].update()
+        None
     None
 
     def update_reactive_elements(self):
