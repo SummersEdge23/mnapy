@@ -222,7 +222,7 @@ class Utils:
                                         len(context.luts),
                                         len(context.vcrs), len(context.vccas), len(context.vcls), len(context.grts),
                                         len(context.tptzs),
-                                        len(context.transformers)]
+                                        len(context.transformers), len(context.bridges)]
         max_general_number: int = 0
         for i in range(0, len(element_max_array)):
             if (element_max_array[i] > max_general_number):
@@ -275,6 +275,8 @@ class Utils:
             return Type.Type.TYPE_TRI
         elif (Tag == Tags.Tags.TAG_CONSTANT):
             return Type.Type.TYPE_CONSTANT
+        elif (Tag == Tags.Tags.TAG_BRIDGE):
+            return Type.Type.TYPE_BRIDGE
         elif (Tag == Tags.Tags.TAG_WIRE):
             return Type.Type.TYPE_WIRE
         elif (Tag == Tags.Tags.TAG_NET):

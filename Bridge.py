@@ -1,29 +1,25 @@
 from typing import List
 
-from mnapy import AmMeterLimits
+from mnapy import BridgeLimits
 from mnapy import Utils
 from mnapy import Wire
 
 
-class AmMeter:
+class Bridge:
     def __init__(
             self,
             context,
-            Test_Voltage,
             options,
             tag,
             units,
-            Current,
             options_units,
             option_limits,
     ):
-        self.Test_Voltage = Test_Voltage
         self.options = options
         self.tag = tag
         self.units = units
-        self.Current = Current
         self.options_units = options_units
-        self.option_limits = AmMeterLimits.AmMeterLimits(
+        self.option_limits = BridgeLimits.BridgeLimits(
             **Utils.Utils.FixDictionary(option_limits)
         )
         self.Nodes = []
@@ -37,22 +33,13 @@ class AmMeter:
 
     def reset(self) -> None:
         None
-        self.Current = 0
 
     def update(self) -> None:
         None
 
     def stamp(self) -> None:
         None
-        self.context.stamp_resistor(
-            self.Nodes[0], self.Nodes[1], self.context.Params.SystemSettings.R_MAX
-        )
-        self.context.stamp_voltage(
-            self.Nodes[0],
-            self.Nodes[1],
-            self.Test_Voltage,
-            self.context.ELEMENT_AMMETER_OFFSET + self.SimulationId,
-        )
+        self.context.stamp_resistor(self.Nodes[0], self.Nodes[1], self.context.Params.SystemSettings.WIRE_RESISTANCE)
 
     def SetId(self, Id: str) -> None:
         None
@@ -78,10 +65,6 @@ class AmMeter:
         None
         self.SimulationId = Id
 
-    def GetSimulationId(self) -> int:
-        None
-        return self.SimulationId
-
     def SetWireReferences(self, wires: List[Wire.Wire]) -> None:
         None
         self.WireReferences.clear()
@@ -94,27 +77,6 @@ class AmMeter:
             return self.Nodes[i]
         else:
             return -1
-
-    def push_current(self, current: float) -> None:
-        None
-        if (
-                self.context.Params.SystemFlags.FlagSimulating
-                and self.context.simulation_time >= self.context.time_step
-                and self.context.solutions_ready
-        ):
-            self.Current = current
-
-    def get_simulation_index(self) -> int:
-        None
-        return (
-                self.context.node_size
-                + self.context.ELEMENT_AMMETER_OFFSET
-                + self.SimulationId
-        )
-
-    def Get_Current(self) -> float:
-        None
-        return self.Current
 
     def GetElementType(self) -> int:
         None

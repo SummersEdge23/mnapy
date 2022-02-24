@@ -3,20 +3,20 @@ import math
 
 class Settings:
     def __init__(self) -> None:
-        self.WIRE_RESISTANCE = 1e-3
+        self.WIRE_RESISTANCE = 1e-6
         self.MAXNODES = 900
         self.SQRT_MAXNODES = math.sqrt(self.MAXNODES)
         self.SQRT_MAXNODES_M1 = self.SQRT_MAXNODES - 1
         self.INV_SQRT_M_1 = 1.0 / (self.SQRT_MAXNODES - 1)
-        self.R_MAX = 1e9
+        self.R_MAX = 1e12
         self.INV_R_MAX = 1.0 / self.R_MAX
-        self.R_SHUNT = 1e12
-        self.RELTOL = 1e-1
-        self.ABSTOL = 1e-1
-        self.VNTOL = 1e-1
-        self.TOLERANCE = 1e-1
+        self.R_GROUND = 1e-12
+        self.R_NODE_TO_GROUND = 1e-15
+        self.RELTOL = 1e-3
+        self.ABSTOL = 1e-12
+        self.VNTOL = 1e-6
+        self.TOLERANCE = 1e-3
         self.ITL4 = 96
-        self.ITL1 = 24
         self.MAX_VOLTAGE = 500e6
         self.MIN_VOLTAGE = 1e-15
         self.MAX_CURRENT = 500e6
@@ -41,8 +41,6 @@ class Settings:
         self.MIN_DUTY_CYCLE = 2
         self.MAX_POSTSCALER = 500e6
         self.MIN_POSTSCALER = 1
-        self.MIN_TIME_CONSTANT = 100e-9
-        self.MAX_TIME_CONSTANT = 10
         self.THERMAL_VOLTAGE = 25.6e-3
         self.GMIN_DEFAULT = 1e-9
         None

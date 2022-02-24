@@ -24,6 +24,8 @@ class Type:
     iterator += 1
     TYPE_CONSTANT = iterator
     iterator += 1
+    TYPE_BRIDGE = iterator
+    iterator += 1
     TYPE_WIRE = iterator
     iterator += 1
     TYPE_NET = iterator
@@ -31,6 +33,10 @@ class Type:
     TYPE_NOTE = iterator
     iterator += 1
     TYPE_RAIL = iterator
+    iterator += 1
+    TYPE_CIRCLE = iterator
+    iterator += 1
+    TYPE_BOX = iterator
     iterator += 1
     TYPE_VOLTMETER = iterator
     iterator += 1

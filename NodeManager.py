@@ -9,8 +9,6 @@ class NodeManager:
         self.active_nodes: List[int] = []
         self.unique_nodes: List[NodeNetwork.NodeNetwork] = []
 
-        None
-
     def clear_active_nodes(self) -> None:
         self.active_nodes.clear()
 
@@ -18,23 +16,17 @@ class NodeManager:
         if Id > -1 and Id < self.context.Params.SystemSettings.MAXNODES:
             if self.find_node(Id) == False:
                 self.active_nodes.append(Id)
-            None
-        None
 
     def remove_node(self, Id: int) -> None:
         if Id > -1 and Id < self.context.Params.SystemSettings.MAXNODES:
             index = self.find_node_index(Id)
             if index > -1 and index < len(self.active_nodes):
                 del self.active_nodes[index]
-            None
-        None
 
     def find_node(self, Id: int) -> bool:
         for i in range(0, len(self.active_nodes)):
             if self.active_nodes[i] == Id:
                 return True
-            None
-        None
 
         return False
 
@@ -42,15 +34,12 @@ class NodeManager:
         for i in range(0, len(self.active_nodes)):
             if self.active_nodes[i] == Id:
                 return i
-            None
-        None
 
         return -1
 
     def assign_node_simulation_ids(self) -> None:
         for i in range(0, len(self.active_nodes)):
             self.context.nodes[self.active_nodes[i]].SimulationId = i
-        None
 
     def generate_unique_nodes_list(self) -> None:
         self.unique_nodes.clear()
@@ -62,7 +51,6 @@ class NodeManager:
                     self.context.grounds[i].GetNode(0),
                 )
             )
-        None
 
         for i in range(0, len(self.unique_nodes)):
             for j in range(0, len(self.unique_nodes)):
@@ -73,9 +61,6 @@ class NodeManager:
                     self.unique_nodes[j].AddReferences(
                         self.unique_nodes[i].GetReferences()
                     )
-                None
-            None
-        None
 
         net_list: List[int] = []
 
@@ -103,11 +88,6 @@ class NodeManager:
                                     self.context.nets[j].GetNode(0),
                                 )
                             )
-                        None
-                    None
-                None
-            None
-        None
 
         for i in range(0, len(self.context.wires)):
             self.unique_nodes.append(
@@ -116,7 +96,14 @@ class NodeManager:
                     self.context.wires[i].GetNodes()[1],
                 )
             )
-        None
+        
+        for i in range(0, len(self.context.bridges)):
+            self.unique_nodes.append(
+                NodeNetwork.NodeNetwork(
+                    self.context.bridges[i].GetNode(0),
+                    self.context.bridges[i].GetNode(1),
+                )
+            )
 
         for i in range(0, len(self.unique_nodes)):
             for j in range(0, len(self.unique_nodes)):
@@ -130,10 +117,6 @@ class NodeManager:
                         self.unique_nodes[j].AddReferences(
                             self.unique_nodes[i].GetReferences()
                         )
-                    None
-                None
-            None
-        None
 
         for i in range(0, len(self.unique_nodes)):
             for j in range(len(self.active_nodes) - 1, -1, -1):
@@ -142,9 +125,6 @@ class NodeManager:
                         and self.active_nodes[j] < self.context.Params.SystemSettings.MAXNODES
                 ):
                     del self.active_nodes[j]
-                None
-            None
-        None
 
     def net_redundancy_check(self, n1: int, n2: int, net_list: List[int]) -> bool:
         output: bool = False
@@ -155,7 +135,5 @@ class NodeManager:
             ):
                 output = True
                 break
-            None
-        None
 
         return output

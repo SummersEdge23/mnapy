@@ -84,10 +84,10 @@ class ADCModule:
                 and self.context.simulation_step != 0
         ):
             self.Input_Voltage = self.context.get_voltage(self.Nodes[0], -1)
-            self.Max_Bits = math.pow(2, self.Bit_Resolution) - 1
+            self.Max_Bits = math.pow(2, self.Bit_Resolution)
             self.LSB = self.Reference_Voltage / self.Max_Bits
             self.Output_Voltage = Utils.Utils.limit(
-                Utils.Utils.cast_int(self.Input_Voltage / self.LSB), 0, self.Max_Bits
+                Utils.Utils.cast_int(self.Input_Voltage / self.LSB), 0, self.Max_Bits - 1
             )
 
     def stamp(self) -> None:

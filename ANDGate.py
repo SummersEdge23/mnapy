@@ -55,7 +55,6 @@ class ANDGate:
         self.context = context
 
     def Set_High_Voltage(self, setter: float) -> None:
-        None
         if (
                 abs(setter) >= abs(self.option_limits.High_Voltage[0])
                 and abs(setter) <= abs(self.option_limits.High_Voltage[1])
@@ -65,11 +64,9 @@ class ANDGate:
             print(self.Designator + " -> Value is outside of limits.")
 
     def Get_High_Voltage(self) -> float:
-        None
         return self.High_Voltage
 
     def reset(self) -> None:
-        None
         self.Output_Voltage = 0
 
     def vout_and(self, ui: List[float]) -> float:
@@ -117,46 +114,36 @@ class ANDGate:
         self.context.stamp_gate2(self.Nodes[2], self.V_partial1, self.V_partial2, self.V_eq, self.context.ELEMENT_AND_OFFSET + self.SimulationId)
 
     def SetId(self, Id: str) -> None:
-        None
         self.Id = int(Id)
 
     def SetNodes(self, Nodes: List[int]) -> None:
-        None
         self.Nodes = Nodes
 
     def SetLinkages(self, Linkages: List[int]) -> None:
-        None
         self.Linkages = Linkages
 
     def SetDesignator(self, Designator: str) -> None:
-        None
         self.Designator = Designator
 
     def GetDesignator(self) -> str:
-        None
         return self.Designator
 
     def SetSimulationId(self, Id: int) -> None:
-        None
         self.SimulationId = Id
 
     def SetWireReferences(self, wires: List[Wire.Wire]) -> None:
-        None
         self.WireReferences.clear()
         for i in range(0, len(wires)):
             self.WireReferences.append(wires[i])
 
     def GetNode(self, i: int) -> int:
-        None
         if i < len(self.Nodes):
             return self.Nodes[i]
         else:
             return -1
 
     def GetElementType(self) -> int:
-        None
         return self.ElementType
 
     def SetElementType(self, setter: int) -> None:
-        None
         self.ElementType = setter

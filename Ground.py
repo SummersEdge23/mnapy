@@ -1,10 +1,11 @@
 from typing import List
 
+from mnapy import GroundLimits
+from mnapy import Utils
 from mnapy import Wire
 
-
 class Ground:
-    def __init__(self, context, tag: str = "", units: str = ""):
+    def __init__(self, context, tag: str = "", units: str = "", option_limits = None):
         self.tag = tag
         self.units = units
         self.Nodes = []
@@ -15,6 +16,9 @@ class Ground:
         self.ElementType = -1
         self.WireReferences = []
         self.context = context
+        self.option_limits = GroundLimits.GroundLimits(
+            **Utils.Utils.FixDictionary(option_limits)
+        )
 
     def reset(self) -> None:
         None
@@ -25,8 +29,7 @@ class Ground:
     def stamp(self) -> None:
         None
         self.context.stamp_node(
-            self.Nodes[0], 1.0 / (2 * self.context.Params.SystemSettings.R_SHUNT)
-        )
+            self.Nodes[0], self.context.Params.SystemSettings.R_GROUND)
 
     def SetId(self, Id: str) -> None:
         None

@@ -2,13 +2,15 @@ import math
 from typing import List
 
 import numpy as np
+
+from mnapy import AbsoluteValue
 from mnapy import ACCurrent
 from mnapy import ACSource
 from mnapy import ADCModule
-from mnapy import ANDGate
-from mnapy import AbsoluteValue
 from mnapy import Adder
+from mnapy import ANDGate
 from mnapy import AmMeter
+from mnapy import Bridge
 from mnapy import Capacitor
 from mnapy import Constant
 from mnapy import CurrentControlledCurrentSource
@@ -20,16 +22,13 @@ from mnapy import DFlipFlop
 from mnapy import DifferentiatorModule
 from mnapy import Diode
 from mnapy import Divider
-from mnapy import Element
 from mnapy import Fuse
 from mnapy import GainBlock
-from mnapy import Global
 from mnapy import GreaterThan
 from mnapy import Ground
 from mnapy import HighPassFilter
 from mnapy import Inductor
 from mnapy import IntegratorModule
-from mnapy import KeyPair
 from mnapy import LightEmittingDiode
 from mnapy import LookUpTable
 from mnapy import LowPassFilter
@@ -40,8 +39,6 @@ from mnapy import NORGate
 from mnapy import NOTGate
 from mnapy import NPNBipolarJunctionTransistor
 from mnapy import Net
-from mnapy import Node
-from mnapy import NodeManager
 from mnapy import Note
 from mnapy import ORGate
 from mnapy import OhmMeter
@@ -63,8 +60,6 @@ from mnapy import Subtractor
 from mnapy import TPTZModule
 from mnapy import Transformer
 from mnapy import TriangleWave
-from mnapy import Type
-from mnapy import Utils
 from mnapy import VoltMeter
 from mnapy import VoltageControlledCapacitor
 from mnapy import VoltageControlledCurrentSource
@@ -78,7 +73,13 @@ from mnapy import Wire
 from mnapy import XNORGate
 from mnapy import XORGate
 from mnapy import ZenerDiode
-
+from mnapy import Element
+from mnapy import Global
+from mnapy import KeyPair
+from mnapy import Node
+from mnapy import NodeManager
+from mnapy import Type
+from mnapy import Utils
 
 class Engine:
     def __init__(self) -> None:
@@ -86,7 +87,7 @@ class Engine:
         generated netlist and creates objects that can be modified during the execution of the code. NOTE: None
         of the modifications are actually written to file. '''
 
-        self.__version__ = "1.2.5"
+        self.__version__ = "1.2.12"
         # Version control variables.
         self.ELEMENT_DIVIDER = "#DIVIDER#"
         self.WIRE_DIVIDER = "#WIRE#"
@@ -133,6 +134,7 @@ class Engine:
         self.matrix_x_copy: np.ndarray = np.zeros((1, 1), dtype=np.float64)
 
         # Circuit Elements
+        self.bridges = []
         self.nodes = []
         self.wires = []
         self.resistors = []
@@ -314,6 +316,11 @@ class Engine:
 
     def InstanceOfACCurrent(self, index: int):
         return self.accurrents[index]
+
+    None
+    
+    def InstanceOfBridge(self, index: int):
+        return self.bridges[index]
 
     None
 
@@ -637,6 +644,10 @@ class Engine:
                 self.inductors[i].SetSimulationId(i)
             None
 
+            if i > -1 and i < len(self.bridges):
+                self.bridges[i].SetSimulationId(i)
+            None
+
             if i > -1 and i < len(self.grounds):
                 self.grounds[i].SetSimulationId(i)
             None
@@ -926,6 +937,10 @@ class Engine:
         for i in range(0, len(self.grounds)):
             self.grounds[i].reset()
         None
+        
+        for i in range(0, len(self.bridges)):
+            self.bridges[i].reset()
+        None
 
         for i in range(0, len(self.dcsources)):
             self.dcsources[i].reset()
@@ -1198,6 +1213,10 @@ class Engine:
             self.inductors[i].update()
         None
 
+        for i in range(0, len(self.bridges)):
+            self.bridges[i].update()
+        None
+
         for i in range(0, len(self.grounds)):
             self.grounds[i].update()
         None
@@ -1421,6 +1440,10 @@ class Engine:
             self.grounds[i].stamp()
         None
 
+        for i in range(0, len(self.bridges)):
+            self.bridges[i].stamp()
+        None
+        
         for i in range(0, len(self.dcsources)):
             self.dcsources[i].stamp()
         None
@@ -1684,9 +1707,9 @@ class Engine:
         self.Elements.clear()
         self.Id_Properties.clear()
         self.CircuitElements.clear()
-
+        
         self.Parts = self.FileData.split(self.VERSION_NUMBER)
-
+        
         if len(self.Parts) > 1:
             Version = self.Parts[0]
             print("File Version: %s" % Version)
@@ -1715,7 +1738,7 @@ class Engine:
                 None
             None
         else:
-            raise RuntimeError("Invalid file version.")
+            raise RuntimeError("Invalid file type.")
         None
 
         self.Elements = self.Parts[1].split(self.ELEMENT_DIVIDER)
@@ -1756,6 +1779,16 @@ class Engine:
                     self.CircuitElements[i].GetElementType()
                 )
                 self.resistors[-1].SetLinkages(self.CircuitElements[i].GetLinkages())
+            elif self.CircuitElements[i].GetElementType() == Type.Type.TYPE_BRIDGE:
+                self.bridges.append(Bridge.Bridge(self, **ModifiedProperties))
+                self.bridges[-1].SetDesignator(
+                    self.CircuitElements[i].GetDesignator()
+                )
+                self.bridges[-1].SetNodes(self.CircuitElements[i].GetNodes())
+                self.bridges[-1].SetElementType(
+                    self.CircuitElements[i].GetElementType()
+                )
+                self.bridges[-1].SetLinkages(self.CircuitElements[i].GetLinkages())
             elif self.CircuitElements[i].GetElementType() == Type.Type.TYPE_CAPACITOR:
                 self.capacitors.append(Capacitor.Capacitor(self, **ModifiedProperties))
                 self.capacitors[-1].SetDesignator(
@@ -2588,6 +2621,31 @@ class Engine:
         self.matrix_z[node_offset + id][0] += voltage
 
     None
+    
+    def stamp_gate1(self, n1: int, par_vout_par_vin1: float, v_eq: float, id: int) -> None:
+    	node_1 = self.map_node(n1)
+    	node_offset = self.node_size
+    	if node_1 != -1:
+    		self.matrix_a[node_1][node_offset + id] = 1
+    		self.matrix_a[node_offset + id][node_1] = -1
+    		self.matrix_a[node_offset + id][node_1 + 1] = par_vout_par_vin1
+    		self.matrix_a[node_1][node_1] += 1.0 / self.Params.SystemSettings.R_MAX
+    	None
+    	self.matrix_z[node_offset + id][0] += v_eq
+    None
+    
+    def stamp_gate2(self, n1: int, par_vout_par_vin1: float, par_vout_par_vin2: float, v_eq: float, id: int) -> None:
+    	node_1 = self.map_node(n1)
+    	node_offset = self.node_size
+    	if node_1 != -1:
+    		self.matrix_a[node_1][node_offset+ id] = 1
+    		self.matrix_a[node_offset + id][node_1] = -1
+    		self.matrix_a[node_offset + id][node_1 + 1] = par_vout_par_vin1
+    		self.matrix_a[node_offset + id][node_1 + 2] = par_vout_par_vin2
+    		self.matrix_a[node_1][node_1] += 1.0 / self.Params.SystemSettings.R_MAX
+    	None
+    	self.matrix_z[node_offset + id][0] += v_eq
+    None
 
     def stamp_current(self, n1: int, n2: int, current: float) -> None:
         node_1 = self.map_node(n1)
@@ -2639,31 +2697,6 @@ class Engine:
             self.matrix_a[node_2][node_1] += -1.0 / transient_resistance
         None
 
-    None
-
-    def stamp_gate1(self, n1: int, par_vout_par_vin1: float, v_eq: float, id: int) -> None:
-    	node_1 = self.map_node(n1)
-    	node_offset = self.node_size
-    	if node_1 != -1:
-    		self.matrix_a[node_1][node_offset + id] = 1
-    		self.matrix_a[node_offset + id][node_1] = -1
-    		self.matrix_a[node_offset + id][node_1 + 1] = par_vout_par_vin1
-    		self.matrix_a[node_1][node_1] += 1.0 / self.Params.SystemSettings.R_MAX
-    	None
-    	self.matrix_z[node_offset + id][0] += v_eq
-    None
-    
-    def stamp_gate2(self, n1: int, par_vout_par_vin1: float, par_vout_par_vin2: float, v_eq: float, id: int) -> None:
-    	node_1 = self.map_node(n1)
-    	node_offset = self.node_size
-    	if node_1 != -1:
-    		self.matrix_a[node_1][node_offset+ id] = 1
-    		self.matrix_a[node_offset + id][node_1] = -1
-    		self.matrix_a[node_offset + id][node_1 + 1] = par_vout_par_vin1
-    		self.matrix_a[node_offset + id][node_1 + 2] = par_vout_par_vin2
-    		self.matrix_a[node_1][node_1] += 1.0 / self.Params.SystemSettings.R_MAX
-    	None
-    	self.matrix_z[node_offset + id][0] += v_eq
     None
     
     def stamp_ccvs(
@@ -2812,15 +2845,24 @@ class Engine:
     def get_voltage(self, n1: int, n2: int) -> float:
         node_1 = self.map_node(n1)
         node_2 = self.map_node(n2)
+        node_3 = 0
         v_node_1 = 0
         v_node_2 = 0
-        if node_1 != -1:
+        v_node_ground = 0
+        if node_1 != -1 and node_1 < len(self.matrix_x):
             v_node_1 = self.matrix_x[node_1][0]
         None
-        if node_2 != -1:
+        if node_2 != -1 and node_2 < len(self.matrix_x):
             v_node_2 = self.matrix_x[node_2][0]
         None
-        return v_node_1 - v_node_2
+        
+        if len(self.grounds) > 0:
+            node_3 = self.map_node(self.grounds[0].GetNode(0))   
+            if node_3 != -1 and node_3 < len(self.matrix_x):
+                v_node_ground = self.matrix_x[node_3][0]
+            None
+        None
+        return v_node_1 - v_node_2 - v_node_ground
 
     None
 
@@ -2832,40 +2874,36 @@ class Engine:
                     self.solve()
                 None
             else:
-                self.update_reactive_elements()
-
-                if (
-                        not self.continue_solving
-                        or self.iterator >= self.Params.SystemSettings.ITL4
-                        or self.Params.SystemVariables.IsSingular
-                        or self.simulation_time >= self.SIMULATION_MAX_TIME
-                ):
-                    if self.iterator >= self.Params.SystemSettings.ITL4:
-                        self.Params.SystemFlags.FlagSimulating = False
-                        print("Error: Convergence Error")
-                    elif self.Params.SystemVariables.IsSingular:
-                        self.Params.SystemFlags.FlagSimulating = False
-                        print("Error: Singular Matrix")
-                    elif self.simulation_time >= self.SIMULATION_MAX_TIME:
-                        self.Params.SystemFlags.FlagSimulating = False
-                        print("Error: End Of Time")
-                    None
-                None
-
-                self.continue_solving = True
-                self.iterator = 0
-                self.update_vir()
-                self.led_check()
-
-                if self.simulation_time >= 1.5 * self.time_step:
-                    self.system_ready = True
-                None
-                self.simulation_time += self.time_step
-                self.simulation_step = 0
+                if (not self.continue_solving):
+                    self.update_reactive_elements()
+    
+                    if (self.iterator >= self.Params.SystemSettings.ITL4
+                            or self.Params.SystemVariables.IsSingular
+                            or self.simulation_time >= self.SIMULATION_MAX_TIME
+                    ):
+                        if self.iterator >= self.Params.SystemSettings.ITL4:
+                            self.Params.SystemFlags.FlagSimulating = False
+                            print("Error: Convergence Error")
+                        elif self.Params.SystemVariables.IsSingular:
+                            self.Params.SystemFlags.FlagSimulating = False
+                            print("Error: Singular Matrix")
+                        elif self.simulation_time >= self.SIMULATION_MAX_TIME:
+                            self.Params.SystemFlags.FlagSimulating = False
+                            print("Error: End Of Time")
+                        None
+                    else:
+                        self.continue_solving = True
+                        self.iterator = 0
+                        self.update_vir()
+                        self.led_check()
+        
+                        self.system_ready = True
+                        self.simulation_time += self.time_step
+                        self.simulation_step = 0
 
             self.update_elements()
         None
-
+    
     def solve(self):
         if self.continue_solving and self.iterator < self.Params.SystemSettings.ITL4:
             self.continue_solving = False
@@ -2888,7 +2926,7 @@ class Engine:
                 None
             None
             self.matrix_a = self.set_matrix_diagonal(
-                self.matrix_a, self.Params.SystemSettings.INV_R_MAX, self.node_size
+                self.matrix_a, self.Params.SystemSettings.R_NODE_TO_GROUND, self.node_size
             )
             self.stamp_elements()
             if self.first_x_matrix_copy:
@@ -2907,10 +2945,10 @@ class Engine:
             None
 
             if np.linalg.det(self.matrix_a) == 0:
-                self.Params.SystemVariables.IsSingular = True
+                self.matrix_x = np.linalg.pinv(self.matrix_a).dot(self.matrix_z)
             else:
                 self.matrix_x = np.linalg.solve(self.matrix_a, self.matrix_z)
-
+            
             for i in range(0, len(self.matrix_x)):
                 if math.isnan(self.matrix_x[i][0]):
                     self.continue_solving = False
@@ -2926,6 +2964,7 @@ class Engine:
             if self.Params.SystemVariables.IsSingular:
                 self.iterator = 0
                 self.continue_solving = False
+                self.iterator = self.Params.SystemSettings.ITL4
                 self.simulation_step += 1
             None
 
@@ -3189,7 +3228,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3199,7 +3238,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3209,7 +3248,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3219,7 +3258,17 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
+
+    None
+    
+    def IndexOfBridge(self, Designator: str):
+        for i in range(0, len(self.bridges)):
+            if self.bridges[i].GetDesignator().strip() == Designator.strip():
+                return i
+            None
+        None
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3229,7 +3278,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3239,7 +3288,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3249,7 +3298,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3259,7 +3308,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3269,7 +3318,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3279,7 +3328,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3289,7 +3338,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3299,7 +3348,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3309,7 +3358,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3319,7 +3368,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3329,7 +3378,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3339,7 +3388,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3349,7 +3398,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3359,7 +3408,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3369,7 +3418,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3379,7 +3428,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3389,7 +3438,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3399,7 +3448,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3409,7 +3458,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3419,7 +3468,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3429,7 +3478,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3439,7 +3488,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3449,7 +3498,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3459,7 +3508,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3469,7 +3518,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3479,7 +3528,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3489,7 +3538,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3499,7 +3548,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3509,7 +3558,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3519,7 +3568,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3529,7 +3578,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3539,7 +3588,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3549,7 +3598,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3559,7 +3608,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3569,7 +3618,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3579,7 +3628,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3589,7 +3638,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3599,7 +3648,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3609,7 +3658,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3619,7 +3668,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3629,7 +3678,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3639,7 +3688,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3649,7 +3698,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3659,7 +3708,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3669,7 +3718,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3679,7 +3728,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3689,7 +3738,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3699,7 +3748,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3709,7 +3758,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3719,7 +3768,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3729,7 +3778,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3739,7 +3788,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3749,7 +3798,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3759,7 +3808,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3769,7 +3818,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3779,7 +3828,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3789,7 +3838,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3799,7 +3848,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3809,7 +3858,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3819,7 +3868,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3829,7 +3878,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3839,7 +3888,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3849,7 +3898,7 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
 
@@ -3859,6 +3908,6 @@ class Engine:
                 return i
             None
         None
-        return -1
+        raise RuntimeError("Element not found.")
 
     None
