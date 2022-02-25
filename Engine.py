@@ -80,6 +80,7 @@ from mnapy import Node
 from mnapy import NodeManager
 from mnapy import Type
 from mnapy import Utils
+import copy
 
 class Engine:
     def __init__(self) -> None:
@@ -87,7 +88,7 @@ class Engine:
         generated netlist and creates objects that can be modified during the execution of the code. NOTE: None
         of the modifications are actually written to file. '''
 
-        self.__version__ = "1.2.12"
+        self.__version__ = "1.2.13"
         # Version control variables.
         self.ELEMENT_DIVIDER = "#DIVIDER#"
         self.WIRE_DIVIDER = "#WIRE#"
@@ -278,7 +279,191 @@ class Engine:
         self.system_ready: bool = False
         self.Params = Global.Global()
         None
+        
+    def save_state(self):
+        State = {
+            "simulation_time" : copy.deepcopy(self.simulation_time),
+            "time_step" : copy.deepcopy(self.time_step),
+            "x_matrix" : copy.deepcopy(self.matrix_x),
+            "x_matrix_copy" : copy.deepcopy(self.matrix_x_copy),
+            "a_matrix" : copy.deepcopy(self.matrix_a),
+            "z_matrix" : copy.deepcopy(self.matrix_z),
+            "solutions_ready" : copy.deepcopy(self.solutions_ready),
+            "elements" : [
+                copy.deepcopy(self.bridges),
+                copy.deepcopy(self.nodes),
+                copy.deepcopy(self.wires),
+                copy.deepcopy(self.resistors),
+                copy.deepcopy(self.capacitors),
+                copy.deepcopy(self.inductors),
+                copy.deepcopy(self.grounds),
+                copy.deepcopy(self.dcsources),
+                copy.deepcopy(self.dccurrents),
+                copy.deepcopy(self.acsources),
+                copy.deepcopy(self.accurrents),
+                copy.deepcopy(self.squarewaves),
+                copy.deepcopy(self.sawwaves),
+                copy.deepcopy(self.trianglewaves),
+                copy.deepcopy(self.constants),
+                copy.deepcopy(self.nets),
+                copy.deepcopy(self.notes),
+                copy.deepcopy(self.rails),
+                copy.deepcopy(self.voltmeters),
+                copy.deepcopy(self.ohmmeters),
+                copy.deepcopy(self.ammeters),
+                copy.deepcopy(self.wattmeters),
+                copy.deepcopy(self.fuses),
+                copy.deepcopy(self.spsts),
+                copy.deepcopy(self.spdts),
+                copy.deepcopy(self.nots),
+                copy.deepcopy(self.diodes),
+                copy.deepcopy(self.leds),
+                copy.deepcopy(self.zeners),
+                copy.deepcopy(self.potentiometers),
+                copy.deepcopy(self.ands),
+                copy.deepcopy(self.ors),
+                copy.deepcopy(self.nands),
+                copy.deepcopy(self.nors),
+                copy.deepcopy(self.xors),
+                copy.deepcopy(self.xnors),
+                copy.deepcopy(self.dffs),
+                copy.deepcopy(self.vsats),
+                copy.deepcopy(self.adders),
+                copy.deepcopy(self.subtractors),
+                copy.deepcopy(self.multipliers),
+                copy.deepcopy(self.dividers),
+                copy.deepcopy(self.gains),
+                copy.deepcopy(self.absvals),
+                copy.deepcopy(self.vcsws),
+                copy.deepcopy(self.vcvss),
+                copy.deepcopy(self.vccss),
+                copy.deepcopy(self.cccss),
+                copy.deepcopy(self.ccvss),
+                copy.deepcopy(self.opamps),
+                copy.deepcopy(self.nmosfets),
+                copy.deepcopy(self.pmosfets),
+                copy.deepcopy(self.npns),
+                copy.deepcopy(self.pnps),
+                copy.deepcopy(self.adcs),
+                copy.deepcopy(self.dacs),
+                copy.deepcopy(self.sandhs),
+                copy.deepcopy(self.pwms),
+                copy.deepcopy(self.integrators),
+                copy.deepcopy(self.differentiators),
+                copy.deepcopy(self.lowpasses),
+                copy.deepcopy(self.highpasses),
+                copy.deepcopy(self.relays),
+                copy.deepcopy(self.pids),
+                copy.deepcopy(self.luts),
+                copy.deepcopy(self.vcrs),
+                copy.deepcopy(self.vccas),
+                copy.deepcopy(self.vcls),
+                copy.deepcopy(self.grts),
+                copy.deepcopy(self.tptzs),
+                copy.deepcopy(self.transformers)
+            ]
+        }
+        
+        return State
+    
+    def apply_state(self, State):
+        self.simulation_time = State["simulation_time"]
+        self.matrix_x = State["x_matrix"]
+        self.matrix_x_copy = State["x_matrix_copy"]
+        self.matrix_a = State["a_matrix"]
+        self.matrix_z = State["z_matrix"]
+        self.solutions_ready = State["solutions_ready"]
 
+        [
+            self.bridges,
+            self.nodes,
+            self.wires,
+            self.resistors,
+            self.capacitors,
+            self.inductors,
+            self.grounds,
+            self.dcsources,
+            self.dccurrents,
+            self.acsources,
+            self.accurrents,
+            self.squarewaves,
+            self.sawwaves,
+            self.trianglewaves,
+            self.constants,
+            self.nets,
+            self.notes,
+            self.rails,
+            self.voltmeters,
+            self.ohmmeters,
+            self.ammeters,
+            self.wattmeters,
+            self.fuses,
+            self.spsts,
+            self.spdts,
+            self.nots,
+            self.diodes,
+            self.leds,
+            self.zeners,
+            self.potentiometers,
+            self.ands,
+            self.ors,
+            self.nands,
+            self.nors,
+            self.xors,
+            self.xnors,
+            self.dffs,
+            self.vsats,
+            self.adders,
+            self.subtractors,
+            self.multipliers,
+            self.dividers,
+            self.gains,
+            self.absvals,
+            self.vcsws,
+            self.vcvss,
+            self.vccss,
+            self.cccss,
+            self.ccvss,
+            self.opamps,
+            self.nmosfets,
+            self.pmosfets,
+            self.npns,
+            self.pnps,
+            self.adcs,
+            self.dacs,
+            self.sandhs,
+            self.pwms,
+            self.integrators,
+            self.differentiators,
+            self.lowpasses,
+            self.highpasses,
+            self.relays,
+            self.pids,
+            self.luts,
+            self.vcrs,
+            self.vccas,
+            self.vcls,
+            self.grts,
+            self.tptzs,
+            self.transformers
+        ] = State["elements"]
+    
+    def setup(self):
+        for i in range(0, len(self.capacitors)):
+            self.capacitors[i].conserve_energy()
+		
+        for i in range(0, len(self.inductors)):
+            self.inductors[i].conserve_energy()
+		
+        for i in range(0, len(self.relays)):
+            self.relays[i].conserve_energy()
+		
+        for i in range(0, len(self.vccas)):
+            self.vccas[i].conserve_energy()
+		
+        for i in range(0, len(self.vcls)):
+            self.vcls[i].conserve_energy()
+		
     def InstanceOfResistor(self, index: int):
         return self.resistors[index]
 

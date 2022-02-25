@@ -31,7 +31,8 @@ VM0 = engine.IndexOfVoltMeter("VM0")
 
 def setup():
     engine.time_step = TIME_STEP
-    
+    engine.setup()
+
 def logic(StepCounter: int):
     Vout.append(engine.InstanceOfVoltMeter(VM0).Get_Voltage())
     Time.append(engine.simulation_time)
