@@ -2908,7 +2908,7 @@ class Engine:
             self.matrix_a[node_offset + id][node_4] = -1
             self.matrix_a[node_4][node_offset + id] = -1
         None
-        self.matrix_a[node_offset + id + 1][node_offset + id] = -gain
+        self.matrix_a[node_offset + id + 1][node_offset + id] = gain
 
     None
 

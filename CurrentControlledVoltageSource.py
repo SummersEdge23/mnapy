@@ -55,7 +55,7 @@ class CurrentControlledVoltageSource:
             self.Nodes[1],
             self.Nodes[2],
             self.Nodes[3],
-            -self.Gain,
+            self.Gain,
             self.context.ELEMENT_CCVS_OFFSET + self.SimulationId,
         )
 
