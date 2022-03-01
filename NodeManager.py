@@ -52,6 +52,38 @@ class NodeManager:
                 )
             )
 
+        for i in range(0, len(self.context.ccvss)):
+            self.unique_nodes.append(
+                NodeNetwork.NodeNetwork(
+                    self.context.ccvss[i].GetNode(3),
+                    self.context.ccvss[i].GetNode(3),
+                )
+            )
+
+        for i in range(0, len(self.context.vcvss)):
+            self.unique_nodes.append(
+                NodeNetwork.NodeNetwork(
+                    self.context.vcvss[i].GetNode(3),
+                    self.context.vcvss[i].GetNode(3),
+                )
+            )
+
+        for i in range(0, len(self.context.vccss)):
+            self.unique_nodes.append(
+                NodeNetwork.NodeNetwork(
+                    self.context.vccss[i].GetNode(3),
+                    self.context.vccss[i].GetNode(3),
+                )
+            )
+
+        for i in range(0, len(self.context.cccss)):
+            self.unique_nodes.append(
+                NodeNetwork.NodeNetwork(
+                    self.context.cccss[i].GetNode(3),
+                    self.context.cccss[i].GetNode(3),
+                )
+            )
+                
         for i in range(0, len(self.unique_nodes)):
             for j in range(0, len(self.unique_nodes)):
                 if i != j:
