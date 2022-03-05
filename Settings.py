@@ -12,11 +12,10 @@ class Settings:
         self.INV_R_MAX = 1.0 / self.R_MAX
         self.R_GROUND = 1e-12
         self.R_NODE_TO_GROUND = 1e-15
-        self.RELTOL = 1e-3
         self.ABSTOL = 1e-12
         self.VNTOL = 1e-6
-        self.TOLERANCE = 1e-3
-        self.ITL4 = 96
+        self.RELTOL = 1e-3
+        self.MAX_ITER = 96
         self.MAX_VOLTAGE = 500e6
         self.MIN_VOLTAGE = 1e-15
         self.MAX_CURRENT = 500e6

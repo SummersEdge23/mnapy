@@ -135,21 +135,14 @@ class Capacitor:
         if self.context.solutions_ready:
             voltage: float = self.context.get_voltage(self.Nodes[0], self.Nodes[1])
             self.Transient_Voltage = voltage
-            self.Transient_Current = (
-                    voltage / self.Transient_Resistance + self.Equivalent_Current
-            )
-            self.Equivalent_Current = (
-                    -self.Transient_Voltage / self.Transient_Resistance
-                    - self.Transient_Current
-            )
+            self.Transient_Current = (voltage / self.Transient_Resistance + self.Equivalent_Current)
+            self.Equivalent_Current = (-self.Transient_Voltage / self.Transient_Resistance - self.Transient_Current)
 
     def conserve_energy(self) -> None:
         None
         self.Transient_Resistance = self.context.time_step / (2 * self.Capacitance)
-        self.Equivalent_Current = (
-                -self.Transient_Voltage / self.Transient_Resistance - self.Transient_Current
-        )
-
+        self.Equivalent_Current = (-self.Transient_Voltage / self.Transient_Resistance - self.Transient_Current)
+        
     def GetElementType(self) -> int:
         None
         return self.ElementType

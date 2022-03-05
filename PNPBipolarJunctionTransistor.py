@@ -120,7 +120,7 @@ class PNPBipolarJunctionTransistor:
         self.Last_Veb = Utils.Utils.calculate_vcrit(
             self.Emission_Coefficient, self.Saturation_Current, self.context
         )
-        self.Last_Io = self.context.Params.SystemSettings.TOLERANCE * 2
+        self.Last_Io = self.context.Params.SystemSettings.RELTOL * 2
         self.update()
 
     def update(self) -> None:

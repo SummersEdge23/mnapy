@@ -102,7 +102,7 @@ class ZenerDiode:
         self.Last_Voltage = Utils.Utils.calculate_vcrit(
             self.Emission_Coefficient, self.Saturation_Current, self.context
         )
-        self.Last_Current = self.context.Params.SystemSettings.TOLERANCE * 2
+        self.Last_Current = self.context.Params.SystemSettings.RELTOL * 2
         self.Resistance = self.context.Params.SystemSettings.R_MAX
         self.Equivalent_Current = 0
         self.update()

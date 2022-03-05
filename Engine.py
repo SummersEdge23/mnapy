@@ -80,15 +80,16 @@ from mnapy import Node
 from mnapy import NodeManager
 from mnapy import Type
 from mnapy import Utils
-import copy
 
 class Engine:
-    def __init__(self) -> None:
-        '''The Engine class is how to interact with a circuit dynamically. It loads all the data from the
+    def __init__(
+        self, time_step, time_start, time_end
+    ) -> None:
+        """The Engine class is how to interact with a circuit dynamically. It loads all the data from the
         generated netlist and creates objects that can be modified during the execution of the code. NOTE: None
-        of the modifications are actually written to file. '''
+        of the modifications are actually written to file."""
 
-        self.__version__ = "1.2.15"
+        self.__version__ = "1.2.16"
         # Version control variables.
         self.ELEMENT_DIVIDER = "#DIVIDER#"
         self.WIRE_DIVIDER = "#WIRE#"
@@ -109,9 +110,9 @@ class Engine:
         self.PATCH_MASK = (0xFF) << self.PATCH_SHIFT
 
         self.MINIMUM_VERSION = (
-                ((self.MINIMUM_MAJOR << self.MAJOR_SHIFT) & self.MAJOR_MASK)
-                | ((self.MINIMUM_MINOR << self.MINOR_SHIFT) & self.MINOR_MASK)
-                | ((self.MINIMUM_PATCH << self.PATCH_SHIFT) & self.PATCH_MASK)
+            ((self.MINIMUM_MAJOR << self.MAJOR_SHIFT) & self.MAJOR_MASK)
+            | ((self.MINIMUM_MINOR << self.MINOR_SHIFT) & self.MINOR_MASK)
+            | ((self.MINIMUM_PATCH << self.PATCH_SHIFT) & self.PATCH_MASK)
         )
 
         # Contains system File Data (Loaded from user file).
@@ -260,9 +261,12 @@ class Engine:
         self.v_node_1: float = 0
         self.v_node_2: float = 0
         self.node_offset: int = 0
-        self.time_step: float = 1e-5
-        self.simulation_time: float = 0
+        self.time_step: float = time_step
+        self.simulation_time: float = time_start
+        self.time_end = time_end
+        self.solver_steps = round((self.time_end - self.simulation_time) / self.time_step)
         self.simulation_step: float = 0
+        self.logic_lock = True
         self.solutions_ready: bool = False
         self.iterator: int = 0
         self.continue_solving: bool = True
@@ -278,191 +282,23 @@ class Engine:
         self.current_converged: bool = False
         self.system_ready: bool = False
         self.Params = Global.Global()
-        None
         
-    def save_state(self):
-        State = {
-            "simulation_time" : (self.simulation_time),
-            "time_step" : (self.time_step),
-            "matrix_x" : (self.matrix_x),
-            "matrix_x_copy" : (self.matrix_x_copy),
-            "matrix_a" : (self.matrix_a),
-            "matrix_z" : (self.matrix_z),
-            "elements" : [
-                (self.bridges),
-                (self.nodes),
-                (self.wires),
-                (self.resistors),
-                (self.capacitors),
-                (self.inductors),
-                (self.grounds),
-                (self.dcsources),
-                (self.dccurrents),
-                (self.acsources),
-                (self.accurrents),
-                (self.squarewaves),
-                (self.sawwaves),
-                (self.trianglewaves),
-                (self.constants),
-                (self.nets),
-                (self.notes),
-                (self.rails),
-                (self.voltmeters),
-                (self.ohmmeters),
-                (self.ammeters),
-                (self.wattmeters),
-                (self.fuses),
-                (self.spsts),
-                (self.spdts),
-                (self.nots),
-                (self.diodes),
-                (self.leds),
-                (self.zeners),
-                (self.potentiometers),
-                (self.ands),
-                (self.ors),
-                (self.nands),
-                (self.nors),
-                (self.xors),
-                (self.xnors),
-                (self.dffs),
-                (self.vsats),
-                (self.adders),
-                (self.subtractors),
-                (self.multipliers),
-                (self.dividers),
-                (self.gains),
-                (self.absvals),
-                (self.vcsws),
-                (self.vcvss),
-                (self.vccss),
-                (self.cccss),
-                (self.ccvss),
-                (self.opamps),
-                (self.nmosfets),
-                (self.pmosfets),
-                (self.npns),
-                (self.pnps),
-                (self.adcs),
-                (self.dacs),
-                (self.sandhs),
-                (self.pwms),
-                (self.integrators),
-                (self.differentiators),
-                (self.lowpasses),
-                (self.highpasses),
-                (self.relays),
-                (self.pids),
-                (self.luts),
-                (self.vcrs),
-                (self.vccas),
-                (self.vcls),
-                (self.grts),
-                (self.tptzs),
-                (self.transformers)
-            ]
-        }
-        
-        return State
-    
-    def apply_state(self, State):
-        self.simulation_time = (State["simulation_time"])
-        self.time_step = (State["time_step"])
-        self.matrix_x = (State["matrix_x"])
-        self.matrix_x_copy = (State["matrix_x_copy"])
-        self.matrix_a = (State["matrix_a"])
-        self.matrix_z = (State["matrix_z"])
-        
-        [
-            self.bridges,
-            self.nodes,
-            self.wires,
-            self.resistors,
-            self.capacitors,
-            self.inductors,
-            self.grounds,
-            self.dcsources,
-            self.dccurrents,
-            self.acsources,
-            self.accurrents,
-            self.squarewaves,
-            self.sawwaves,
-            self.trianglewaves,
-            self.constants,
-            self.nets,
-            self.notes,
-            self.rails,
-            self.voltmeters,
-            self.ohmmeters,
-            self.ammeters,
-            self.wattmeters,
-            self.fuses,
-            self.spsts,
-            self.spdts,
-            self.nots,
-            self.diodes,
-            self.leds,
-            self.zeners,
-            self.potentiometers,
-            self.ands,
-            self.ors,
-            self.nands,
-            self.nors,
-            self.xors,
-            self.xnors,
-            self.dffs,
-            self.vsats,
-            self.adders,
-            self.subtractors,
-            self.multipliers,
-            self.dividers,
-            self.gains,
-            self.absvals,
-            self.vcsws,
-            self.vcvss,
-            self.vccss,
-            self.cccss,
-            self.ccvss,
-            self.opamps,
-            self.nmosfets,
-            self.pmosfets,
-            self.npns,
-            self.pnps,
-            self.adcs,
-            self.dacs,
-            self.sandhs,
-            self.pwms,
-            self.integrators,
-            self.differentiators,
-            self.lowpasses,
-            self.highpasses,
-            self.relays,
-            self.pids,
-            self.luts,
-            self.vcrs,
-            self.vccas,
-            self.vcls,
-            self.grts,
-            self.tptzs,
-            self.transformers
-        ] = (State["elements"])
-                
-    def setup(self):
+    def refactor_reactive_components(self):
         for i in range(0, len(self.capacitors)):
             self.capacitors[i].conserve_energy()
-		
+
         for i in range(0, len(self.inductors)):
             self.inductors[i].conserve_energy()
-		
+
         for i in range(0, len(self.relays)):
             self.relays[i].conserve_energy()
-		
+
         for i in range(0, len(self.vccas)):
             self.vccas[i].conserve_energy()
-		
+
         for i in range(0, len(self.vcls)):
             self.vcls[i].conserve_energy()
-		
+
     def InstanceOfResistor(self, index: int):
         return self.resistors[index]
 
@@ -502,7 +338,7 @@ class Engine:
         return self.accurrents[index]
 
     None
-    
+
     def InstanceOfBridge(self, index: int):
         return self.bridges[index]
 
@@ -1099,6 +935,8 @@ class Engine:
         with open(FilePath, "r") as UserFile:
             self.FileData = UserFile.readlines()
             self.FileData = "".join(self.FileData)
+            
+        self.initialize()
 
     def contains(self, Phrase: str, Text: str) -> bool:
         return Phrase in Text
@@ -1121,7 +959,7 @@ class Engine:
         for i in range(0, len(self.grounds)):
             self.grounds[i].reset()
         None
-        
+
         for i in range(0, len(self.bridges)):
             self.bridges[i].reset()
         None
@@ -1627,7 +1465,7 @@ class Engine:
         for i in range(0, len(self.bridges)):
             self.bridges[i].stamp()
         None
-        
+
         for i in range(0, len(self.dcsources)):
             self.dcsources[i].stamp()
         None
@@ -1891,9 +1729,9 @@ class Engine:
         self.Elements.clear()
         self.Id_Properties.clear()
         self.CircuitElements.clear()
-        
+
         self.Parts = self.FileData.split(self.VERSION_NUMBER)
-        
+
         if len(self.Parts) > 1:
             Version = self.Parts[0]
             print("File Version: %s" % Version)
@@ -1905,21 +1743,23 @@ class Engine:
                 Patch = int(MajorMinorPatch[2].replace("[^\d]", ""))
 
                 VersionNumber = (
-                        ((Major << self.MAJOR_SHIFT) & self.MAJOR_MASK)
-                        | ((Minor << self.MINOR_SHIFT) & self.MINOR_MASK)
-                        | ((Patch << self.PATCH_SHIFT) & self.PATCH_MASK)
+                    ((Major << self.MAJOR_SHIFT) & self.MAJOR_MASK)
+                    | ((Minor << self.MINOR_SHIFT) & self.MINOR_MASK)
+                    | ((Patch << self.PATCH_SHIFT) & self.PATCH_MASK)
                 )
 
                 if VersionNumber < self.MINIMUM_VERSION:
-                    raise RuntimeError("Invalid file version: %d.%d.%d. The minimum file version number is: %d.%d.%d."
-                                       % (
-                                           Major,
-                                           Minor,
-                                           Patch,
-                                           self.MINIMUM_MAJOR,
-                                           self.MINIMUM_MINOR,
-                                           self.MINIMUM_PATCH,
-                                       ))
+                    raise RuntimeError(
+                        "Invalid file version: %d.%d.%d. The minimum file version number is: %d.%d.%d."
+                        % (
+                            Major,
+                            Minor,
+                            Patch,
+                            self.MINIMUM_MAJOR,
+                            self.MINIMUM_MINOR,
+                            self.MINIMUM_PATCH,
+                        )
+                    )
                 None
             None
         else:
@@ -1966,9 +1806,7 @@ class Engine:
                 self.resistors[-1].SetLinkages(self.CircuitElements[i].GetLinkages())
             elif self.CircuitElements[i].GetElementType() == Type.Type.TYPE_BRIDGE:
                 self.bridges.append(Bridge.Bridge(self, **ModifiedProperties))
-                self.bridges[-1].SetDesignator(
-                    self.CircuitElements[i].GetDesignator()
-                )
+                self.bridges[-1].SetDesignator(self.CircuitElements[i].GetDesignator())
                 self.bridges[-1].SetNodes(self.CircuitElements[i].GetNodes())
                 self.bridges[-1].SetElementType(
                     self.CircuitElements[i].GetElementType()
@@ -2197,7 +2035,7 @@ class Engine:
                 self.zeners[-1].SetElementType(self.CircuitElements[i].GetElementType())
                 self.zeners[-1].SetLinkages(self.CircuitElements[i].GetLinkages())
             elif (
-                    self.CircuitElements[i].GetElementType() == Type.Type.TYPE_POTENTIOMETER
+                self.CircuitElements[i].GetElementType() == Type.Type.TYPE_POTENTIOMETER
             ):
                 self.potentiometers.append(
                     Potentiometer.Potentiometer(self, **ModifiedProperties)
@@ -2457,8 +2295,8 @@ class Engine:
                 )
                 self.integrators[-1].SetLinkages(self.CircuitElements[i].GetLinkages())
             elif (
-                    self.CircuitElements[i].GetElementType()
-                    == Type.Type.TYPE_DIFFERENTIATOR
+                self.CircuitElements[i].GetElementType()
+                == Type.Type.TYPE_DIFFERENTIATOR
             ):
                 self.differentiators.append(
                     DifferentiatorModule.DifferentiatorModule(
@@ -2662,50 +2500,51 @@ class Engine:
         self.ELEMENT_TRAN_OFFSET = self.ELEMENT_TPTZ_OFFSET + len(self.tptzs)
 
         self.MATRIX_OFFSET = (
-                len(self.dcsources)
-                + len(self.acsources)
-                + len(self.squarewaves)
-                + len(self.sawwaves)
-                + len(self.trianglewaves)
-                + len(self.constants)
-                + len(self.rails)
-                + len(self.ohmmeters)
-                + len(self.ammeters)
-                + len(self.wattmeters)
-                + len(self.nots)
-                + len(self.ands)
-                + len(self.ors)
-                + len(self.nands)
-                + len(self.nors)
-                + len(self.xors)
-                + len(self.xnors)
-                + (2 * len(self.dffs))
-                + len(self.vsats)
-                + len(self.adders)
-                + len(self.subtractors)
-                + len(self.multipliers)
-                + len(self.dividers)
-                + len(self.gains)
-                + len(self.absvals)
-                + len(self.vcvss)
-                + len(self.cccss)
-                + (2 * len(self.ccvss))
-                + len(self.opamps)
-                + len(self.adcs)
-                + len(self.dacs)
-                + len(self.sandhs)
-                + len(self.pwms)
-                + len(self.integrators)
-                + len(self.differentiators)
-                + len(self.lowpasses)
-                + len(self.highpasses)
-                + len(self.pids)
-                + len(self.luts)
-                + len(self.grts)
-                + len(self.tptzs)
-                + len(self.transformers)
+            len(self.dcsources)
+            + len(self.acsources)
+            + len(self.squarewaves)
+            + len(self.sawwaves)
+            + len(self.trianglewaves)
+            + len(self.constants)
+            + len(self.rails)
+            + len(self.ohmmeters)
+            + len(self.ammeters)
+            + len(self.wattmeters)
+            + len(self.nots)
+            + len(self.ands)
+            + len(self.ors)
+            + len(self.nands)
+            + len(self.nors)
+            + len(self.xors)
+            + len(self.xnors)
+            + (2 * len(self.dffs))
+            + len(self.vsats)
+            + len(self.adders)
+            + len(self.subtractors)
+            + len(self.multipliers)
+            + len(self.dividers)
+            + len(self.gains)
+            + len(self.absvals)
+            + len(self.vcvss)
+            + len(self.cccss)
+            + (2 * len(self.ccvss))
+            + len(self.opamps)
+            + len(self.adcs)
+            + len(self.dacs)
+            + len(self.sandhs)
+            + len(self.pwms)
+            + len(self.integrators)
+            + len(self.differentiators)
+            + len(self.lowpasses)
+            + len(self.highpasses)
+            + len(self.pids)
+            + len(self.luts)
+            + len(self.grts)
+            + len(self.tptzs)
+            + len(self.transformers)
         )
-
+        
+        self.refactor_reactive_components()
         self.Params.SystemFlags.FlagSimulating = True
 
     def map_node(self, node_id: int) -> int:
@@ -2806,30 +2645,41 @@ class Engine:
         self.matrix_z[node_offset + id][0] += voltage
 
     None
-    
-    def stamp_gate1(self, n1: int, par_vout_par_vin1: float, v_eq: float, id: int) -> None:
-    	node_1 = self.map_node(n1)
-    	node_offset = self.node_size
-    	if node_1 != -1:
-    		self.matrix_a[node_1][node_offset + id] = 1
-    		self.matrix_a[node_offset + id][node_1] = -1
-    		self.matrix_a[node_offset + id][node_1 + 1] = par_vout_par_vin1
-    		self.matrix_a[node_1][node_1] += 1.0 / self.Params.SystemSettings.R_MAX
-    	None
-    	self.matrix_z[node_offset + id][0] += v_eq
+
+    def stamp_gate1(
+        self, n1: int, par_vout_par_vin1: float, v_eq: float, id: int
+    ) -> None:
+        node_1 = self.map_node(n1)
+        node_offset = self.node_size
+        if node_1 != -1:
+            self.matrix_a[node_1][node_offset + id] = 1
+            self.matrix_a[node_offset + id][node_1] = -1
+            self.matrix_a[node_offset + id][node_1 + 1] = par_vout_par_vin1
+            self.matrix_a[node_1][node_1] += 1.0 / self.Params.SystemSettings.R_MAX
+        None
+        self.matrix_z[node_offset + id][0] += v_eq
+
     None
-    
-    def stamp_gate2(self, n1: int, par_vout_par_vin1: float, par_vout_par_vin2: float, v_eq: float, id: int) -> None:
-    	node_1 = self.map_node(n1)
-    	node_offset = self.node_size
-    	if node_1 != -1:
-    		self.matrix_a[node_1][node_offset+ id] = 1
-    		self.matrix_a[node_offset + id][node_1] = -1
-    		self.matrix_a[node_offset + id][node_1 + 1] = par_vout_par_vin1
-    		self.matrix_a[node_offset + id][node_1 + 2] = par_vout_par_vin2
-    		self.matrix_a[node_1][node_1] += 1.0 / self.Params.SystemSettings.R_MAX
-    	None
-    	self.matrix_z[node_offset + id][0] += v_eq
+
+    def stamp_gate2(
+        self,
+        n1: int,
+        par_vout_par_vin1: float,
+        par_vout_par_vin2: float,
+        v_eq: float,
+        id: int,
+    ) -> None:
+        node_1 = self.map_node(n1)
+        node_offset = self.node_size
+        if node_1 != -1:
+            self.matrix_a[node_1][node_offset + id] = 1
+            self.matrix_a[node_offset + id][node_1] = -1
+            self.matrix_a[node_offset + id][node_1 + 1] = par_vout_par_vin1
+            self.matrix_a[node_offset + id][node_1 + 2] = par_vout_par_vin2
+            self.matrix_a[node_1][node_1] += 1.0 / self.Params.SystemSettings.R_MAX
+        None
+        self.matrix_z[node_offset + id][0] += v_eq
+
     None
 
     def stamp_current(self, n1: int, n2: int, current: float) -> None:
@@ -2845,7 +2695,7 @@ class Engine:
     None
 
     def stamp_capacitor(
-            self, n1: int, n2: int, transient_resistance: float, transient_ieq: float
+        self, n1: int, n2: int, transient_resistance: float, transient_ieq: float
     ) -> None:
         node_1 = self.map_node(n1)
         node_2 = self.map_node(n2)
@@ -2865,7 +2715,7 @@ class Engine:
     None
 
     def stamp_inductor(
-            self, n1: int, n2: int, transient_resistance: float, transient_ieq: float
+        self, n1: int, n2: int, transient_resistance: float, transient_ieq: float
     ) -> None:
         node_1 = self.map_node(n1)
         node_2 = self.map_node(n2)
@@ -2883,9 +2733,9 @@ class Engine:
         None
 
     None
-    
+
     def stamp_ccvs(
-            self, n1: int, n2: int, n3: int, n4: int, gain: float, id: int
+        self, n1: int, n2: int, n3: int, n4: int, gain: float, id: int
     ) -> None:
         node_1 = self.map_node(n1)
         node_2 = self.map_node(n2)
@@ -2933,7 +2783,7 @@ class Engine:
     None
 
     def stamp_cccs(
-            self, n1: int, n2: int, n3: int, n4: int, gain: float, id: int
+        self, n1: int, n2: int, n3: int, n4: int, gain: float, id: int
     ) -> None:
         node_1 = self.map_node(n1)
         node_2 = self.map_node(n2)
@@ -2958,7 +2808,7 @@ class Engine:
     None
 
     def stamp_vcvs(
-            self, n1: int, n2: int, n3: int, n4: int, gain: float, id: int
+        self, n1: int, n2: int, n3: int, n4: int, gain: float, id: int
     ) -> None:
         node_1 = self.map_node(n1)
         node_2 = self.map_node(n2)
@@ -3001,7 +2851,7 @@ class Engine:
     None
 
     def stamp_transformer(
-            self, n1: int, n2: int, n3: int, n4: int, gain: float, id: int
+        self, n1: int, n2: int, n3: int, n4: int, gain: float, id: int
     ) -> None:
         node_1 = self.map_node(n1)
         node_2 = self.map_node(n2)
@@ -3040,17 +2890,21 @@ class Engine:
         if node_2 != -1 and node_2 < len(self.matrix_x):
             v_node_2 = self.matrix_x[node_2][0]
         None
-        
+
         if len(self.grounds) > 0:
-            node_3 = self.map_node(self.grounds[0].GetNode(0))   
+            node_3 = self.map_node(self.grounds[0].GetNode(0))
             if node_3 != -1 and node_3 < len(self.matrix_x):
                 v_node_ground = self.matrix_x[node_3][0]
             None
         None
         return v_node_1 - v_node_2 - v_node_ground
 
-    None        
-        
+    None
+
+    def publish(self):
+        self.update_reactive_elements()
+        self.update_elements()
+
     def simulate(self):
         if self.Params.SystemFlags.FlagSimulating:
             if self.simulation_step == 0:
@@ -3059,14 +2913,13 @@ class Engine:
                     self.solve()
                 None
             else:
-                if (not self.continue_solving):
-                    self.update_reactive_elements()
-    
-                    if (self.iterator >= self.Params.SystemSettings.ITL4
-                            or self.Params.SystemVariables.IsSingular
-                            or self.simulation_time >= self.SIMULATION_MAX_TIME
+                if not self.continue_solving:
+                    if (
+                        self.iterator >= self.Params.SystemSettings.MAX_ITER
+                        or self.Params.SystemVariables.IsSingular
+                        or self.simulation_time >= self.SIMULATION_MAX_TIME
                     ):
-                        if self.iterator >= self.Params.SystemSettings.ITL4:
+                        if self.iterator >= self.Params.SystemSettings.MAX_ITER:
                             self.Params.SystemFlags.FlagSimulating = False
                             print("Error: Convergence Error")
                         elif self.Params.SystemVariables.IsSingular:
@@ -3077,20 +2930,46 @@ class Engine:
                             print("Error: End Of Time")
                         None
                     else:
+                        self.publish()
                         self.continue_solving = True
                         self.iterator = 0
                         self.update_vir()
                         self.led_check()
-                
                         self.system_ready = True
                         self.simulation_time += self.time_step
                         self.simulation_step = 0
 
-            self.update_elements()
         None
     
+    def simulation_loop(self, logic_func_ptr, output_func_ptr, plot_func_ptr):
+        step_counter = 0
+        
+        while step_counter < self.solver_steps:
+            if not self.logic_lock:
+                logic_func_ptr(step_counter)
+                self.logic_lock = True
+            None
+        
+            self.simulate()
+        
+            if not self.Params.SystemFlags.FlagSimulating:
+                break
+            None
+            
+            if self.ready():
+                self.logic_lock = False
+                output_func_ptr(step_counter)
+                step_counter += 1
+            None
+        None
+        
+        plot_func_ptr()
+
     def solve(self):
-        if self.continue_solving and self.iterator < self.Params.SystemSettings.ITL4:
+        if (
+            self.continue_solving
+            and self.iterator < self.Params.SystemSettings.MAX_ITER
+        ):
             self.continue_solving = False
             if self.first_matrix_build:
                 self.matrix_a = self.matrix(
@@ -3111,7 +2990,9 @@ class Engine:
                 None
             None
             self.matrix_a = self.set_matrix_diagonal(
-                self.matrix_a, self.Params.SystemSettings.R_NODE_TO_GROUND, self.node_size
+                self.matrix_a,
+                self.Params.SystemSettings.R_NODE_TO_GROUND,
+                self.node_size,
             )
             self.stamp_elements()
             if self.first_x_matrix_copy:
@@ -3133,11 +3014,11 @@ class Engine:
                 self.matrix_x = np.linalg.pinv(self.matrix_a).dot(self.matrix_z)
             else:
                 self.matrix_x = np.linalg.solve(self.matrix_a, self.matrix_z)
-            
+
             for i in range(0, len(self.matrix_x)):
                 if math.isnan(self.matrix_x[i][0]):
                     self.continue_solving = False
-                    self.iterator = self.Params.SystemSettings.ITL4
+                    self.iterator = self.Params.SystemSettings.MAX_ITER
                     self.matrix_x[i][0] = 0
                 None
             None
@@ -3149,7 +3030,7 @@ class Engine:
             if self.Params.SystemVariables.IsSingular:
                 self.iterator = 0
                 self.continue_solving = False
-                self.iterator = self.Params.SystemSettings.ITL4
+                self.iterator = self.Params.SystemSettings.MAX_ITER
                 self.simulation_step += 1
             None
 
@@ -3264,6 +3145,7 @@ class Engine:
         for i in range(0, len(self.xnors)):
             self.xnors[i].update()
         None
+
     None
 
     def update_reactive_elements(self):
@@ -3326,9 +3208,10 @@ class Engine:
             for i in range(0, len(self.matrix_x)):
                 if i < self.node_size:
                     if (
-                            abs(self.matrix_x[i][0] - self.matrix_x_copy[i][0])
-                            < self.Params.SystemSettings.RELTOL * self.max_voltage_error[i][0]
-                            + self.Params.SystemSettings.VNTOL
+                        abs(self.matrix_x[i][0] - self.matrix_x_copy[i][0])
+                        < self.Params.SystemSettings.RELTOL
+                        * self.max_voltage_error[i][0]
+                        + self.Params.SystemSettings.VNTOL
                     ):
                         if not self.voltage_error_locked:
                             self.voltage_converged = True
@@ -3339,9 +3222,10 @@ class Engine:
                     None
                 else:
                     if (
-                            abs(self.matrix_x[i][0] - self.matrix_x_copy[i][0])
-                            < self.Params.SystemSettings.RELTOL * self.max_current_error[i][0]
-                            + self.Params.SystemSettings.ABSTOL
+                        abs(self.matrix_x[i][0] - self.matrix_x_copy[i][0])
+                        < self.Params.SystemSettings.RELTOL
+                        * self.max_current_error[i][0]
+                        + self.Params.SystemSettings.ABSTOL
                     ):
                         if not self.current_error_locked:
                             self.current_converged = True
@@ -3393,7 +3277,7 @@ class Engine:
 
     def clone(self, inp):
         None
-        if (np.shape(inp)[0] > 0 and np.shape(inp)[1] > 0):
+        if np.shape(inp)[0] > 0 and np.shape(inp)[1] > 0:
             output = np.zeros((len(inp), len(inp[0])), dtype=np.float64)
             for i in range(0, len(output)):
                 for j in range(0, len(output[0])):
@@ -3444,7 +3328,7 @@ class Engine:
         raise RuntimeError("Element not found.")
 
     None
-    
+
     def IndexOfBridge(self, Designator: str):
         for i in range(0, len(self.bridges)):
             if self.bridges[i].GetDesignator().strip() == Designator.strip():

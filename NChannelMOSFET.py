@@ -123,7 +123,7 @@ class NChannelMOSFET:
         self.Vgs = 0
         self.Vds = 0
         self.Last_Vgs = 2
-        self.Last_Io = self.context.Params.SystemSettings.TOLERANCE * 2
+        self.Last_Io = self.context.Params.SystemSettings.RELTOL * 2
         self.update()
 
     def update(self) -> None:
