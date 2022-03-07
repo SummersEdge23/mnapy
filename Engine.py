@@ -2431,7 +2431,6 @@ class Engine:
 
         self.Params.SystemVariables.IsSingular = False
         self.first_matrix_build = True
-        self.simulation_time = 0
         self.continue_solving = True
         self.solutions_ready = False
         self.iterator = 0
