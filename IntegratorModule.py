@@ -103,12 +103,25 @@ class IntegratorModule:
             else:
                 self.Last_Value = self.Input_Voltage
                 self.Input_Voltage = self.context.get_voltage(self.Nodes[0], -1)
-                self.Output_Voltage += (
-                        (self.Input_Voltage + self.Last_Value)
-                        * 0.5
-                        * self.context.time_step
-                )
-
+                
+                if (self.context.integration_method == "trapezoidal"):
+                    self.Output_Voltage += (
+                            (self.Input_Voltage + self.Last_Value)
+                            * 0.5
+                            * self.context.time_step
+                    )
+                elif (self.context.integration_method == "backward_euler"):
+                    self.Output_Voltage += (
+                            self.Input_Voltage
+                            * self.context.time_step
+                    )
+                else:
+                    self.Output_Voltage += (
+                            (self.Input_Voltage + self.Last_Value)
+                            * 0.5
+                            * self.context.time_step
+                    )
+                
             self.Output_Voltage = Utils.Utils.limit(
                 self.Output_Voltage, self.Low_Voltage, self.High_Voltage
             )

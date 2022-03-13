@@ -83,13 +83,13 @@ from mnapy import Utils
 
 class Engine:
     def __init__(
-        self, time_step, time_start, time_end
+        self, time_step, time_start, time_end, integration_method = "trapezoidal"
     ) -> None:
         """The Engine class is how to interact with a circuit dynamically. It loads all the data from the
         generated netlist and creates objects that can be modified during the execution of the code. NOTE: None
         of the modifications are actually written to file."""
 
-        self.__version__ = "1.2.16"
+        self.__version__ = "1.2.18"
         # Version control variables.
         self.ELEMENT_DIVIDER = "#DIVIDER#"
         self.WIRE_DIVIDER = "#WIRE#"
@@ -282,6 +282,7 @@ class Engine:
         self.current_converged: bool = False
         self.system_ready: bool = False
         self.Params = Global.Global()
+        self.integration_method = integration_method
         
     def refactor_reactive_components(self):
         for i in range(0, len(self.capacitors)):
@@ -3294,7 +3295,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3304,7 +3305,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3314,7 +3315,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3324,7 +3325,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3334,7 +3335,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3344,7 +3345,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3354,7 +3355,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3364,7 +3365,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3374,7 +3375,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3384,7 +3385,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3394,7 +3395,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3404,7 +3405,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3414,7 +3415,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3424,7 +3425,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3434,7 +3435,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3444,7 +3445,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3454,7 +3455,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3464,7 +3465,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3474,7 +3475,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3484,7 +3485,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3494,7 +3495,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3504,7 +3505,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3514,7 +3515,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3524,7 +3525,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3534,7 +3535,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3544,7 +3545,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3554,7 +3555,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3564,7 +3565,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3574,7 +3575,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3584,7 +3585,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3594,7 +3595,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3604,7 +3605,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3614,7 +3615,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3624,7 +3625,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3634,7 +3635,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3644,7 +3645,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3654,7 +3655,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3664,7 +3665,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3674,7 +3675,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3684,7 +3685,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3694,7 +3695,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3704,7 +3705,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3714,7 +3715,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3724,7 +3725,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3734,7 +3735,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3744,7 +3745,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3754,7 +3755,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3764,7 +3765,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3774,7 +3775,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3784,7 +3785,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3794,7 +3795,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3804,7 +3805,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3814,7 +3815,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3824,7 +3825,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3834,7 +3835,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3844,7 +3845,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3854,7 +3855,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3864,7 +3865,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3874,7 +3875,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3884,7 +3885,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3894,7 +3895,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3904,7 +3905,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3914,7 +3915,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3924,7 +3925,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3934,7 +3935,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3944,7 +3945,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3954,7 +3955,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3964,7 +3965,7 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
     None
 
@@ -3974,6 +3975,496 @@ class Engine:
                 return i
             None
         None
-        raise RuntimeError("Element not found.")
+        raise RuntimeError("Element:" + Designator + " not found.")
 
+    None
+    
+    def Resistor(self, Designator: str):
+        obj = self.InstanceOfResistor(self.IndexOfResistor(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def Capacitor(self, Designator: str):
+        obj = self.InstanceOfCapacitor(self.IndexOfCapacitor(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def Inductor(self, Designator: str):
+        obj = self.InstanceOfInductor(self.IndexOfInductor(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def Ground(self, Designator: str):
+        obj = self.InstanceOfGround(self.IndexOfGround(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def DCSource(self, Designator: str):
+        obj = self.InstanceOfDCSource(self.IndexOfDCSource(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def DCCurrent(self, Designator: str):
+        obj = self.InstanceOfDCCurrent(self.IndexOfDCCurrent(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def ACSource(self, Designator: str):
+        obj = self.InstanceOfACSource(self.IndexOfACSource(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def ACCurrent(self, Designator: str):
+        obj = self.InstanceOfACCurrent(self.IndexOfACCurrent(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def Bridge(self, Designator: str):
+        obj = self.InstanceOfBridge(self.IndexOfBridge(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def SquareWave(self, Designator: str):
+        obj = self.InstanceOfSquareWave(self.IndexOfSquareWave(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def SawWave(self, Designator: str):
+        obj = self.InstanceOfSawWave(self.IndexOfSawWave(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def TriangleWave(self, Designator: str):
+        obj = self.InstanceOfTriangleWave(self.IndexOfTriangleWave(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def Constant(self, Designator: str):
+        obj = self.InstanceOfConstant(self.IndexOfConstant(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def Wire(self, Designator: str):
+        obj = self.InstanceOfWire(self.IndexOfWire(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def Net(self, Designator: str):
+        obj = self.InstanceOfNet(self.IndexOfNet(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def Note(self, Designator: str):
+        obj = self.InstanceOfNote(self.IndexOfNote(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def Rail(self, Designator: str):
+        obj = self.InstanceOfRail(self.IndexOfRail(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def VoltMeter(self, Designator: str):
+        obj = self.InstanceOfVoltMeter(self.IndexOfVoltMeter(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def OhmMeter(self, Designator: str):
+        obj = self.InstanceOfOhmMeter(self.IndexOfOhmMeter(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def AmMeter(self, Designator: str):
+        obj = self.InstanceOfAmMeter(self.IndexOfAmMeter(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def WattMeter(self, Designator: str):
+        obj = self.InstanceOfWattMeter(self.IndexOfWattMeter(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def Fuse(self, Designator: str):
+        obj = self.InstanceOfFuse(self.IndexOfFuse(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def SinglePoleSingleThrow(self, Designator: str):
+        obj = self.InstanceOfSinglePoleSingleThrow(self.IndexOfSinglePoleSingleThrow(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def SinglePoleDoubleThrow(self, Designator: str):
+        obj = self.InstanceOfSinglePoleDoubleThrow(self.IndexOfSinglePoleDoubleThrow(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def NOTGate(self, Designator: str):
+        obj = self.InstanceOfNOTGate(self.IndexOfNOTGate(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def Diode(self, Designator: str):
+        obj = self.InstanceOfDiode(self.IndexOfDiode(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def LightEmittingDiode(self, Designator: str):
+        obj = self.InstanceOfLightEmittingDiode(self.IndexOfLightEmittingDiode(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def ZenerDiode(self, Designator: str):
+        obj = self.InstanceOfZenerDiode(self.IndexOfZenerDiode(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def Potentiometer(self, Designator: str):
+        obj = self.InstanceOfPotentiometer(self.IndexOfPotentiometer(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def ANDGate(self, Designator: str):
+        obj = self.InstanceOfANDGate(self.IndexOfANDGate(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def ORGate(self, Designator: str):
+        obj = self.InstanceOfORGate(self.IndexOfORGate(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def NANDGate(self, Designator: str):
+        obj = self.InstanceOfNANDGate(self.IndexOfNANDGate(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def NORGate(self, Designator: str):
+        obj = self.InstanceOfNORGate(self.IndexOfNORGate(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def XORGate(self, Designator: str):
+        obj = self.InstanceOfXORGate(self.IndexOfXORGate(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def XNORGate(self, Designator: str):
+        obj = self.InstanceOfXNORGate(self.IndexOfXNORGate(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def DFlipFlop(self, Designator: str):
+        obj = self.InstanceOfDFlipFlop(self.IndexOfDFlipFlop(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def VoltageSaturation(self, Designator: str):
+        obj = self.InstanceOfVoltageSaturation(self.IndexOfVoltageSaturation(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def Adder(self, Designator: str):
+        obj = self.InstanceOfAdder(self.IndexOfAdder(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def Subtractor(self, Designator: str):
+        obj = self.InstanceOfSubtractor(self.IndexOfSubtractor(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def Multiplier(self, Designator: str):
+        obj = self.InstanceOfMultiplier(self.IndexOfMultiplier(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def Divider(self, Designator: str):
+        obj = self.InstanceOfDivider(self.IndexOfDivider(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def GainBlock(self, Designator: str):
+        obj = self.InstanceOfGainBlock(self.IndexOfGainBlock(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def AbsoluteValue(self, Designator: str):
+        obj = self.InstanceOfAbsoluteValue(self.IndexOfAbsoluteValue(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def VoltageControlledSwitch(self, Designator: str):
+        obj = self.InstanceOfVoltageControlledSwitch(self.IndexOfVoltageControlledSwitch(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def VoltageControlledVoltageSource(self, Designator: str):
+        obj = self.InstanceOfVoltageControlledVoltageSource(self.IndexOfVoltageControlledVoltageSource(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def VoltageControlledCurrentSource(self, Designator: str):
+        obj = self.InstanceOfVoltageControlledCurrentSource(self.IndexOfVoltageControlledCurrentSource(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def CurrentControlledCurrentSource(self, Designator: str):
+        obj = self.InstanceOfCurrentControlledCurrentSource(self.IndexOfCurrentControlledCurrentSource(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def CurrentControlledVoltageSource(self, Designator: str):
+        obj = self.InstanceOfCurrentControlledVoltageSource(self.IndexOfCurrentControlledVoltageSource(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def OperationalAmplifier(self, Designator: str):
+        obj = self.InstanceOfOperationalAmplifier(self.IndexOfOperationalAmplifier(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def NChannelMOSFET(self, Designator: str):
+        obj = self.InstanceOfNChannelMOSFET(self.IndexOfNChannelMOSFET(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def PChannelMOSFET(self, Designator: str):
+        obj = self.InstanceOfPChannelMOSFET(self.IndexOfPChannelMOSFET(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def NPNBipolarJunctionTransistor(self, Designator: str):
+        obj = self.InstanceOfNPNBipolarJunctionTransistor(self.IndexOfNPNBipolarJunctionTransistor(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def PNPBipolarJunctionTransistor(self, Designator: str):
+        obj = self.InstanceOfPNPBipolarJunctionTransistor(self.IndexOfPNPBipolarJunctionTransistor(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def ADCModule(self, Designator: str):
+        obj = self.InstanceOfADCModule(self.IndexOfADCModule(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def DACModule(self, Designator: str):
+        obj = self.InstanceOfDACModule(self.IndexOfDACModule(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def SampleAndHold(self, Designator: str):
+        obj = self.InstanceOfSampleAndHold(self.IndexOfSampleAndHold(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def PulseWidthModulator(self, Designator: str):
+        obj = self.InstanceOfPulseWidthModulator(self.IndexOfPulseWidthModulator(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def IntegratorModule(self, Designator: str):
+        obj = self.InstanceOfIntegratorModule(self.IndexOfIntegratorModule(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def DifferentiatorModule(self, Designator: str):
+        obj = self.InstanceOfDifferentiatorModule(self.IndexOfDifferentiatorModule(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def LowPassFilter(self, Designator: str):
+        obj = self.InstanceOfLowPassFilter(self.IndexOfLowPassFilter(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def HighPassFilter(self, Designator: str):
+        obj = self.InstanceOfHighPassFilter(self.IndexOfHighPassFilter(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def Relay(self, Designator: str):
+        obj = self.InstanceOfRelay(self.IndexOfRelay(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def PIDModule(self, Designator: str):
+        obj = self.InstanceOfPIDModule(self.IndexOfPIDModule(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def LookUpTable(self, Designator: str):
+        obj = self.InstanceOfLookUpTable(self.IndexOfLookUpTable(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def VoltageControlledResistor(self, Designator: str):
+        obj = self.InstanceOfVoltageControlledResistor(self.IndexOfVoltageControlledResistor(Designator))
+        if (obj.GetDesignator() != Designator):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def VoltageControlledCapacitor(self, Designator: str):
+        obj = self.InstanceOfVoltageControlledCapacitor(self.IndexOfVoltageControlledCapacitor(Designator))
+        if (obj.GetDesignator() != Designator):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def VoltageControlledInductor(self, Designator: str):
+        obj = self.InstanceOfVoltageControlledInductor(self.IndexOfVoltageControlledInductor(Designator))
+        if (obj.GetDesignator() != Designator):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def GreaterThan(self, Designator: str):
+        obj = self.InstanceOfGreaterThan(self.IndexOfGreaterThan(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def TPTZModule(self, Designator: str):
+        obj = self.InstanceOfTPTZModule(self.IndexOfTPTZModule(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
+    None
+
+    def Transformer(self, Designator: str):
+        obj = self.InstanceOfTransformer(self.IndexOfTransformer(Designator))
+        if (obj.GetDesignator().strip() != Designator.strip()):
+            raise RuntimeError("Element:" + Designator + " does not exist")
+        return obj
     None

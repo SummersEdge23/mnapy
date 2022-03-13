@@ -1,20 +1,14 @@
-## -*- coding: utf-8 -*-
-"""
-Created on Sat Feb 20 07:22:25 2021
-
-@author: Christian
-
-"""
 import pandas as pd
 
 from mnapy.Engine import Engine
 
 FILE_LOCATION = r"ACSourceInitial_nl.txt"
 
-engine = Engine(time_start = 0, time_step=5e-6, time_end=25e-3)
+# integration_method = ["trapezoidal", "backward_euler"]
+engine = Engine(time_start = 0, time_step=5e-6, time_end=25e-3, integration_method="trapezoidal")
 engine.load_file(FILE_LOCATION)
 
-VM0 = engine.InstanceOfVoltMeter(engine.IndexOfVoltMeter("VM0"))
+VM0 = engine.VoltMeter("VM0")
 
 Vout = []
 Time = []
