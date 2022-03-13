@@ -114,7 +114,7 @@ Circuit Solver is developed to make sure it's capable of generating
 correct simulation results should the user understand that it's a fixed timestep
 solver. PhasorSystems is not liable for any incorrect simulation results.
 
-NOTE: This is only tested w/ file version 1.1.03 and above. There is no gurantee
+NOTE: This is only tested w/ file version 1.1.9 and above. There is no gurantee
 that it will work for older files.
 
 This engine will allow you to run the simulation engine for circuit solver
