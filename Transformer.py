@@ -7,7 +7,7 @@ from mnapy import Wire
 
 class Transformer:
     def __init__(
-            self, context, options, tag, units, options_units, Turns_Ratio, option_limits
+        self, context, options, tag, units, options_units, Turns_Ratio, option_limits
     ):
         self.options = options
         self.tag = tag
@@ -29,12 +29,12 @@ class Transformer:
     def Set_Turns_Ratio(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Turns_Ratio[0])
-                and abs(setter) <= abs(self.option_limits.Turns_Ratio[1])
+            abs(setter) >= abs(self.option_limits.Turns_Ratio[0])
+            and abs(setter) <= abs(self.option_limits.Turns_Ratio[1])
         ) or abs(setter) == 0:
             self.Turns_Ratio = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Turns_Ratio(self) -> float:
         None

@@ -8,19 +8,19 @@ from mnapy import Wire
 
 class ADCModule:
     def __init__(
-            self,
-            context,
-            Reference_Voltage,
-            options,
-            LSB,
-            Input_Voltage,
-            Bit_Resolution,
-            tag,
-            units,
-            Max_Bits,
-            Output_Voltage,
-            options_units,
-            option_limits,
+        self,
+        context,
+        Reference_Voltage,
+        options,
+        LSB,
+        Input_Voltage,
+        Bit_Resolution,
+        tag,
+        units,
+        Max_Bits,
+        Output_Voltage,
+        options_units,
+        option_limits,
     ):
         self.Reference_Voltage = Reference_Voltage
         self.options = options
@@ -47,12 +47,12 @@ class ADCModule:
     def Set_Reference_Voltage(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Reference_Voltage[0])
-                and abs(setter) <= abs(self.option_limits.Reference_Voltage[1])
+            abs(setter) >= abs(self.option_limits.Reference_Voltage[0])
+            and abs(setter) <= abs(self.option_limits.Reference_Voltage[1])
         ) or abs(setter) == 0:
             self.Reference_Voltage = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Reference_Voltage(self) -> float:
         None
@@ -61,12 +61,12 @@ class ADCModule:
     def Set_Bit_Resolution(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Bit_Resolution[0])
-                and abs(setter) <= abs(self.option_limits.Bit_Resolution[1])
+            abs(setter) >= abs(self.option_limits.Bit_Resolution[0])
+            and abs(setter) <= abs(self.option_limits.Bit_Resolution[1])
         ) or abs(setter) == 0:
             self.Bit_Resolution = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Bit_Resolution(self) -> float:
         None
@@ -79,15 +79,17 @@ class ADCModule:
     def update(self) -> None:
         None
         if (
-                self.context.Params.SystemFlags.FlagSimulating
-                and self.context.solutions_ready
-                and self.context.simulation_step != 0
+            self.context.Params.SystemFlags.FlagSimulating
+            and self.context.solutions_ready
+            and self.context.simulation_step != 0
         ):
             self.Input_Voltage = self.context.get_voltage(self.Nodes[0], -1)
             self.Max_Bits = math.pow(2, self.Bit_Resolution)
             self.LSB = self.Reference_Voltage / self.Max_Bits
             self.Output_Voltage = Utils.Utils.limit(
-                Utils.Utils.cast_int(self.Input_Voltage / self.LSB), 0, self.Max_Bits - 1
+                Utils.Utils.cast_int(self.Input_Voltage / self.LSB),
+                0,
+                self.Max_Bits - 1,
             )
 
     def stamp(self) -> None:

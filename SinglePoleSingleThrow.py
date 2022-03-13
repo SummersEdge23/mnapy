@@ -7,16 +7,16 @@ from mnapy import Wire
 
 class SinglePoleSingleThrow:
     def __init__(
-            self,
-            context,
-            Closed_Resistance,
-            options,
-            Open_Resistance,
-            tag,
-            units,
-            Switch_State,
-            options_units,
-            option_limits,
+        self,
+        context,
+        Closed_Resistance,
+        options,
+        Open_Resistance,
+        tag,
+        units,
+        Switch_State,
+        options_units,
+        option_limits,
     ):
         self.Closed_Resistance = Closed_Resistance
         self.options = options
@@ -40,11 +40,11 @@ class SinglePoleSingleThrow:
     def Set_Switch_State(self, setter: str) -> None:
         None
         if setter == (self.context.Params.SystemConstants.OFF) or setter == (
-                self.context.Params.SystemConstants.ON
+            self.context.Params.SystemConstants.ON
         ):
             self.Switch_State = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Switch_State(self) -> str:
         None
@@ -53,12 +53,12 @@ class SinglePoleSingleThrow:
     def Set_Closed_Resistance(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Closed_Resistance[0])
-                and abs(setter) <= abs(self.option_limits.Closed_Resistance[1])
+            abs(setter) >= abs(self.option_limits.Closed_Resistance[0])
+            and abs(setter) <= abs(self.option_limits.Closed_Resistance[1])
         ) or abs(setter) == 0:
             self.Closed_Resistance = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Closed_Resistance(self) -> float:
         None

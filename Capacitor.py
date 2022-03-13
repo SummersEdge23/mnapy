@@ -7,19 +7,19 @@ from mnapy import Wire
 
 class Capacitor:
     def __init__(
-            self,
-            context,
-            Transient_Resistance,
-            Initial_Voltage,
-            options,
-            Capacitance,
-            tag,
-            units,
-            Transient_Current,
-            Transient_Voltage,
-            options_units,
-            Equivalent_Current,
-            option_limits,
+        self,
+        context,
+        Transient_Resistance,
+        Initial_Voltage,
+        options,
+        Capacitance,
+        tag,
+        units,
+        Transient_Current,
+        Transient_Voltage,
+        options_units,
+        Equivalent_Current,
+        option_limits,
     ):
         self.Transient_Resistance = Transient_Resistance
         self.Initial_Voltage = Initial_Voltage
@@ -46,12 +46,12 @@ class Capacitor:
     def Set_Initial_Voltage(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Initial_Voltage[0])
-                and abs(setter) <= abs(self.option_limits.Initial_Voltage[1])
+            abs(setter) >= abs(self.option_limits.Initial_Voltage[0])
+            and abs(setter) <= abs(self.option_limits.Initial_Voltage[1])
         ) or abs(setter) == 0:
             self.Initial_Voltage = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Initial_Voltage(self) -> float:
         None
@@ -60,13 +60,13 @@ class Capacitor:
     def Set_Capacitance(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Capacitance[0])
-                and abs(setter) <= abs(self.option_limits.Capacitance[1])
+            abs(setter) >= abs(self.option_limits.Capacitance[0])
+            and abs(setter) <= abs(self.option_limits.Capacitance[1])
         ) or abs(setter) == 0:
             self.Capacitance = setter
             self.conserve_energy()
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Capacitance(self) -> float:
         None
@@ -74,26 +74,28 @@ class Capacitor:
 
     def reset(self) -> None:
         None
-        if (self.context.integration_method == "trapezoidal"):
+        if self.context.integration_method == "trapezoidal":
             self.Transient_Resistance = self.context.time_step / (2 * self.Capacitance)
             self.Transient_Voltage = self.Initial_Voltage
             self.Transient_Current = 0
             self.Equivalent_Current = (
-                    -self.Transient_Voltage / self.Transient_Resistance - self.Transient_Current
+                -self.Transient_Voltage / self.Transient_Resistance
+                - self.Transient_Current
             )
-        elif (self.context.integration_method == "backward_euler"):
+        elif self.context.integration_method == "backward_euler":
             self.Transient_Resistance = self.context.time_step / self.Capacitance
             self.Transient_Voltage = self.Initial_Voltage
             self.Transient_Current = 0
             self.Equivalent_Current = (
-                    -self.Transient_Voltage / self.Transient_Resistance
+                -self.Transient_Voltage / self.Transient_Resistance
             )
         else:
             self.Transient_Resistance = self.context.time_step / (2 * self.Capacitance)
             self.Transient_Voltage = self.Initial_Voltage
             self.Transient_Current = 0
             self.Equivalent_Current = (
-                    -self.Transient_Voltage / self.Transient_Resistance - self.Transient_Current
+                -self.Transient_Voltage / self.Transient_Resistance
+                - self.Transient_Current
             )
 
     def update(self) -> None:
@@ -151,31 +153,57 @@ class Capacitor:
             voltage: float = self.context.get_voltage(self.Nodes[0], self.Nodes[1])
             self.Transient_Voltage = voltage
 
-            if (self.context.integration_method == "trapezoidal"):
-                self.Transient_Resistance = self.context.time_step / (2 * self.Capacitance)
-                self.Transient_Current = (self.Transient_Voltage / self.Transient_Resistance + self.Equivalent_Current)
-                self.Equivalent_Current = (-self.Transient_Voltage / self.Transient_Resistance - self.Transient_Current)
-            elif (self.context.integration_method == "backward_euler"):
+            if self.context.integration_method == "trapezoidal":
+                self.Transient_Resistance = self.context.time_step / (
+                    2 * self.Capacitance
+                )
+                self.Transient_Current = (
+                    self.Transient_Voltage / self.Transient_Resistance
+                    + self.Equivalent_Current
+                )
+                self.Equivalent_Current = (
+                    -self.Transient_Voltage / self.Transient_Resistance
+                    - self.Transient_Current
+                )
+            elif self.context.integration_method == "backward_euler":
                 self.Transient_Resistance = self.context.time_step / self.Capacitance
-                self.Transient_Current = (self.Transient_Voltage / self.Transient_Resistance)
+                self.Transient_Current = (
+                    self.Transient_Voltage / self.Transient_Resistance
+                )
                 self.Equivalent_Current = -self.Transient_Current
             else:
-                self.Transient_Resistance = self.context.time_step / (2 * self.Capacitance)
-                self.Transient_Current = (self.Transient_Voltage / self.Transient_Resistance + self.Equivalent_Current)
-                self.Equivalent_Current = (-self.Transient_Voltage / self.Transient_Resistance - self.Transient_Current)
+                self.Transient_Resistance = self.context.time_step / (
+                    2 * self.Capacitance
+                )
+                self.Transient_Current = (
+                    self.Transient_Voltage / self.Transient_Resistance
+                    + self.Equivalent_Current
+                )
+                self.Equivalent_Current = (
+                    -self.Transient_Voltage / self.Transient_Resistance
+                    - self.Transient_Current
+                )
 
     def conserve_energy(self) -> None:
         None
-        if (self.context.integration_method == "trapezoidal"):
+        if self.context.integration_method == "trapezoidal":
             self.Transient_Resistance = self.context.time_step / (2 * self.Capacitance)
-            self.Equivalent_Current = (-self.Transient_Voltage / self.Transient_Resistance - self.Transient_Current)
-        elif (self.context.integration_method == "backward_euler"):
+            self.Equivalent_Current = (
+                -self.Transient_Voltage / self.Transient_Resistance
+                - self.Transient_Current
+            )
+        elif self.context.integration_method == "backward_euler":
             self.Transient_Resistance = self.context.time_step / self.Capacitance
-            self.Equivalent_Current = (-self.Transient_Voltage / self.Transient_Resistance)
+            self.Equivalent_Current = (
+                -self.Transient_Voltage / self.Transient_Resistance
+            )
         else:
             self.Transient_Resistance = self.context.time_step / (2 * self.Capacitance)
-            self.Equivalent_Current = (-self.Transient_Voltage / self.Transient_Resistance - self.Transient_Current)
-            
+            self.Equivalent_Current = (
+                -self.Transient_Voltage / self.Transient_Resistance
+                - self.Transient_Current
+            )
+
     def GetElementType(self) -> int:
         None
         return self.ElementType

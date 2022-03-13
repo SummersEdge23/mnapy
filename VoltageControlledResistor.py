@@ -7,23 +7,23 @@ from mnapy import Wire
 
 class VoltageControlledResistor:
     def __init__(
-            self,
-            context,
-            Elm1,
-            Input_Voltage,
-            Elm0,
-            units,
-            High_Voltage,
-            Elm3,
-            Elm2,
-            options_units,
-            Low_Voltage,
-            option_limits,
-            Elm4,
-            Output_Resistance,
-            Interpolate,
-            options,
-            tag,
+        self,
+        context,
+        Elm1,
+        Input_Voltage,
+        Elm0,
+        units,
+        High_Voltage,
+        Elm3,
+        Elm2,
+        options_units,
+        Low_Voltage,
+        option_limits,
+        Elm4,
+        Output_Resistance,
+        Interpolate,
+        options,
+        tag,
     ):
         self.Elm1 = Elm1
         self.Input_Voltage = Input_Voltage
@@ -56,11 +56,11 @@ class VoltageControlledResistor:
     def Set_Interpolate(self, setter: str) -> None:
         None
         if setter == (self.context.Params.SystemConstants.ON) or setter == (
-                self.context.Params.SystemConstants.OFF
+            self.context.Params.SystemConstants.OFF
         ):
             self.Interpolate = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Interpolate(self) -> str:
         None
@@ -69,12 +69,12 @@ class VoltageControlledResistor:
     def Set_Elm1(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Elm1[0])
-                and abs(setter) <= abs(self.option_limits.Elm1[1])
+            abs(setter) >= abs(self.option_limits.Elm1[0])
+            and abs(setter) <= abs(self.option_limits.Elm1[1])
         ) or abs(setter) == 0:
             self.Elm1 = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Elm1(self) -> float:
         None
@@ -83,12 +83,12 @@ class VoltageControlledResistor:
     def Set_Elm0(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Elm0[0])
-                and abs(setter) <= abs(self.option_limits.Elm0[1])
+            abs(setter) >= abs(self.option_limits.Elm0[0])
+            and abs(setter) <= abs(self.option_limits.Elm0[1])
         ) or abs(setter) == 0:
             self.Elm0 = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Elm0(self) -> float:
         None
@@ -97,12 +97,12 @@ class VoltageControlledResistor:
     def Set_Elm3(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Elm3[0])
-                and abs(setter) <= abs(self.option_limits.Elm3[1])
+            abs(setter) >= abs(self.option_limits.Elm3[0])
+            and abs(setter) <= abs(self.option_limits.Elm3[1])
         ) or abs(setter) == 0:
             self.Elm3 = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Elm3(self) -> float:
         None
@@ -111,12 +111,12 @@ class VoltageControlledResistor:
     def Set_Elm2(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Elm2[0])
-                and abs(setter) <= abs(self.option_limits.Elm2[1])
+            abs(setter) >= abs(self.option_limits.Elm2[0])
+            and abs(setter) <= abs(self.option_limits.Elm2[1])
         ) or abs(setter) == 0:
             self.Elm2 = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Elm2(self) -> float:
         None
@@ -125,12 +125,12 @@ class VoltageControlledResistor:
     def Set_Elm4(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Elm4[0])
-                and abs(setter) <= abs(self.option_limits.Elm4[1])
+            abs(setter) >= abs(self.option_limits.Elm4[0])
+            and abs(setter) <= abs(self.option_limits.Elm4[1])
         ) or abs(setter) == 0:
             self.Elm4 = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Elm4(self) -> float:
         None
@@ -142,9 +142,9 @@ class VoltageControlledResistor:
     def update(self) -> None:
         None
         if (
-                self.context.Params.SystemFlags.FlagSimulating
-                and self.context.solutions_ready
-                and self.context.simulation_step != 0
+            self.context.Params.SystemFlags.FlagSimulating
+            and self.context.solutions_ready
+            and self.context.simulation_step != 0
         ):
             self.Input_Voltage = Utils.Utils.limit(
                 self.context.get_voltage(self.Nodes[1], -1),
@@ -160,41 +160,43 @@ class VoltageControlledResistor:
                         self.High_Voltage * 0.75,
                         self.High_Voltage,
                     ],
-                    [
-                        self.Elm0, self.Elm1, self.Elm2, self.Elm3, self.Elm4
-                    ],
+                    [self.Elm0, self.Elm1, self.Elm2, self.Elm3, self.Elm4],
                     self.Input_Voltage,
                 )
             elif self.Interpolate == (self.context.Params.SystemConstants.OFF):
                 index: int = 0
                 if (
-                        self.Input_Voltage >= self.High_Voltage * 0
-                        and self.Input_Voltage <= self.High_Voltage * 0.2
+                    self.Input_Voltage >= self.High_Voltage * 0
+                    and self.Input_Voltage <= self.High_Voltage * 0.2
                 ):
                     index = 0
                 elif (
-                        self.Input_Voltage >= self.High_Voltage * 0.2
-                        and self.Input_Voltage <= self.High_Voltage * 0.4
+                    self.Input_Voltage >= self.High_Voltage * 0.2
+                    and self.Input_Voltage <= self.High_Voltage * 0.4
                 ):
                     index = 1
                 elif (
-                        self.Input_Voltage >= self.High_Voltage * 0.4
-                        and self.Input_Voltage <= self.High_Voltage * 0.6
+                    self.Input_Voltage >= self.High_Voltage * 0.4
+                    and self.Input_Voltage <= self.High_Voltage * 0.6
                 ):
                     index = 2
                 elif (
-                        self.Input_Voltage >= self.High_Voltage * 0.6
-                        and self.Input_Voltage <= self.High_Voltage * 0.8
+                    self.Input_Voltage >= self.High_Voltage * 0.6
+                    and self.Input_Voltage <= self.High_Voltage * 0.8
                 ):
                     index = 3
                 elif (
-                        self.Input_Voltage >= self.High_Voltage * 0.8
-                        and self.Input_Voltage <= self.High_Voltage * 1.0
+                    self.Input_Voltage >= self.High_Voltage * 0.8
+                    and self.Input_Voltage <= self.High_Voltage * 1.0
                 ):
                     index = 4
 
                 self.Output_Resistance = [
-                    self.Elm0, self.Elm1, self.Elm2, self.Elm3, self.Elm4
+                    self.Elm0,
+                    self.Elm1,
+                    self.Elm2,
+                    self.Elm3,
+                    self.Elm4,
                 ][index]
 
     def stamp(self) -> None:

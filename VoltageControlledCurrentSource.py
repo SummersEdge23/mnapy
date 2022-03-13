@@ -7,7 +7,7 @@ from mnapy import Wire
 
 class VoltageControlledCurrentSource:
     def __init__(
-            self, context, options, tag, units, options_units, Gain, option_limits
+        self, context, options, tag, units, options_units, Gain, option_limits
     ):
         self.options = options
         self.tag = tag
@@ -31,12 +31,12 @@ class VoltageControlledCurrentSource:
     def Set_Gain(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Gain[0])
-                and abs(setter) <= abs(self.option_limits.Gain[1])
+            abs(setter) >= abs(self.option_limits.Gain[0])
+            and abs(setter) <= abs(self.option_limits.Gain[1])
         ) or abs(setter) == 0:
             self.Gain = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Gain(self) -> float:
         None

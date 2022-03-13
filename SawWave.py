@@ -8,17 +8,17 @@ from mnapy import Wire
 
 class SawWave:
     def __init__(
-            self,
-            context,
-            Phase,
-            Voltage,
-            options,
-            Frequency,
-            tag,
-            units,
-            options_units,
-            option_limits,
-            Offset,
+        self,
+        context,
+        Phase,
+        Voltage,
+        options,
+        Frequency,
+        tag,
+        units,
+        options_units,
+        option_limits,
+        Offset,
     ):
         self.Phase = Phase
         self.Voltage = Voltage
@@ -43,12 +43,12 @@ class SawWave:
     def Set_Phase(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Phase[0])
-                and abs(setter) <= abs(self.option_limits.Phase[1])
+            abs(setter) >= abs(self.option_limits.Phase[0])
+            and abs(setter) <= abs(self.option_limits.Phase[1])
         ) or abs(setter) == 0:
             self.Phase = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Phase(self) -> float:
         None
@@ -57,12 +57,12 @@ class SawWave:
     def Set_Voltage(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Voltage[0])
-                and abs(setter) <= abs(self.option_limits.Voltage[1])
+            abs(setter) >= abs(self.option_limits.Voltage[0])
+            and abs(setter) <= abs(self.option_limits.Voltage[1])
         ) or abs(setter) == 0:
             self.Voltage = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Voltage(self) -> float:
         None
@@ -71,12 +71,12 @@ class SawWave:
     def Set_Frequency(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Frequency[0])
-                and abs(setter) <= abs(self.option_limits.Frequency[1])
+            abs(setter) >= abs(self.option_limits.Frequency[0])
+            and abs(setter) <= abs(self.option_limits.Frequency[1])
         ) or abs(setter) == 0:
             self.Frequency = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Frequency(self) -> float:
         None
@@ -85,12 +85,12 @@ class SawWave:
     def Set_Offset(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Offset[0])
-                and abs(setter) <= abs(self.option_limits.Offset[1])
+            abs(setter) >= abs(self.option_limits.Offset[0])
+            and abs(setter) <= abs(self.option_limits.Offset[1])
         ) or abs(setter) == 0:
             self.Offset = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Offset(self) -> float:
         None
@@ -112,11 +112,11 @@ class SawWave:
             * math.atan(
                 1.0
                 / (
-                        math.tan(
-                            self.context.simulation_time * math.pi * self.Frequency
-                            + math.radians(self.Phase)
-                        )
-                        + 1e-19
+                    math.tan(
+                        self.context.simulation_time * math.pi * self.Frequency
+                        + math.radians(self.Phase)
+                    )
+                    + 1e-19
                 )
             ),
             self.context.ELEMENT_SAW_OFFSET + self.SimulationId,

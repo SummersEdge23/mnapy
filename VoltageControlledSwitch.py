@@ -8,17 +8,17 @@ from mnapy import Wire
 
 class VoltageControlledSwitch:
     def __init__(
-            self,
-            context,
-            Closed_Resistance,
-            options,
-            Input_Voltage,
-            tag,
-            units,
-            High_Voltage,
-            Output_Voltage,
-            options_units,
-            option_limits,
+        self,
+        context,
+        Closed_Resistance,
+        options,
+        Input_Voltage,
+        tag,
+        units,
+        High_Voltage,
+        Output_Voltage,
+        options_units,
+        option_limits,
     ):
         self.Closed_Resistance = Closed_Resistance
         self.options = options
@@ -45,12 +45,12 @@ class VoltageControlledSwitch:
     def Set_Closed_Resistance(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Closed_Resistance[0])
-                and abs(setter) <= abs(self.option_limits.Closed_Resistance[1])
+            abs(setter) >= abs(self.option_limits.Closed_Resistance[0])
+            and abs(setter) <= abs(self.option_limits.Closed_Resistance[1])
         ) or abs(setter) == 0:
             self.Closed_Resistance = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Closed_Resistance(self) -> float:
         None
@@ -59,12 +59,12 @@ class VoltageControlledSwitch:
     def Set_High_Voltage(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.High_Voltage[0])
-                and abs(setter) <= abs(self.option_limits.High_Voltage[1])
+            abs(setter) >= abs(self.option_limits.High_Voltage[0])
+            and abs(setter) <= abs(self.option_limits.High_Voltage[1])
         ) or abs(setter) == 0:
             self.High_Voltage = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_High_Voltage(self) -> float:
         None
@@ -77,15 +77,15 @@ class VoltageControlledSwitch:
     def update(self) -> None:
         None
         if (
-                self.context.Params.SystemFlags.FlagSimulating
-                and self.context.solutions_ready
-                and self.context.simulation_step != 0
+            self.context.Params.SystemFlags.FlagSimulating
+            and self.context.solutions_ready
+            and self.context.simulation_step != 0
         ):
             self.Input_Voltage = math.tanh(
                 10
                 * (
-                        self.context.get_voltage(self.Nodes[1], -1) / self.High_Voltage
-                        - 0.5
+                    self.context.get_voltage(self.Nodes[1], -1) / self.High_Voltage
+                    - 0.5
                 )
             )
             self.Output_Voltage = self.High_Voltage * 0.5 * (1 - self.Input_Voltage)

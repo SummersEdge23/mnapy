@@ -49,12 +49,12 @@ class NOTGate:
     def Set_High_Voltage(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.High_Voltage[0])
-                and abs(setter) <= abs(self.option_limits.High_Voltage[1])
+            abs(setter) >= abs(self.option_limits.High_Voltage[0])
+            and abs(setter) <= abs(self.option_limits.High_Voltage[1])
         ) or abs(setter) == 0:
             self.High_Voltage = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_High_Voltage(self) -> float:
         None
@@ -65,16 +65,26 @@ class NOTGate:
         self.Output_Voltage = 0
 
     def update(self) -> None:
-        if self.context.Params.SystemFlags.FlagSimulating and self.context.solutions_ready:
+        if (
+            self.context.Params.SystemFlags.FlagSimulating
+            and self.context.solutions_ready
+        ):
             self.V_in1 = self.context.get_voltage(self.Nodes[0], -1)
             self.V_1 = math.tanh(10 * (self.V_in1 / self.High_Voltage - 0.5))
             self.V_1_prime = 10 * (1.0 - self.V_1 * self.V_1)
             self.V_out = 0.5 * (1 - self.V_1)
             self.V_partial1 = Utils.Utils.limit(-0.5 * self.V_1_prime, 0.0, 1.0)
-            self.V_eq = self.High_Voltage * (self.V_partial1 * (self.V_in1 / self.High_Voltage) - self.V_out)
+            self.V_eq = self.High_Voltage * (
+                self.V_partial1 * (self.V_in1 / self.High_Voltage) - self.V_out
+            )
 
     def stamp(self) -> None:
-        self.context.stamp_gate1(self.Nodes[1], self.V_partial1, self.V_eq, self.context.ELEMENT_NOT_OFFSET + self.SimulationId)
+        self.context.stamp_gate1(
+            self.Nodes[1],
+            self.V_partial1,
+            self.V_eq,
+            self.context.ELEMENT_NOT_OFFSET + self.SimulationId,
+        )
 
     def SetId(self, Id: str) -> None:
         None

@@ -7,15 +7,15 @@ from mnapy import Wire
 
 class Potentiometer:
     def __init__(
-            self,
-            context,
-            Resistance,
-            Wiper_Percentage,
-            options,
-            tag,
-            units,
-            options_units,
-            option_limits,
+        self,
+        context,
+        Resistance,
+        Wiper_Percentage,
+        options,
+        tag,
+        units,
+        options_units,
+        option_limits,
     ):
         self.Resistance = Resistance
         self.Wiper_Percentage = Wiper_Percentage
@@ -38,12 +38,12 @@ class Potentiometer:
     def Set_Resistance(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Resistance[0])
-                and abs(setter) <= abs(self.option_limits.Resistance[1])
+            abs(setter) >= abs(self.option_limits.Resistance[0])
+            and abs(setter) <= abs(self.option_limits.Resistance[1])
         ) or abs(setter) == 0:
             self.Resistance = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Resistance(self) -> float:
         None
@@ -52,12 +52,12 @@ class Potentiometer:
     def Set_Wiper_Percentage(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Wiper_Percentage[0])
-                and abs(setter) <= abs(self.option_limits.Wiper_Percentage[1])
+            abs(setter) >= abs(self.option_limits.Wiper_Percentage[0])
+            and abs(setter) <= abs(self.option_limits.Wiper_Percentage[1])
         ) or abs(setter) == 0:
             self.Wiper_Percentage = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Wiper_Percentage(self) -> float:
         None
@@ -74,7 +74,9 @@ class Potentiometer:
         self.context.stamp_resistor(
             self.Nodes[0],
             self.Nodes[1],
-            Utils.Utils.limit(self.Wiper_Percentage, 0.01, 99.99) * 0.01 * self.Resistance,
+            Utils.Utils.limit(self.Wiper_Percentage, 0.01, 99.99)
+            * 0.01
+            * self.Resistance,
         )
         self.context.stamp_resistor(
             self.Nodes[1],

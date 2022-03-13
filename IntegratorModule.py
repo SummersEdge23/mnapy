@@ -7,19 +7,19 @@ from mnapy import Wire
 
 class IntegratorModule:
     def __init__(
-            self,
-            context,
-            options,
-            Initial_Value,
-            Input_Voltage,
-            tag,
-            units,
-            High_Voltage,
-            Last_Value,
-            Output_Voltage,
-            options_units,
-            Low_Voltage,
-            option_limits,
+        self,
+        context,
+        options,
+        Initial_Value,
+        Input_Voltage,
+        tag,
+        units,
+        High_Voltage,
+        Last_Value,
+        Output_Voltage,
+        options_units,
+        Low_Voltage,
+        option_limits,
     ):
         self.options = options
         self.Initial_Value = Initial_Value
@@ -46,12 +46,12 @@ class IntegratorModule:
     def Set_Initial_Value(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Initial_Value[0])
-                and abs(setter) <= abs(self.option_limits.Initial_Value[1])
+            abs(setter) >= abs(self.option_limits.Initial_Value[0])
+            and abs(setter) <= abs(self.option_limits.Initial_Value[1])
         ) or abs(setter) == 0:
             self.Initial_Value = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Initial_Value(self) -> float:
         None
@@ -60,12 +60,12 @@ class IntegratorModule:
     def Set_High_Voltage(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.High_Voltage[0])
-                and abs(setter) <= abs(self.option_limits.High_Voltage[1])
+            abs(setter) >= abs(self.option_limits.High_Voltage[0])
+            and abs(setter) <= abs(self.option_limits.High_Voltage[1])
         ) or abs(setter) == 0:
             self.High_Voltage = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_High_Voltage(self) -> float:
         None
@@ -74,12 +74,12 @@ class IntegratorModule:
     def Set_Low_Voltage(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Low_Voltage[0])
-                and abs(setter) <= abs(self.option_limits.Low_Voltage[1])
+            abs(setter) >= abs(self.option_limits.Low_Voltage[0])
+            and abs(setter) <= abs(self.option_limits.Low_Voltage[1])
         ) or abs(setter) == 0:
             self.Low_Voltage = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Low_Voltage(self) -> float:
         None
@@ -92,9 +92,9 @@ class IntegratorModule:
     def update(self) -> None:
         None
         if (
-                self.context.Params.SystemFlags.FlagSimulating
-                and self.context.solutions_ready
-                and self.context.simulation_step != 0
+            self.context.Params.SystemFlags.FlagSimulating
+            and self.context.solutions_ready
+            and self.context.simulation_step != 0
         ):
             if self.context.simulation_time < self.context.time_step:
                 self.Last_Value = self.Initial_Value
@@ -103,25 +103,22 @@ class IntegratorModule:
             else:
                 self.Last_Value = self.Input_Voltage
                 self.Input_Voltage = self.context.get_voltage(self.Nodes[0], -1)
-                
-                if (self.context.integration_method == "trapezoidal"):
+
+                if self.context.integration_method == "trapezoidal":
                     self.Output_Voltage += (
-                            (self.Input_Voltage + self.Last_Value)
-                            * 0.5
-                            * self.context.time_step
+                        (self.Input_Voltage + self.Last_Value)
+                        * 0.5
+                        * self.context.time_step
                     )
-                elif (self.context.integration_method == "backward_euler"):
-                    self.Output_Voltage += (
-                            self.Input_Voltage
-                            * self.context.time_step
-                    )
+                elif self.context.integration_method == "backward_euler":
+                    self.Output_Voltage += self.Input_Voltage * self.context.time_step
                 else:
                     self.Output_Voltage += (
-                            (self.Input_Voltage + self.Last_Value)
-                            * 0.5
-                            * self.context.time_step
+                        (self.Input_Voltage + self.Last_Value)
+                        * 0.5
+                        * self.context.time_step
                     )
-                
+
             self.Output_Voltage = Utils.Utils.limit(
                 self.Output_Voltage, self.Low_Voltage, self.High_Voltage
             )

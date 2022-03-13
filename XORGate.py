@@ -8,24 +8,24 @@ from mnapy import XORGateLimits
 
 class XORGate:
     def __init__(
-            self,
-            context,
-            options,
-            tag,
-            units,
-            High_Voltage,
-            V_1,
-            V_1_prime,
-            V_in1,
-            V_partial1,
-            V_2,
-            V_2_prime,
-            V_in2,
-            V_partial2,
-            V_out,
-            V_eq,
-            options_units,
-            option_limits,
+        self,
+        context,
+        options,
+        tag,
+        units,
+        High_Voltage,
+        V_1,
+        V_1_prime,
+        V_in1,
+        V_partial1,
+        V_2,
+        V_2_prime,
+        V_in2,
+        V_partial2,
+        V_out,
+        V_eq,
+        options_units,
+        option_limits,
     ):
         self.options = options
         self.tag = tag
@@ -57,12 +57,12 @@ class XORGate:
     def Set_High_Voltage(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.High_Voltage[0])
-                and abs(setter) <= abs(self.option_limits.High_Voltage[1])
+            abs(setter) >= abs(self.option_limits.High_Voltage[0])
+            and abs(setter) <= abs(self.option_limits.High_Voltage[1])
         ) or abs(setter) == 0:
             self.High_Voltage = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_High_Voltage(self) -> float:
         None
@@ -80,17 +80,25 @@ class XORGate:
 
         return 0.5 * (1 - product) + self.context.Params.SystemConstants.ZERO_BIAS
 
-    def partial_xor(self, terminal: float, ui: List[float], ui_prime: List[float]) -> float:
+    def partial_xor(
+        self, terminal: float, ui: List[float], ui_prime: List[float]
+    ) -> float:
         product = 1
 
         for i in range(0, len(ui)):
-            if (i != terminal):
+            if i != terminal:
                 product *= -ui[i]
 
-        return 0.5 * ui_prime[terminal] * product + self.context.Params.SystemConstants.ZERO_BIAS
-    
+        return (
+            0.5 * ui_prime[terminal] * product
+            + self.context.Params.SystemConstants.ZERO_BIAS
+        )
+
     def update(self):
-        if self.context.Params.SystemFlags.FlagSimulating and self.context.solutions_ready:
+        if (
+            self.context.Params.SystemFlags.FlagSimulating
+            and self.context.solutions_ready
+        ):
             self.V_in1 = self.context.get_voltage(self.Nodes[0], -1)
             self.V_1 = math.tanh(10 * (self.V_in1 / self.High_Voltage - 0.5))
             self.V_1_prime = 10 * (1.0 - self.V_1 * self.V_1)
@@ -99,19 +107,33 @@ class XORGate:
             self.V_2_prime = 10 * (1.0 - self.V_2 * self.V_2)
             self.V_out = self.vout_xor([self.V_1, self.V_2])
             self.V_partial1 = Utils.Utils.limit(
-                self.partial_xor(0, [self.V_1, self.V_2], [self.V_1_prime, self.V_2_prime]),
+                self.partial_xor(
+                    0, [self.V_1, self.V_2], [self.V_1_prime, self.V_2_prime]
+                ),
                 0.0,
-                1.0
+                1.0,
             )
             self.V_partial2 = Utils.Utils.limit(
-                self.partial_xor(1, [self.V_1, self.V_2], [self.V_1_prime, self.V_2_prime]),
+                self.partial_xor(
+                    1, [self.V_1, self.V_2], [self.V_1_prime, self.V_2_prime]
+                ),
                 0.0,
-                1.0
+                1.0,
             )
-            self.V_eq = self.High_Voltage * (self.V_partial1 * (self.V_in1 / self.High_Voltage) + self.V_partial2 * (self.V_in2 / self.High_Voltage) - self.V_out)
+            self.V_eq = self.High_Voltage * (
+                self.V_partial1 * (self.V_in1 / self.High_Voltage)
+                + self.V_partial2 * (self.V_in2 / self.High_Voltage)
+                - self.V_out
+            )
 
     def stamp(self):
-        self.context.stamp_gate2(self.Nodes[2], self.V_partial1, self.V_partial2, self.V_eq, self.context.ELEMENT_XOR_OFFSET + self.SimulationId)
+        self.context.stamp_gate2(
+            self.Nodes[2],
+            self.V_partial1,
+            self.V_partial2,
+            self.V_eq,
+            self.context.ELEMENT_XOR_OFFSET + self.SimulationId,
+        )
 
     def SetId(self, Id: str) -> None:
         None

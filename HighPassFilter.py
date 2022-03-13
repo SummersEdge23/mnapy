@@ -8,20 +8,20 @@ from mnapy import Wire
 
 class HighPassFilter:
     def __init__(
-            self,
-            context,
-            Y_Hat,
-            Y_Out,
-            X_Hat,
-            Cutoff_Frequency,
-            Alpha,
-            options,
-            Input_Voltage,
-            tag,
-            units,
-            Output_Voltage,
-            options_units,
-            option_limits,
+        self,
+        context,
+        Y_Hat,
+        Y_Out,
+        X_Hat,
+        Cutoff_Frequency,
+        Alpha,
+        options,
+        Input_Voltage,
+        tag,
+        units,
+        Output_Voltage,
+        options_units,
+        option_limits,
     ):
         self.Y_Hat = Y_Hat
         self.Y_Out = Y_Out
@@ -49,12 +49,12 @@ class HighPassFilter:
     def Set_Cutoff_Frequency(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Cutoff_Frequency[0])
-                and abs(setter) <= abs(self.option_limits.Cutoff_Frequency[1])
+            abs(setter) >= abs(self.option_limits.Cutoff_Frequency[0])
+            and abs(setter) <= abs(self.option_limits.Cutoff_Frequency[1])
         ) or abs(setter) == 0:
             self.Cutoff_Frequency = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Cutoff_Frequency(self) -> float:
         None
@@ -70,9 +70,9 @@ class HighPassFilter:
     def update(self) -> None:
         None
         if (
-                self.context.Params.SystemFlags.FlagSimulating
-                and self.context.solutions_ready
-                and self.context.simulation_step != 0
+            self.context.Params.SystemFlags.FlagSimulating
+            and self.context.solutions_ready
+            and self.context.simulation_step != 0
         ):
             self.Input_Voltage = self.context.get_voltage(self.Nodes[0], -1)
             self.Output_Voltage = self.highpass_filter(self.Input_Voltage)
@@ -94,7 +94,7 @@ class HighPassFilter:
     def highpass_filter(self, input: float) -> float:
         None
         self.Alpha = 1.0 / (
-                2.0 * math.pi * self.context.time_step * self.Cutoff_Frequency + 1.0
+            2.0 * math.pi * self.context.time_step * self.Cutoff_Frequency + 1.0
         )
         self.Y_Hat = self.Alpha * self.Y_Out + self.Alpha * (input - self.X_Hat)
         self.Y_Out = self.Y_Hat

@@ -7,7 +7,7 @@ from mnapy import Wire
 
 class DCSource:
     def __init__(
-            self, context, Voltage, options, tag, units, options_units, option_limits
+        self, context, Voltage, options, tag, units, options_units, option_limits
     ):
         self.Voltage = Voltage
         self.options = options
@@ -29,12 +29,12 @@ class DCSource:
     def Set_Voltage(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Voltage[0])
-                and abs(setter) <= abs(self.option_limits.Voltage[1])
+            abs(setter) >= abs(self.option_limits.Voltage[0])
+            and abs(setter) <= abs(self.option_limits.Voltage[1])
         ) or abs(setter) == 0:
             self.Voltage = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Voltage(self) -> float:
         None

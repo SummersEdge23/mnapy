@@ -8,30 +8,30 @@ from mnapy import Wire
 
 class PulseWidthModulator:
     def __init__(
-            self,
-            context,
-            Max_Frequency,
-            A,
-            Phase,
-            Min_Duty,
-            Saw_Wave,
-            units,
-            High_Voltage,
-            options_units,
-            Low_Voltage,
-            option_limits,
-            Min_Frequency,
-            Max_Duty,
-            Counter,
-            Duty,
-            Input_Voltage2,
-            options,
-            Frequency,
-            Last_Output_Voltage,
-            Input_Voltage1,
-            tag,
-            Output_Voltage,
-            Postscaler,
+        self,
+        context,
+        Max_Frequency,
+        A,
+        Phase,
+        Min_Duty,
+        Saw_Wave,
+        units,
+        High_Voltage,
+        options_units,
+        Low_Voltage,
+        option_limits,
+        Min_Frequency,
+        Max_Duty,
+        Counter,
+        Duty,
+        Input_Voltage2,
+        options,
+        Frequency,
+        Last_Output_Voltage,
+        Input_Voltage1,
+        tag,
+        Output_Voltage,
+        Postscaler,
     ):
         self.Max_Frequency = Max_Frequency
         self.A = A
@@ -69,12 +69,12 @@ class PulseWidthModulator:
     def Set_Max_Frequency(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Max_Frequency[0])
-                and abs(setter) <= abs(self.option_limits.Max_Frequency[1])
+            abs(setter) >= abs(self.option_limits.Max_Frequency[0])
+            and abs(setter) <= abs(self.option_limits.Max_Frequency[1])
         ) or abs(setter) == 0:
             self.Max_Frequency = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Max_Frequency(self) -> float:
         None
@@ -83,12 +83,12 @@ class PulseWidthModulator:
     def Set_Min_Frequency(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Min_Frequency[0])
-                and abs(setter) <= abs(self.option_limits.Min_Frequency[1])
+            abs(setter) >= abs(self.option_limits.Min_Frequency[0])
+            and abs(setter) <= abs(self.option_limits.Min_Frequency[1])
         ) or abs(setter) == 0:
             self.Min_Frequency = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Min_Frequency(self) -> float:
         None
@@ -97,12 +97,12 @@ class PulseWidthModulator:
     def Set_Max_Duty(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Max_Duty[0])
-                and abs(setter) <= abs(self.option_limits.Max_Duty[1])
+            abs(setter) >= abs(self.option_limits.Max_Duty[0])
+            and abs(setter) <= abs(self.option_limits.Max_Duty[1])
         ) or abs(setter) == 0:
             self.Max_Duty = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Max_Duty(self) -> float:
         None
@@ -111,12 +111,12 @@ class PulseWidthModulator:
     def Set_Phase(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Phase[0])
-                and abs(setter) <= abs(self.option_limits.Phase[1])
+            abs(setter) >= abs(self.option_limits.Phase[0])
+            and abs(setter) <= abs(self.option_limits.Phase[1])
         ) or abs(setter) == 0:
             self.Phase = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Phase(self) -> float:
         None
@@ -125,12 +125,12 @@ class PulseWidthModulator:
     def Set_Min_Duty(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Min_Duty[0])
-                and abs(setter) <= abs(self.option_limits.Min_Duty[1])
+            abs(setter) >= abs(self.option_limits.Min_Duty[0])
+            and abs(setter) <= abs(self.option_limits.Min_Duty[1])
         ) or abs(setter) == 0:
             self.Min_Duty = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Min_Duty(self) -> float:
         None
@@ -139,12 +139,12 @@ class PulseWidthModulator:
     def Set_Postscaler(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Postscaler[0])
-                and abs(setter) <= abs(self.option_limits.Postscaler[1])
+            abs(setter) >= abs(self.option_limits.Postscaler[0])
+            and abs(setter) <= abs(self.option_limits.Postscaler[1])
         ) or abs(setter) == 0:
             self.Postscaler = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Postscaler(self) -> float:
         None
@@ -157,13 +157,13 @@ class PulseWidthModulator:
     def update(self) -> None:
         None
         if (
-                self.context.Params.SystemFlags.FlagSimulating
-                and self.context.solutions_ready
-                and self.context.simulation_step != 0
+            self.context.Params.SystemFlags.FlagSimulating
+            and self.context.solutions_ready
+            and self.context.simulation_step != 0
         ):
             if (
-                    self.context.simulation_time < self.context.time_step
-                    or self.Counter >= self.Postscaler
+                self.context.simulation_time < self.context.time_step
+                or self.Counter >= self.Postscaler
             ):
                 self.Input_Voltage1 = Utils.Utils.limit(
                     self.context.get_voltage(self.Nodes[0], -1),
@@ -181,8 +181,8 @@ class PulseWidthModulator:
             self.Last_Output_Voltage = self.Output_Voltage
             self.Output_Voltage = self.A
             if (
-                    abs(self.Last_Output_Voltage - self.Output_Voltage) > 0
-                    or self.context.simulation_time < self.context.time_step
+                abs(self.Last_Output_Voltage - self.Output_Voltage) > 0
+                or self.context.simulation_time < self.context.time_step
             ):
                 self.Frequency = Utils.Utils.map_range(
                     self.Input_Voltage1, self.Min_Frequency, self.Max_Frequency
@@ -194,10 +194,13 @@ class PulseWidthModulator:
 
             self.Saw_Wave = 0.5 - (1 / math.pi) * math.atan(
                 1.0
-                / (math.tan(
-                    self.context.simulation_time * math.pi * self.Frequency
-                    + math.radians(self.Phase)
-                ) + self.context.Params.SystemConstants.ZERO_BIAS)
+                / (
+                    math.tan(
+                        self.context.simulation_time * math.pi * self.Frequency
+                        + math.radians(self.Phase)
+                    )
+                    + self.context.Params.SystemConstants.ZERO_BIAS
+                )
             )
             if self.Saw_Wave > 1.0 - self.Duty * 0.01:
                 self.A = self.High_Voltage

@@ -8,25 +8,25 @@ from mnapy import Wire
 
 class NChannelMOSFET:
     def __init__(
-            self,
-            context,
-            W_L_Ratio,
-            Vgs,
-            Vds,
-            gm,
-            Io,
-            units,
-            options_units,
-            option_limits,
-            VTN,
-            K_n,
-            gds,
-            options,
-            Mosfet_Mode,
-            Last_Io,
-            tag,
-            Lambda,
-            Last_Vgs,
+        self,
+        context,
+        W_L_Ratio,
+        Vgs,
+        Vds,
+        gm,
+        Io,
+        units,
+        options_units,
+        option_limits,
+        VTN,
+        K_n,
+        gds,
+        options,
+        Mosfet_Mode,
+        Last_Io,
+        tag,
+        Lambda,
+        Last_Vgs,
     ):
         self.W_L_Ratio = W_L_Ratio
         self.Vgs = Vgs
@@ -64,12 +64,12 @@ class NChannelMOSFET:
     def Set_W_L_Ratio(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.W_L_Ratio[0])
-                and abs(setter) <= abs(self.option_limits.W_L_Ratio[1])
+            abs(setter) >= abs(self.option_limits.W_L_Ratio[0])
+            and abs(setter) <= abs(self.option_limits.W_L_Ratio[1])
         ) or abs(setter) == 0:
             self.W_L_Ratio = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_W_L_Ratio(self) -> float:
         None
@@ -78,12 +78,12 @@ class NChannelMOSFET:
     def Set_VTN(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.VTN[0])
-                and abs(setter) <= abs(self.option_limits.VTN[1])
+            abs(setter) >= abs(self.option_limits.VTN[0])
+            and abs(setter) <= abs(self.option_limits.VTN[1])
         ) or abs(setter) == 0:
             self.VTN = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_VTN(self) -> float:
         None
@@ -92,12 +92,12 @@ class NChannelMOSFET:
     def Set_K_n(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.K_n[0])
-                and abs(setter) <= abs(self.option_limits.K_n[1])
+            abs(setter) >= abs(self.option_limits.K_n[0])
+            and abs(setter) <= abs(self.option_limits.K_n[1])
         ) or abs(setter) == 0:
             self.K_n = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_K_n(self) -> float:
         None
@@ -106,12 +106,12 @@ class NChannelMOSFET:
     def Set_Lambda(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Lambda[0])
-                and abs(setter) <= abs(self.option_limits.Lambda[1])
+            abs(setter) >= abs(self.option_limits.Lambda[0])
+            and abs(setter) <= abs(self.option_limits.Lambda[1])
         ) or abs(setter) == 0:
             self.Lambda = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Lambda(self) -> float:
         None
@@ -128,7 +128,10 @@ class NChannelMOSFET:
 
     def update(self) -> None:
         None
-        if self.context.Params.SystemFlags.FlagSimulating and self.context.solutions_ready:
+        if (
+            self.context.Params.SystemFlags.FlagSimulating
+            and self.context.solutions_ready
+        ):
             self.Last_Vgs = self.Vgs
             self.Last_Io = self.Io
             self.Vgs = Utils.Utils.log_damping(
@@ -144,7 +147,10 @@ class NChannelMOSFET:
                 self.kappa,
             )
             self.gmin = Utils.Utils.gmin_step(
-                self.gmin_start, self.get_nmosfet_error(), self.context.iterator, self.context
+                self.gmin_start,
+                self.get_nmosfet_error(),
+                self.context.iterator,
+                self.context,
             )
             kn: float = 0.5 * self.W_L_Ratio * self.K_n
             if self.Vgs <= self.VTN:
@@ -157,24 +163,24 @@ class NChannelMOSFET:
                 self.gds = 2.0 * kn * (self.Vgs - self.VTN - self.Vds)
                 self.gm = 2.0 * kn * self.Vds
                 self.Io = (
-                        2.0
-                        * kn
-                        * ((self.Vgs - self.VTN) * self.Vds - 0.5 * self.Vds * self.Vds)
-                        - self.Vgs * self.gm
-                        - self.Vds * self.gds
+                    2.0
+                    * kn
+                    * ((self.Vgs - self.VTN) * self.Vds - 0.5 * self.Vds * self.Vds)
+                    - self.Vgs * self.gm
+                    - self.Vds * self.gds
                 )
             elif self.Vds >= self.Vgs - self.VTN:
                 self.Mosfet_Mode = 2
                 self.gds = kn * self.Lambda * math.pow(self.Vgs - self.VTN, 2)
                 self.gm = (
-                        2.0 * kn * ((self.Vgs - self.VTN) * (1.0 + self.Lambda * self.Vds))
+                    2.0 * kn * ((self.Vgs - self.VTN) * (1.0 + self.Lambda * self.Vds))
                 )
                 self.Io = (
-                        kn
-                        * math.pow(self.Vgs - self.VTN, 2)
-                        * (1.0 + self.Lambda * self.Vds)
-                        - self.Vgs * self.gm
-                        - self.Vds * self.gds
+                    kn
+                    * math.pow(self.Vgs - self.VTN, 2)
+                    * (1.0 + self.Lambda * self.Vds)
+                    - self.Vgs * self.gm
+                    - self.Vds * self.gds
                 )
 
     def stamp(self) -> None:

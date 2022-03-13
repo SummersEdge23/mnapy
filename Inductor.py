@@ -7,19 +7,19 @@ from mnapy import Wire
 
 class Inductor:
     def __init__(
-            self,
-            context,
-            Transient_Resistance,
-            Inductance,
-            options,
-            Initial_Current,
-            tag,
-            units,
-            Transient_Current,
-            Transient_Voltage,
-            options_units,
-            Equivalent_Current,
-            option_limits,
+        self,
+        context,
+        Transient_Resistance,
+        Inductance,
+        options,
+        Initial_Current,
+        tag,
+        units,
+        Transient_Current,
+        Transient_Voltage,
+        options_units,
+        Equivalent_Current,
+        option_limits,
     ):
         self.Transient_Resistance = Transient_Resistance
         self.Inductance = Inductance
@@ -46,13 +46,13 @@ class Inductor:
     def Set_Inductance(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Inductance[0])
-                and abs(setter) <= abs(self.option_limits.Inductance[1])
+            abs(setter) >= abs(self.option_limits.Inductance[0])
+            and abs(setter) <= abs(self.option_limits.Inductance[1])
         ) or abs(setter) == 0:
             self.Inductance = setter
             self.conserve_energy()
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Inductance(self) -> float:
         None
@@ -61,12 +61,12 @@ class Inductor:
     def Set_Initial_Current(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Initial_Current[0])
-                and abs(setter) <= abs(self.option_limits.Initial_Current[1])
+            abs(setter) >= abs(self.option_limits.Initial_Current[0])
+            and abs(setter) <= abs(self.option_limits.Initial_Current[1])
         ) or abs(setter) == 0:
             self.Initial_Current = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Initial_Current(self) -> float:
         None
@@ -74,14 +74,15 @@ class Inductor:
 
     def reset(self) -> None:
         None
-        if (self.context.integration_method == "trapezoidal"):
+        if self.context.integration_method == "trapezoidal":
             self.Transient_Resistance = (2 * self.Inductance) / self.context.time_step
             self.Transient_Voltage = 0
             self.Transient_Current = self.Initial_Current
             self.Equivalent_Current = (
-                    self.Transient_Voltage / self.Transient_Resistance + self.Transient_Current
+                self.Transient_Voltage / self.Transient_Resistance
+                + self.Transient_Current
             )
-        elif (self.context.integration_method == "backward_euler"):
+        elif self.context.integration_method == "backward_euler":
             self.Transient_Resistance = self.Inductance / self.context.time_step
             self.Transient_Voltage = 0
             self.Transient_Current = self.Initial_Current
@@ -91,7 +92,8 @@ class Inductor:
             self.Transient_Voltage = 0
             self.Transient_Current = self.Initial_Current
             self.Equivalent_Current = (
-                    self.Transient_Voltage / self.Transient_Resistance + self.Transient_Current
+                self.Transient_Voltage / self.Transient_Resistance
+                + self.Transient_Current
             )
 
     def update(self) -> None:
@@ -148,46 +150,52 @@ class Inductor:
         if self.context.solutions_ready:
             voltage: float = self.context.get_voltage(self.Nodes[0], self.Nodes[1])
             self.Transient_Voltage = voltage
-            
-            if (self.context.integration_method == "trapezoidal"):
-                self.Transient_Resistance = (2 * self.Inductance) / self.context.time_step
+
+            if self.context.integration_method == "trapezoidal":
+                self.Transient_Resistance = (
+                    2 * self.Inductance
+                ) / self.context.time_step
                 self.Transient_Current = (
                     voltage / self.Transient_Resistance + self.Equivalent_Current
                 )
                 self.Equivalent_Current = (
-                        self.Transient_Voltage / self.Transient_Resistance
-                        + self.Transient_Current
+                    self.Transient_Voltage / self.Transient_Resistance
+                    + self.Transient_Current
                 )
-            elif (self.context.integration_method == "backward_euler"):
+            elif self.context.integration_method == "backward_euler":
                 self.Transient_Resistance = self.Inductance / self.context.time_step
                 self.Transient_Current = (
                     voltage / self.Transient_Resistance + self.Transient_Current
                 )
                 self.Equivalent_Current = self.Transient_Current
             else:
-                self.Transient_Resistance = (2 * self.Inductance) / self.context.time_step
+                self.Transient_Resistance = (
+                    2 * self.Inductance
+                ) / self.context.time_step
                 self.Transient_Current = (
                     voltage / self.Transient_Resistance + self.Equivalent_Current
                 )
                 self.Equivalent_Current = (
-                        self.Transient_Voltage / self.Transient_Resistance
-                        + self.Transient_Current
+                    self.Transient_Voltage / self.Transient_Resistance
+                    + self.Transient_Current
                 )
 
     def conserve_energy(self) -> None:
         None
-        if (self.context.integration_method == "trapezoidal"):
+        if self.context.integration_method == "trapezoidal":
             self.Transient_Resistance = (2 * self.Inductance) / self.context.time_step
             self.Equivalent_Current = (
-                    self.Transient_Voltage / self.Transient_Resistance + self.Transient_Current
+                self.Transient_Voltage / self.Transient_Resistance
+                + self.Transient_Current
             )
-        elif (self.context.integration_method == "backward_euler"):
+        elif self.context.integration_method == "backward_euler":
             self.Transient_Resistance = self.Inductance / self.context.time_step
-            self.Equivalent_Current = (self.Transient_Voltage / self.Transient_Resistance)
+            self.Equivalent_Current = self.Transient_Voltage / self.Transient_Resistance
         else:
             self.Transient_Resistance = (2 * self.Inductance) / self.context.time_step
             self.Equivalent_Current = (
-                    self.Transient_Voltage / self.Transient_Resistance + self.Transient_Current
+                self.Transient_Voltage / self.Transient_Resistance
+                + self.Transient_Current
             )
 
     def GetElementType(self) -> int:

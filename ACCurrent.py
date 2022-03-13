@@ -8,17 +8,17 @@ from mnapy import Wire
 
 class ACCurrent:
     def __init__(
-            self,
-            context,
-            Phase,
-            options,
-            Frequency,
-            tag,
-            units,
-            Current,
-            options_units,
-            option_limits,
-            Offset,
+        self,
+        context,
+        Phase,
+        options,
+        Frequency,
+        tag,
+        units,
+        Current,
+        options_units,
+        option_limits,
+        Offset,
     ):
         self.Phase = Phase
         self.options = options
@@ -43,12 +43,12 @@ class ACCurrent:
     def Set_Phase(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Phase[0])
-                and abs(setter) <= abs(self.option_limits.Phase[1])
+            abs(setter) >= abs(self.option_limits.Phase[0])
+            and abs(setter) <= abs(self.option_limits.Phase[1])
         ) or abs(setter) == 0:
             self.Phase = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Phase(self) -> float:
         None
@@ -57,12 +57,12 @@ class ACCurrent:
     def Set_Frequency(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Frequency[0])
-                and abs(setter) <= abs(self.option_limits.Frequency[1])
+            abs(setter) >= abs(self.option_limits.Frequency[0])
+            and abs(setter) <= abs(self.option_limits.Frequency[1])
         ) or abs(setter) == 0:
             self.Frequency = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Frequency(self) -> float:
         None
@@ -71,12 +71,12 @@ class ACCurrent:
     def Set_Current(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Current[0])
-                and abs(setter) <= abs(self.option_limits.Current[1])
+            abs(setter) >= abs(self.option_limits.Current[0])
+            and abs(setter) <= abs(self.option_limits.Current[1])
         ) or abs(setter) == 0:
             self.Current = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Current(self) -> float:
         None
@@ -85,12 +85,12 @@ class ACCurrent:
     def Set_Offset(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Offset[0])
-                and abs(setter) <= abs(self.option_limits.Offset[1])
+            abs(setter) >= abs(self.option_limits.Offset[0])
+            and abs(setter) <= abs(self.option_limits.Offset[1])
         ) or abs(setter) == 0:
             self.Offset = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Offset(self) -> float:
         None

@@ -8,20 +8,20 @@ from mnapy import Wire
 
 class Diode:
     def __init__(
-            self,
-            context,
-            Last_Voltage,
-            Resistance,
-            Last_Current,
-            Saturation_Current,
-            Voltage,
-            options,
-            Emission_Coefficient,
-            tag,
-            units,
-            options_units,
-            Equivalent_Current,
-            option_limits,
+        self,
+        context,
+        Last_Voltage,
+        Resistance,
+        Last_Current,
+        Saturation_Current,
+        Voltage,
+        options,
+        Emission_Coefficient,
+        tag,
+        units,
+        options_units,
+        Equivalent_Current,
+        option_limits,
     ):
         self.Last_Voltage = Last_Voltage
         self.Resistance = Resistance
@@ -54,12 +54,12 @@ class Diode:
     def Set_Saturation_Current(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Saturation_Current[0])
-                and abs(setter) <= abs(self.option_limits.Saturation_Current[1])
+            abs(setter) >= abs(self.option_limits.Saturation_Current[0])
+            and abs(setter) <= abs(self.option_limits.Saturation_Current[1])
         ) or abs(setter) == 0:
             self.Saturation_Current = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Saturation_Current(self) -> float:
         None
@@ -68,12 +68,12 @@ class Diode:
     def Set_Emission_Coefficient(self, setter: float) -> None:
         None
         if (
-                setter > self.option_limits.Emission_Coefficient[0]
-                and setter < self.option_limits.Emission_Coefficient[1]
+            setter > self.option_limits.Emission_Coefficient[0]
+            and setter < self.option_limits.Emission_Coefficient[1]
         ):
             self.Emission_Coefficient = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Emission_Coefficient(self) -> float:
         None
@@ -92,7 +92,10 @@ class Diode:
 
     def update(self) -> None:
         None
-        if self.context.Params.SystemFlags.FlagSimulating and self.context.solutions_ready:
+        if (
+            self.context.Params.SystemFlags.FlagSimulating
+            and self.context.solutions_ready
+        ):
             self.Last_Voltage = self.Voltage
             self.Last_Current = self.Equivalent_Current
             next_voltage: float = self.context.get_voltage(self.Nodes[0], self.Nodes[1])
@@ -113,43 +116,47 @@ class Diode:
 
             diode_voltage = Utils.Utils.limit(diode_voltage, -vcrit, vcrit)
             self.gmin = Utils.Utils.gmin_step(
-                self.gmin_start, self.get_diode_error(), self.context.iterator, self.context
+                self.gmin_start,
+                self.get_diode_error(),
+                self.context.iterator,
+                self.context,
             )
             self.Voltage = diode_voltage
             self.Resistance = 1.0 / (
-                    (
-                            self.Saturation_Current
-                            / (
-                                    self.Emission_Coefficient
-                                    * self.context.Params.SystemSettings.THERMAL_VOLTAGE
-                            )
-                    )
-                    * math.exp(
-                self.Voltage
-                / (
+                (
+                    self.Saturation_Current
+                    / (
                         self.Emission_Coefficient
                         * self.context.Params.SystemSettings.THERMAL_VOLTAGE
+                    )
+                )
+                * math.exp(
+                    self.Voltage
+                    / (
+                        self.Emission_Coefficient
+                        * self.context.Params.SystemSettings.THERMAL_VOLTAGE
+                    )
                 )
             )
-            )
             self.Equivalent_Current = -(
-                    self.Saturation_Current
-                    * (
-                            math.exp(
-                                self.Voltage
-                                / (
-                                        self.Emission_Coefficient
-                                        * self.context.Params.SystemSettings.THERMAL_VOLTAGE
-                                )
-                            )
-                            - 1
+                self.Saturation_Current
+                * (
+                    math.exp(
+                        self.Voltage
+                        / (
+                            self.Emission_Coefficient
+                            * self.context.Params.SystemSettings.THERMAL_VOLTAGE
+                        )
                     )
-                    - self.Voltage / self.Resistance
+                    - 1
+                )
+                - self.Voltage / self.Resistance
             )
 
     def stamp(self) -> None:
         None
-        self.context.stamp_resistor(self.Nodes[0], self.Nodes[1], 1.0 / self.gmin)
+        if self.context.iterator >= self.gmin_start:
+            self.context.stamp_resistor(self.Nodes[0], self.Nodes[1], 1.0 / self.gmin)
         self.context.stamp_current(
             self.Nodes[0], self.Nodes[1], self.Equivalent_Current
         )

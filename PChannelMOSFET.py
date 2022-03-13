@@ -8,25 +8,25 @@ from mnapy import Wire
 
 class PChannelMOSFET:
     def __init__(
-            self,
-            context,
-            W_L_Ratio,
-            Last_Vsg,
-            Vsd,
-            gm,
-            Io,
-            Vsg,
-            units,
-            options_units,
-            option_limits,
-            VTP,
-            K_p,
-            options,
-            gsd,
-            Mosfet_Mode,
-            Last_Io,
-            tag,
-            Lambda,
+        self,
+        context,
+        W_L_Ratio,
+        Last_Vsg,
+        Vsd,
+        gm,
+        Io,
+        Vsg,
+        units,
+        options_units,
+        option_limits,
+        VTP,
+        K_p,
+        options,
+        gsd,
+        Mosfet_Mode,
+        Last_Io,
+        tag,
+        Lambda,
     ):
         self.W_L_Ratio = W_L_Ratio
         self.Last_Vsg = Last_Vsg
@@ -64,12 +64,12 @@ class PChannelMOSFET:
     def Set_W_L_Ratio(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.W_L_Ratio[0])
-                and abs(setter) <= abs(self.option_limits.W_L_Ratio[1])
+            abs(setter) >= abs(self.option_limits.W_L_Ratio[0])
+            and abs(setter) <= abs(self.option_limits.W_L_Ratio[1])
         ) or abs(setter) == 0:
             self.W_L_Ratio = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_W_L_Ratio(self) -> float:
         None
@@ -78,12 +78,12 @@ class PChannelMOSFET:
     def Set_VTP(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.VTP[0])
-                and abs(setter) <= abs(self.option_limits.VTP[1])
+            abs(setter) >= abs(self.option_limits.VTP[0])
+            and abs(setter) <= abs(self.option_limits.VTP[1])
         ) or abs(setter) == 0:
             self.VTP = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_VTP(self) -> float:
         None
@@ -92,12 +92,12 @@ class PChannelMOSFET:
     def Set_K_p(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.K_p[0])
-                and abs(setter) <= abs(self.option_limits.K_p[1])
+            abs(setter) >= abs(self.option_limits.K_p[0])
+            and abs(setter) <= abs(self.option_limits.K_p[1])
         ) or abs(setter) == 0:
             self.K_p = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_K_p(self) -> float:
         None
@@ -106,12 +106,12 @@ class PChannelMOSFET:
     def Set_Lambda(self, setter: float) -> None:
         None
         if (
-                abs(setter) >= abs(self.option_limits.Lambda[0])
-                and abs(setter) <= abs(self.option_limits.Lambda[1])
+            abs(setter) >= abs(self.option_limits.Lambda[0])
+            and abs(setter) <= abs(self.option_limits.Lambda[1])
         ) or abs(setter) == 0:
             self.Lambda = setter
         else:
-            print(self.Designator + " -> Value is outside of limits.")
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
 
     def Get_Lambda(self) -> float:
         None
@@ -128,7 +128,10 @@ class PChannelMOSFET:
 
     def update(self) -> None:
         None
-        if self.context.Params.SystemFlags.FlagSimulating and self.context.solutions_ready:
+        if (
+            self.context.Params.SystemFlags.FlagSimulating
+            and self.context.solutions_ready
+        ):
             self.Last_Vsg = self.Vsg
             self.Last_Io = self.Io
             self.Vsg = Utils.Utils.log_damping(
@@ -144,7 +147,10 @@ class PChannelMOSFET:
                 self.kappa,
             )
             self.gmin = Utils.Utils.gmin_step(
-                self.gmin_start, self.get_pmosfet_error(), self.context.iterator, self.context
+                self.gmin_start,
+                self.get_pmosfet_error(),
+                self.context.iterator,
+                self.context,
             )
             kp: float = 0.5 * self.W_L_Ratio * -self.K_p
             if self.Vsg <= -self.VTP:
@@ -157,22 +163,24 @@ class PChannelMOSFET:
                 self.gsd = 2.0 * kp * (self.Vsg + self.VTP - self.Vsd)
                 self.gm = 2.0 * kp * self.Vsd
                 self.Io = (
-                        2.0
-                        * kp
-                        * ((self.Vsg + self.VTP) * self.Vsd - 0.5 * self.Vsd * self.Vsd)
-                        - self.Vsg * self.gm
-                        - self.Vsd * self.gsd
+                    2.0
+                    * kp
+                    * ((self.Vsg + self.VTP) * self.Vsd - 0.5 * self.Vsd * self.Vsd)
+                    - self.Vsg * self.gm
+                    - self.Vsd * self.gsd
                 )
             elif self.Vsd >= self.Vsg + self.VTP:
                 self.Mosfet_Mode = 2
                 self.gsd = kp * self.Lambda * math.pow(self.Vsg + self.VTP, 2)
                 self.gm = (
-                        2.0 * kp * ((self.Vsg + self.VTP) * (1.0 + self.Lambda * self.Vsd))
+                    2.0 * kp * ((self.Vsg + self.VTP) * (1.0 + self.Lambda * self.Vsd))
                 )
                 self.Io = (
-                        kp * math.pow(self.Vsg + self.VTP, 2) * (1.0 + self.Lambda * self.Vsd)
-                        - self.Vsg * self.gm
-                        - self.Vsd * self.gsd
+                    kp
+                    * math.pow(self.Vsg + self.VTP, 2)
+                    * (1.0 + self.Lambda * self.Vsd)
+                    - self.Vsg * self.gm
+                    - self.Vsd * self.gsd
                 )
 
     def stamp(self) -> None:

@@ -89,7 +89,7 @@ class Engine:
         generated netlist and creates objects that can be modified during the execution of the code. NOTE: None
         of the modifications are actually written to file."""
 
-        self.__version__ = "1.2.18"
+        self.__version__ = "1.2.19"
         # Version control variables.
         self.ELEMENT_DIVIDER = "#DIVIDER#"
         self.WIRE_DIVIDER = "#WIRE#"
