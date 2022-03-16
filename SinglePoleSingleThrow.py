@@ -64,6 +64,20 @@ class SinglePoleSingleThrow:
         None
         return self.Closed_Resistance
 
+    def Set_Open_Resistance(self, setter: float) -> None:
+        None
+        if (
+            abs(setter) >= abs(self.option_limits.Open_Resistance[0])
+            and abs(setter) <= abs(self.option_limits.Open_Resistance[1])
+        ) or abs(setter) == 0:
+            self.Open_Resistance = setter
+        else:
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
+
+    def Get_Open_Resistance(self) -> float:
+        None
+        return self.Open_Resistance
+    
     def reset(self) -> None:
         None
 

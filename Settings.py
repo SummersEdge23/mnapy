@@ -13,7 +13,7 @@ class Settings:
         self.R_GROUND = 1e-12
         self.R_NODE_TO_GROUND = 1e-15
         self.ABSTOL = 1e-12
-        self.VNTOL = 1e-6
+        self.VNTOL = 1e-5
         self.RELTOL = 1e-3
         self.MAX_ITER = 96
         self.MAX_VOLTAGE = 500e6

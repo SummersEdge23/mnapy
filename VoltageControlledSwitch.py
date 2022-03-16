@@ -12,6 +12,7 @@ class VoltageControlledSwitch:
         context,
         Closed_Resistance,
         options,
+        Open_Resistance,
         Input_Voltage,
         tag,
         units,
@@ -22,6 +23,7 @@ class VoltageControlledSwitch:
     ):
         self.Closed_Resistance = Closed_Resistance
         self.options = options
+        self.Open_Resistance = Open_Resistance
         self.Input_Voltage = Input_Voltage
         self.tag = tag
         self.units = units
@@ -56,6 +58,20 @@ class VoltageControlledSwitch:
         None
         return self.Closed_Resistance
 
+    def Set_Open_Resistance(self, setter: float) -> None:
+        None
+        if (
+            abs(setter) >= abs(self.option_limits.Open_Resistance[0])
+            and abs(setter) <= abs(self.option_limits.Open_Resistance[1])
+        ) or abs(setter) == 0:
+            self.Open_Resistance = setter
+        else:
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
+
+    def Get_Open_Resistance(self) -> float:
+        None
+        return self.Open_Resistance
+    
     def Set_High_Voltage(self, setter: float) -> None:
         None
         if (
@@ -95,6 +111,10 @@ class VoltageControlledSwitch:
         if self.Output_Voltage < self.High_Voltage * 0.5:
             self.context.stamp_resistor(
                 self.Nodes[0], self.Nodes[2], self.Closed_Resistance
+            )
+        else:
+            self.context.stamp_resistor(
+                self.Nodes[0], self.Nodes[2], self.Open_Resistance
             )
 
     def SetId(self, Id: str) -> None:

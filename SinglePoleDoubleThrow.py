@@ -63,6 +63,20 @@ class SinglePoleDoubleThrow:
     def Get_Closed_Resistance(self) -> float:
         None
         return self.Closed_Resistance
+    
+    def Set_Open_Resistance(self, setter: float) -> None:
+        None
+        if (
+            abs(setter) >= abs(self.option_limits.Open_Resistance[0])
+            and abs(setter) <= abs(self.option_limits.Open_Resistance[1])
+        ) or abs(setter) == 0:
+            self.Open_Resistance = setter
+        else:
+            print(self.Designator + ":=" + setter + " -> Value is outside of limits.")
+
+    def Get_Open_Resistance(self) -> float:
+        None
+        return self.Open_Resistance
 
     def reset(self) -> None:
         None
@@ -76,12 +90,16 @@ class SinglePoleDoubleThrow:
             self.context.stamp_resistor(
                 self.Nodes[1], self.Nodes[2], self.Closed_Resistance
             )
-            self.context.stamp_node(self.Nodes[0], self.Open_Resistance)
+            self.context.stamp_resistor(
+                self.Nodes[0], self.Nodes[2], self.Open_Resistance
+            )
         else:
             self.context.stamp_resistor(
                 self.Nodes[0], self.Nodes[2], self.Closed_Resistance
             )
-            self.context.stamp_node(self.Nodes[1], self.Open_Resistance)
+            self.context.stamp_resistor(
+                self.Nodes[1], self.Nodes[2], self.Open_Resistance
+            )
 
     def SetId(self, Id: str) -> None:
         None

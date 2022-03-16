@@ -210,7 +210,6 @@ class VoltageControlledResistor:
                 self.context.Params.SystemSettings.R_MAX,
             ),
         )
-        self.context.stamp_node(self.Nodes[1], self.context.Params.SystemSettings.R_MAX)
 
     def SetId(self, Id: str) -> None:
         None
