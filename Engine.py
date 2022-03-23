@@ -89,7 +89,7 @@ class Engine:
         generated netlist and creates objects that can be modified during the execution of the code. NOTE: None
         of the modifications are actually written to file."""
 
-        self.__version__ = "1.2.21"
+        self.__version__ = "1.2.22"
         # Version control variables.
         self.ELEMENT_DIVIDER = "#DIVIDER#"
         self.WIRE_DIVIDER = "#WIRE#"
@@ -2631,16 +2631,10 @@ class Engine:
         if node_1 != -1:
             self.matrix_a[node_1][node_offset + id] = 1
             self.matrix_a[node_offset + id][node_1] = 1
-            self.matrix_a[node_1][node_1] += 1.0 / self.Params.SystemSettings.R_MAX
         None
         if node_2 != -1:
             self.matrix_a[node_2][node_offset + id] = -1
             self.matrix_a[node_offset + id][node_2] = -1
-            self.matrix_a[node_2][node_2] += 1.0 / self.Params.SystemSettings.R_MAX
-        None
-        if node_1 != -1 and node_2 != -1:
-            self.matrix_a[node_1][node_2] += -1.0 / self.Params.SystemSettings.R_MAX
-            self.matrix_a[node_2][node_1] += -1.0 / self.Params.SystemSettings.R_MAX
         None
         self.matrix_z[node_offset + id][0] += voltage
 
@@ -2655,7 +2649,6 @@ class Engine:
             self.matrix_a[node_1][node_offset + id] = 1
             self.matrix_a[node_offset + id][node_1] = -1
             self.matrix_a[node_offset + id][node_1 + 1] = par_vout_par_vin1
-            self.matrix_a[node_1][node_1] += 1.0 / self.Params.SystemSettings.R_MAX
         None
         self.matrix_z[node_offset + id][0] += v_eq
 
@@ -2676,7 +2669,6 @@ class Engine:
             self.matrix_a[node_offset + id][node_1] = -1
             self.matrix_a[node_offset + id][node_1 + 1] = par_vout_par_vin1
             self.matrix_a[node_offset + id][node_1 + 2] = par_vout_par_vin2
-            self.matrix_a[node_1][node_1] += 1.0 / self.Params.SystemSettings.R_MAX
         None
         self.matrix_z[node_offset + id][0] += v_eq
 

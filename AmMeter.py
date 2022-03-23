@@ -44,9 +44,6 @@ class AmMeter:
 
     def stamp(self) -> None:
         None
-        self.context.stamp_resistor(
-            self.Nodes[0], self.Nodes[1], self.context.Params.SystemSettings.R_MAX
-        )
         self.context.stamp_voltage(
             self.Nodes[0],
             self.Nodes[1],
