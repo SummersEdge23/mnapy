@@ -47,8 +47,8 @@ class ZenerDiode:
         self.ElementType = -1
         self.WireReferences = []
         self.context = context
-        self.gamma = 0.12
-        self.kappa = 0.414
+        self.gamma = 0.8
+        self.kappa = 0.618
         self.gmin = 1e-9
         self.gmin_start = 12
         self.damping_safety_factor = 0.97
@@ -132,12 +132,6 @@ class ZenerDiode:
                 diode_voltage = next_voltage
 
             diode_voltage = Utils.Utils.limit(diode_voltage, -self.Zener_Voltage, vcrit)
-            self.gmin = Utils.Utils.gmin_step(
-                self.gmin_start,
-                self.get_zener_error(),
-                self.context.iterator,
-                self.context,
-            )
             self.Voltage = diode_voltage
             adjusted_zener_voltage: float = (
                 self.damping_safety_factor * self.Zener_Voltage
@@ -205,6 +199,12 @@ class ZenerDiode:
                     )
                     - self.Voltage / self.Resistance
                 )
+            self.gmin = Utils.Utils.gmin_step(
+                self.gmin_start,
+                self.get_zener_error(),
+                self.context.iterator,
+                self.context,
+            )
 
     def stamp(self) -> None:
         None
@@ -217,7 +217,7 @@ class ZenerDiode:
 
     def get_zener_error(self) -> float:
         None
-        return abs(self.Voltage - self.Last_Voltage)
+        return abs(self.Equivalent_Current - self.Last_Current)
 
     def SetId(self, Id: str) -> None:
         None

@@ -55,8 +55,8 @@ class NChannelMOSFET:
         self.ElementType = -1
         self.WireReferences = []
         self.context = context
-        self.gamma = 0.12
-        self.kappa = 0.414
+        self.gamma = 0.8
+        self.kappa = 0.618
         self.gmin = 1e-9
         self.gmin_start = 12
         self.damping_safety_factor = 0.97
@@ -146,12 +146,6 @@ class NChannelMOSFET:
                 self.gamma,
                 self.kappa,
             )
-            self.gmin = Utils.Utils.gmin_step(
-                self.gmin_start,
-                self.get_nmosfet_error(),
-                self.context.iterator,
-                self.context,
-            )
             kn: float = 0.5 * self.W_L_Ratio * self.K_n
             if self.Vgs <= self.VTN:
                 self.Mosfet_Mode = 0
@@ -182,6 +176,12 @@ class NChannelMOSFET:
                     - self.Vgs * self.gm
                     - self.Vds * self.gds
                 )
+            self.gmin = Utils.Utils.gmin_step(
+                self.gmin_start,
+                self.get_nmosfet_error(),
+                self.context.iterator,
+                self.context,
+            )
 
     def stamp(self) -> None:
         None
@@ -189,14 +189,14 @@ class NChannelMOSFET:
             self.context.stamp_vccs(
                 self.Nodes[2], self.Nodes[1], self.Nodes[0], self.Nodes[1], -self.gm
             )
-
-        self.context.stamp_resistor(self.Nodes[0], self.Nodes[1], 1.0 / self.gmin)
+        if self.context.iterator >= self.gmin_start:
+            self.context.stamp_resistor(self.Nodes[0], self.Nodes[1], 1.0 / self.gmin)
         self.context.stamp_current(self.Nodes[0], self.Nodes[1], -self.Io)
         self.context.stamp_resistor(self.Nodes[0], self.Nodes[1], 1.0 / self.gds)
 
     def get_nmosfet_error(self) -> float:
         None
-        return abs(self.Vgs - self.Last_Vgs)
+        return abs(self.Io - self.Last_Io)
 
     def SetId(self, Id: str) -> None:
         None

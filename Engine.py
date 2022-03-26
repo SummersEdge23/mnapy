@@ -2885,8 +2885,9 @@ class Engine:
 
         if len(self.grounds) > 0:
             node_3 = self.map_node(self.grounds[0].GetNode(0))
-            if node_3 != -1 and node_3 < len(self.matrix_x):
-                v_node_ground = self.matrix_x[node_3][0]
+            if node_3 != -1:
+                if (not np.isnan(self.matrix_x[node_3][0])):
+                    v_node_ground = self.matrix_x[node_3][0]
             None
         None
         return v_node_1 - v_node_2 - v_node_ground
@@ -2925,11 +2926,11 @@ class Engine:
                         self.publish()
                         self.continue_solving = True
                         self.iterator = 0
-                        self.update_vir()
-                        self.led_check()
                         self.system_ready = True
                         self.simulation_time += self.time_step
+                        self.update_vir()
                         self.simulation_step = 0
+                        self.led_check()
 
         None
     
@@ -3242,7 +3243,7 @@ class Engine:
     None
 
     def ready(self):
-        return not self.continue_solving
+        return not self.continue_solving and self.system_ready and self.simulation_step == 1
 
     None
 

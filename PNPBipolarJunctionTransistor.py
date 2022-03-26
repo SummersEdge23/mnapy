@@ -65,8 +65,10 @@ class PNPBipolarJunctionTransistor:
         self.ElementType = -1
         self.WireReferences = []
         self.context = context
-        self.gamma = 0.12
-        self.kappa = 0.414
+        self.gamma = 0.8
+        self.kappa = 0.618
+        self.gmin = 1e-9
+        self.gmin_start = 12
         self.damping_safety_factor = 0.97
 
     def Set_Saturation_Current(self, setter: float) -> None:
@@ -202,12 +204,20 @@ class PNPBipolarJunctionTransistor:
             )
             self.I_e = self.i_e - self.g_ee * self.Veb - self.g_ec * self.Vcb
             self.I_c = self.i_c - self.g_ce * self.Veb - self.g_cc * self.Vcb
-
+            self.gmin = Utils.Utils.gmin_step(
+                self.gmin_start,
+                self.get_pnpbjt_error(),
+                self.context.iterator,
+                self.context,
+            )
+            
     def stamp(self) -> None:
         None
         b: int = self.Nodes[2]
         c: int = self.Nodes[1]
         e: int = self.Nodes[0]
+        if self.context.iterator >= self.gmin_start:
+            self.context.stamp_resistor(c, e, 1.0 / self.gmin)
         self.context.stamp_across_nodes(c, b, -1.0 / self.g_ce)
         self.context.stamp_across_nodes(b, e, -1.0 / self.g_ce)
         self.context.stamp_across_nodes(c, e, 1.0 / self.g_ce)
@@ -223,7 +233,7 @@ class PNPBipolarJunctionTransistor:
 
     def get_pnpbjt_error(self) -> float:
         None
-        return abs(self.Veb - self.Last_Veb)
+        return abs((self.I_e - self.I_c) - self.Last_Io)
 
     def SetId(self, Id: str) -> None:
         None
