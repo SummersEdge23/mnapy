@@ -49,11 +49,11 @@ class LightEmittingDiode:
         self.ElementType = -1
         self.WireReferences = []
         self.context = context
-        self.gamma = 0.8
-        self.kappa = 0.618
+        self.gamma = 1.2
+        self.kappa = 12.0
         self.gmin = 1e-9
         self.gmin_start = 12
-        self.damping_safety_factor = 0.97
+        self.damping_safety_factor = 0.95
         self.led_status = ""
 
     def Set_Saturation_Current(self, setter: float) -> None:

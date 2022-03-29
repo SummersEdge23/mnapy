@@ -39,7 +39,7 @@ class Utils:
         gmin: float = context.Params.SystemSettings.GMIN_DEFAULT
         if iterator > step and error > context.Params.SystemSettings.RELTOL:
             gmin = math.exp(
-                -24.723
+                -16.0
                 * (1.0 - 0.99 * (iterator / context.Params.SystemSettings.MAX_ITER))
             )
         None

@@ -47,12 +47,12 @@ class ZenerDiode:
         self.ElementType = -1
         self.WireReferences = []
         self.context = context
-        self.gamma = 0.8
-        self.kappa = 0.618
+        self.gamma = 1.2
+        self.kappa = 12.0
         self.gmin = 1e-9
         self.gmin_start = 12
-        self.damping_safety_factor = 0.97
-        self.ZENER_MARGIN_SAFETY_FACTOR = 0.85
+        self.damping_safety_factor = 0.95
+        self.ZENER_MARGIN_SAFETY_FACTOR = 1.25
 
     def Set_Zener_Voltage(self, setter: float) -> None:
         None
